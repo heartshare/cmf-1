@@ -3,13 +3,44 @@
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
+    'language' => 'ru-RU',
+    'sourceLanguage' => 'en-US',
     'bootstrap' => ['log'],
     'components' => [
         'request' => [
-            'cookieValidationKey' => '$2y$13$lK7gekcccWnAaTyKt4$2y$13$zQsgFBDscpbrCfBk0ZjXzuV6c2VjPzCHH5.bWDV5UiIn5UodsGtA.7tCuaU.3BGSdYjV6ZLin/SRg0aEBoTk7XkC',
+            'cookieValidationKey' => 'pbrCfBk0ZjXzuV6c2VSRg0aEBoTk7XkC',
         ],
+        'i18n' => [
+            'translations' => [
+                'app' => [
+                    'sourceLanguage' => 'ru-RU',
+                    'class' => 'app\components\DbMessageSource',
+                    'messageTable' => 'cmf_i18n_message',
+                    'sourceMessageTable' => 'cmf_i18n_source',
+                    'enableCaching' => false,
+                ],
+            ],
+        ],
+        'urlManager' => [
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
+            'suffix' => '.html',
+        ],
+        /*
         'cache' => [
             'class' => 'yii\caching\FileCache',
+        ],
+        */
+        'cache' => [
+            'class' => '\yii\caching\MemCache',
+            'servers' => [
+                [
+                    'host' => 'localhost',
+                    'port' => 11211,
+                    'weight' => 1,
+                    'persistent' => true,
+                ],
+            ],
         ],
         'user' => [
             'identityClass' => 'app\models\User',
@@ -20,17 +51,24 @@ $config = [
         ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
-            // send all mails to a file by default. You have to set
-            // 'useFileTransport' to false and configure a transport
-            // for the mailer to send real emails.
-            'useFileTransport' => true,
+            'useFileTransport' => false, // @runtime/mail/
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
-                [
+                'file' => [
                     'class' => 'yii\log\FileTarget',
                     'levels' => ['error', 'warning'],
+                ],
+                'email' => [
+                    'class' => 'yii\log\EmailTarget',
+                    'levels' => ['error', 'warning'],
+                    'message' => [
+                        'to' => [
+                            'webmaster@d7.home',
+                        ],
+                        'subject' => 'Logging',
+                    ],
                 ],
             ],
         ],
