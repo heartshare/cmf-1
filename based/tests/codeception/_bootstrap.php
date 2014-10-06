@@ -1,6 +1,6 @@
 <?php
 defined('YII_DEBUG') or define('YII_DEBUG', true);
-defined('YII_ENV') or define('YII_ENV', 'test');
+defined('YII_ENV') or define('YII_ENV', 'test'); // prod | dev | test
 
 defined('YII_TEST_ENTRY_URL') or define('YII_TEST_ENTRY_URL', \Codeception\Configuration::config(
 )['config']['test_entry_url']);
