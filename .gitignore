@@ -20,3 +20,4 @@ Thumbs.db
 
 # db config
 /based/config/db.php
+/based/tests/codeception/config/config.php
