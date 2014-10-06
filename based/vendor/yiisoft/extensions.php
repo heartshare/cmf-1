@@ -75,4 +75,13 @@ return array(
                     '@yii/imagine' => $vendorDir . '/yiisoft/yii2-imagine',
                 ),
         ),
+    'yiisoft/yii2-sphinx' =>
+        array(
+            'name' => 'yiisoft/yii2-sphinx',
+            'version' => '2.0.0.0-RC',
+            'alias' =>
+                array(
+                    '@yii/sphinx' => $vendorDir . '/yiisoft/yii2-sphinx',
+                ),
+        ),
 );

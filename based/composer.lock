@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a5f0d63145b3a689b4938b44f8295704",
+    "hash": "a3218bbf78939d8d4a2c6d2d1f3498c5",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -711,6 +711,56 @@
             "time": "2014-09-28 01:59:54"
         },
         {
+            "name": "yiisoft/yii2-sphinx",
+            "version": "2.0.0-rc",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yiisoft/yii2-sphinx.git",
+                "reference": "7fa92de8716bf3be7bbd3ecf79d6f2e1c38288f6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/yiisoft/yii2-sphinx/zipball/7fa92de8716bf3be7bbd3ecf79d6f2e1c38288f6",
+                "reference": "7fa92de8716bf3be7bbd3ecf79d6f2e1c38288f6",
+                "shasum": ""
+            },
+            "require": {
+                "ext-pdo": "*",
+                "ext-pdo_mysql": "*",
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "yii\\sphinx\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Paul Klimov",
+                    "email": "klimov.paul@gmail.com"
+                }
+            ],
+            "description": "Sphinx full text search engine extension for the Yii framework",
+            "keywords": [
+                "active-record",
+                "fulltext",
+                "search",
+                "sphinx",
+                "yii2"
+            ],
+            "time": "2014-09-28 01:59:54"
+        },
+        {
             "name": "yiisoft/yii2-swiftmailer",
             "version": "2.0.0-rc",
             "source": {
@@ -1182,7 +1232,8 @@
     "minimum-stability": "RC",
     "stability-flags": {
         "yiisoft/yii2-jui": 5,
-        "yiisoft/yii2-imagine": 5
+        "yiisoft/yii2-imagine": 5,
+        "yiisoft/yii2-sphinx": 5
     },
     "prefer-stable": false,
     "platform": {
