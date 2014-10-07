@@ -60,7 +60,11 @@ AppAsset::register($this);
     <div class="container">
         <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
 
-        <p class="pull-right"><?= Yii::powered() ?> version <?= Yii::getVersion() ?></p>
+        <p class="pull-right">
+            <?= Yii::powered() ?>
+            <?= Yii::t('app', 'версия') ?>
+            <?= Yii::getVersion() ?>
+        </p>
     </div>
 </footer>
 

@@ -14,10 +14,11 @@ $config = [
             'translations' => [
                 'app' => [
                     'sourceLanguage' => 'ru-RU',
-                    'class' => 'app\components\DbMessageSource',
+                    'class' => 'yii\i18n\DbMessageSource',
                     'messageTable' => '{{%i18n_message}}',
                     'sourceMessageTable' => '{{%i18n_source}}',
                     'enableCaching' => YII_DEBUG ? false : true,
+                    'on missingTranslation' => ['app\components\TranslationEventHandler', 'handleMissingTranslation'],
                 ],
             ],
         ],
@@ -62,6 +63,9 @@ $config = [
                     'message' => [
                         'to' => [
                             'webmaster@d7.home',
+                        ],
+                        [
+                            'from' => 'logging@d7.home',
                         ],
                         'subject' => 'Logging',
                     ],

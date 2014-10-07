@@ -22,7 +22,7 @@
             <?php if ($method !== null): ?>
                 <span class="call">
                     <?php if ($file !== null) {
-                        echo '&ndash;'
+                        echo '&ndash;';
 } ?>
                     <?= ($class !== null ? $handler->addTypeLinks("$class::$method") : $handler->htmlEncode(
                         $method

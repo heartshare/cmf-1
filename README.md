@@ -17,11 +17,11 @@ codeception fixtures
 ```
 
 ```
-migration
+migration - done!
 ```
 
 ```
-i18n translations
+i18n translations - done!
 ```
 
 ```
