@@ -15,9 +15,9 @@ $config = [
                 'app' => [
                     'sourceLanguage' => 'ru-RU',
                     'class' => 'app\components\DbMessageSource',
-                    'messageTable' => 'cmf_i18n_message',
-                    'sourceMessageTable' => 'cmf_i18n_source',
-                    'enableCaching' => false,
+                    'messageTable' => '{{%i18n_message}}',
+                    'sourceMessageTable' => '{{%i18n_source}}',
+                    'enableCaching' => YII_DEBUG ? false : true,
                 ],
             ],
         ],
@@ -41,10 +41,6 @@ $config = [
                     'persistent' => true,
                 ],
             ],
-        ],
-        'user' => [
-            'identityClass' => 'app\models\User',
-            'enableAutoLogin' => true,
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',

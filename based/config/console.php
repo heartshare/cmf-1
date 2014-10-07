@@ -10,7 +10,7 @@ return [
     'controllerMap' => [
         'migrate' => [
             'class' => '\yii\console\controllers\MigrateController',
-            'migrationTable' => 'cmf_migrate',
+            'migrationTable' => '{{%migrate}}',
         ],
     ],
     'modules' => [
