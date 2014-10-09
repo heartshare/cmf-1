@@ -30,17 +30,17 @@ $config = [
             'enableStrictParsing' => false,
             'rules' => [
                 // gii
-                '<lang:\w+\-\w+>/gii' => 'gii/default/index',
-                '<lang:\w+\-\w+>/gii/<id:\w+>' => 'gii/default/view',
-                '<lang:\w+\-\w+>/gii/<controller:\w+>/<action:\w+>' => 'gii/<controller>/<action>',
+                '<language:\w+\-\w+>/gii' => 'gii/default/index',
+                '<language:\w+\-\w+>/gii/<id:\w+>' => 'gii/default/view',
+                '<language:\w+\-\w+>/gii/<controller:\w+>/<action:\w+>' => 'gii/<controller>/<action>',
                 // debug
-                '<lang:\w+\-\w+>/debug' => 'debug',
-                '<lang:\w+\-\w+>/debug/<controller:\w+>/<action:\w+>' => 'debug/<controller>/<action>',
+                '<language:\w+\-\w+>/debug' => 'debug',
+                '<language:\w+\-\w+>/debug/<controller:\w+>/<action:\w+>' => 'debug/<controller>/<action>',
                 // site
                 '/' => 'site/index',
-                '<lang:\w+\-\w+>' => 'site/index',
-                '<lang:\w+\-\w+>/<controller:\w+>' => '<controller>',
-                '<lang:\w+\-\w+>/<controller:\w+>/<action:\w+>' => '<controller>/<action>',
+                '<language:\w+\-\w+>' => 'site/index',
+                '<language:\w+\-\w+>/<controller:\w+>' => '<controller>',
+                '<language:\w+\-\w+>/<controller:\w+>/<action:\w+>' => '<controller>/<action>',
             ],
         ],
         /*
