@@ -29,6 +29,6 @@ class LangUrlManager extends UrlManager
 
         parse_str(yii::$app->request->getQueryString(), $queryString);
 
-        return parent::createUrl(ArrayHelper::merge($params, $queryString, ['language' => $language]));
+        return parent::createUrl(ArrayHelper::merge($queryString, ['language' => $language], $params));
     }
 }

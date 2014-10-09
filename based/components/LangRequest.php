@@ -11,6 +11,7 @@ namespace app\components;
 use yii;
 use yii\web\Request;
 use app\models\Language;
+use yii\helpers\ArrayHelper;
 
 class LangRequest extends Request
 {
@@ -36,6 +37,10 @@ class LangRequest extends Request
 
         if (Language::isLanguage($language)) {
             Language::setCurrent($language);
+        } else {
+            Language::setCurrent(
+                $this->getPreferredLanguage(ArrayHelper::getColumn(Language::listing(), 'iso'))
+            );
         }
 
         return $resolveRequestUri;

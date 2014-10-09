@@ -30,14 +30,6 @@ $config = [
             'suffix' => '.html',
             'enableStrictParsing' => false,
             'rules' => [
-                // gii
-                '<language:\w+\-\w+>/gii' => 'gii/default/index',
-                '<language:\w+\-\w+>/gii/<id:\w+>' => 'gii/default/view',
-                '<language:\w+\-\w+>/gii/<controller:\w+>/<action:\w+>' => 'gii/<controller>/<action>',
-                // debug
-                '<language:\w+\-\w+>/debug' => 'debug',
-                '<language:\w+\-\w+>/debug/<controller:\w+>/<action:\w+>' => 'debug/<controller>/<action>',
-                // site
                 '<language:\w+\-\w+>' => '/',
                 '<language:\w+\-\w+>/<controller:\w+>' => '<controller>',
                 '<language:\w+\-\w+>/<controller:\w+>/<action:\w+>' => '<controller>/<action>',
