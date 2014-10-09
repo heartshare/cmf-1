@@ -4,6 +4,7 @@ use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
+use app\components\LanguageWidget;
 
 /* @var $this \yii\web\View */
 /* @var $content string */
@@ -38,7 +39,7 @@ AppAsset::register($this);
         [
             'options' => ['class' => 'navbar-nav navbar-right'],
             'items' => [
-                ['label' => 'Home', 'url' => ['/site/index']],
+                ['label' => 'Home', 'url' => ['site/index']],
             ],
         ]
     );
@@ -52,6 +53,7 @@ AppAsset::register($this);
                 'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
             ]
         ) ?>
+        <?= LanguageWidget::widget(); ?>
         <?= $content ?>
     </div>
 </div>
