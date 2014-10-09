@@ -9,7 +9,7 @@ return [
     'controllerNamespace' => 'app\commands',
     'controllerMap' => [
         'migrate' => [
-            'class' => '\yii\console\controllers\MigrateController',
+            'class' => 'yii\console\controllers\MigrateController',
             'migrationTable' => '{{%migrate}}',
         ],
     ],
@@ -17,22 +17,6 @@ return [
         'gii' => 'yii\gii\Module',
     ],
     'components' => [
-        /*
-        'cache' => [
-            'class' => 'yii\caching\FileCache',
-        ],
-        */
-        'cache' => [
-            'class' => '\yii\caching\MemCache',
-            'servers' => [
-                [
-                    'host' => 'localhost',
-                    'port' => 11211,
-                    'weight' => 1,
-                    'persistent' => true,
-                ],
-            ],
-        ],
         'log' => [
             'targets' => [
                 'file' => [
