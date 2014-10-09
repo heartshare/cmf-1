@@ -23,9 +23,25 @@ $config = [
             ],
         ],
         'urlManager' => [
+            'class' => 'app\components\LangUrlManager',
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'suffix' => '.html',
+            'enableStrictParsing' => false,
+            'rules' => [
+                // gii
+                '<lang:\w+\-\w+>/gii' => 'gii/default/index',
+                '<lang:\w+\-\w+>/gii/<id:\w+>' => 'gii/default/view',
+                '<lang:\w+\-\w+>/gii/<controller:\w+>/<action:\w+>' => 'gii/<controller>/<action>',
+                // debug
+                '<lang:\w+\-\w+>/debug' => 'debug',
+                '<lang:\w+\-\w+>/debug/<controller:\w+>/<action:\w+>' => 'debug/<controller>/<action>',
+                // site
+                '/' => 'site/index',
+                '<lang:\w+\-\w+>' => 'site/index',
+                '<lang:\w+\-\w+>/<controller:\w+>' => '<controller>',
+                '<lang:\w+\-\w+>/<controller:\w+>/<action:\w+>' => '<controller>/<action>',
+            ],
         ],
         /*
         'cache' => [
@@ -33,7 +49,7 @@ $config = [
         ],
         */
         'cache' => [
-            'class' => '\yii\caching\MemCache',
+            'class' => 'yii\caching\MemCache',
             'servers' => [
                 [
                     'host' => 'localhost',
