@@ -5,15 +5,15 @@ TODO
 ----
 
 ```
-@app/config/web.php extensions
+@app/config/web.php extensions - done!
 ```
 
 ```
-sphinx
+sphinx - done! [ To enable sphinxsearch, edit /etc/default/sphinxsearch and set START=yes ]
 ```
 
 ```
-codeception fixtures
+codeception fixtures - done!
 ```
 
 ```
@@ -25,7 +25,7 @@ i18n translations - done!
 ```
 
 ```
-language
+language - done!
 ```
 
 ```

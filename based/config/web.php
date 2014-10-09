@@ -8,6 +8,7 @@ $config = [
     'bootstrap' => ['log'],
     'components' => [
         'request' => [
+            'class' => 'app\components\LangRequest',
             'cookieValidationKey' => 'pbrCfBk0ZjXzuV6c2VSRg0aEBoTk7XkC',
         ],
         'i18n' => [
@@ -37,8 +38,7 @@ $config = [
                 '<language:\w+\-\w+>/debug' => 'debug',
                 '<language:\w+\-\w+>/debug/<controller:\w+>/<action:\w+>' => 'debug/<controller>/<action>',
                 // site
-                '/' => 'site/index',
-                '<language:\w+\-\w+>' => 'site/index',
+                '<language:\w+\-\w+>' => '/',
                 '<language:\w+\-\w+>/<controller:\w+>' => '<controller>',
                 '<language:\w+\-\w+>/<controller:\w+>/<action:\w+>' => '<controller>/<action>',
             ],

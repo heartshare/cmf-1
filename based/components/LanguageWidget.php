@@ -12,6 +12,7 @@ use yii;
 use yii\base\Widget;
 use app\models\Language;
 use yii\bootstrap\ButtonDropdown;
+use yii\helpers\ArrayHelper;
 
 class LanguageWidget extends Widget
 {
@@ -22,7 +23,7 @@ class LanguageWidget extends Widget
 
     public function init()
     {
-        $this->languages = Language::find()->asArray()->all();
+        $this->languages = Language::listing();
     }
 
     /**
@@ -33,18 +34,22 @@ class LanguageWidget extends Widget
         $list = [];
 
         foreach ($this->languages as $row) {
-            array_push(
+            $list = ArrayHelper::merge(
                 $list,
                 [
-                    'label' => $row['title'],
-                    'url' => yii::$app->urlManager->createUrl([yii::$app->defaultRoute, 'language' => $row['iso']]),
+                    [
+                        'label' => $row['title'],
+                        'url' => yii::$app->urlManager->createUrl(
+                                [yii::$app->requestedRoute, 'language' => $row['iso']]
+                            ),
+                    ],
                 ]
             );
         }
 
         return ButtonDropdown::widget(
             [
-                'label' => 'Language',
+                'label' => Language::getCurrentRecord()->title,
                 'dropdown' => [
                     'items' => $list,
                 ],
