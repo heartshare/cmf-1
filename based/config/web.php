@@ -2,10 +2,14 @@
 
 $config = [
     'id' => 'basic',
+    'charset' => 'UTF-8',
     'basePath' => dirname(__DIR__),
     'language' => 'ru-RU',
     'sourceLanguage' => 'en-US',
-    'bootstrap' => ['log'],
+    'bootstrap' => [
+        'log',
+        'language',
+    ],
     'defaultRoute' => 'site', // default controller
     'modules' => [
         'cp' => [
@@ -22,7 +26,7 @@ $config = [
         ],
         'i18n' => [
             'translations' => [
-                '*' => [
+                'app' => [
                     'sourceLanguage' => 'ru-RU',
                     'class' => 'yii\i18n\DbMessageSource',
                     'messageTable' => '{{%i18n_message}}',
@@ -42,7 +46,6 @@ $config = [
                 '<language:\w+\-\w+>' => '/',
                 '<language:\w+\-\w+>/<controller:\w+>' => '<controller>',
                 '<language:\w+\-\w+>/<controller:\w+>/<action:\w+>' => '<controller>/<action>',
-                '<language:\w+\-\w+>/<module:\w+>/<controller:\w+>/<action:\w+>' => '<module><controller>/<action>',
             ],
         ],
         /*

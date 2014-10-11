@@ -4,6 +4,9 @@ namespace app\modules\cp;
 
 class Cp extends \yii\base\Module
 {
+    /**
+     * @var string
+     */
     public $controllerNamespace = 'app\modules\cp\controllers';
 
     public function init()
@@ -13,7 +16,7 @@ class Cp extends \yii\base\Module
         // custom initialization code goes here
         $this->modules = [
             'language' => [
-                'class' => 'app\modules\language\Cp',
+                'class' => 'app\modules\language\Manage',
             ],
         ];
     }

@@ -11,7 +11,7 @@ namespace app\modules\language\widgets;
 use yii;
 use yii\base\Widget;
 use app\modules\language\models\Language;
-use yii\bootstrap\ButtonDropdown;
+use yii\bootstrap\Nav;
 use yii\helpers\ArrayHelper;
 
 class LanguageWidget extends Widget
@@ -20,6 +20,11 @@ class LanguageWidget extends Widget
      * @var array
      */
     protected $languages = [];
+
+    /**
+     * @var array
+     */
+    public $options = [];
 
     public function init()
     {
@@ -47,11 +52,14 @@ class LanguageWidget extends Widget
             );
         }
 
-        return ButtonDropdown::widget(
+        return Nav::widget(
             [
-                'label' => Language::getCurrentRecord()->title,
-                'dropdown' => [
-                    'items' => $list,
+                'options' => $this->options,
+                'items' => [
+                    [
+                        'label' => Language::getCurrentRecord()->title,
+                        'items' => $list,
+                    ],
                 ],
             ]
         );

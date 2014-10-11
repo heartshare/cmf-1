@@ -35,21 +35,24 @@ AppAsset::register($this);
     );
     echo LanguageWidget::widget(
         [
-            'options' => ['class' => 'navbar-nav navbar-left'],
+            'options' => ['class' => 'navbar-nav navbar-right'],
         ]
     );
     echo Nav::widget(
         [
-            'options' => ['class' => 'navbar-nav navbar-right'],
+            'options' => ['class' => 'navbar-nav navbar-left'],
             'items' => [
-                ['label' => 'Home', 'url' => ['/site/index']],
-                ['label' => 'Control Panel', 'url' => ['/cp']],
+                [
+                    'label' => 'Administration',
+                    'items' => [
+                        ['label' => 'Language', 'url' => ['/cp/language']],
+                    ],
+                ]
             ],
         ]
     );
     NavBar::end();
     ?>
-
     <div class="container">
         <?=
         Breadcrumbs::widget(

@@ -5,27 +5,14 @@ namespace app\modules\language\controllers;
 use Yii;
 use app\modules\language\models\Language;
 use app\modules\language\models\LanguageSearch;
-use yii\web\Controller;
+use app\modules\cp\components\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * LanguageController implements the CRUD actions for Language model.
  */
-class CpController extends Controller
+class ManageController extends Controller
 {
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['post'],
-                ],
-            ],
-        ];
-    }
-
     /**
      * Lists all Language models.
      * @return mixed

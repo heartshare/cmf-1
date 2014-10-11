@@ -2,10 +2,13 @@
 
 namespace app\modules\cp\controllers;
 
-use yii\web\Controller;
+use \app\modules\cp\components\Controller;
 
 class DefaultController extends Controller
 {
+    /**
+     * @return string
+     */
     public function actionIndex()
     {
         return $this->render('index');
