@@ -1,20 +1,16 @@
 <?php
 
-namespace app\models;
+namespace app\modules\language\models;
 
 use Yii;
 use yii\helpers\ArrayHelper;
 
 /**
- * This is the model class for table "cmf_language".
+ * This is the model class for table "{{%language}}".
  *
- * @property integer $id
+ * @property string $id
  * @property string $title
  * @property string $iso
- * @property integer $is_default
- *
- * @property I18nMessage[] $i18nMessages
- * @property I18nSource[] $ids
  */
 class Language extends \yii\db\ActiveRecord
 {
@@ -49,29 +45,10 @@ class Language extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'title' => 'Title',
-            'iso' => 'ISO',
+            'id' => Yii::t('app', 'ID'),
+            'title' => Yii::t('app', 'Title'),
+            'iso' => Yii::t('app', 'ISO'),
         ];
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getI18nMessages()
-    {
-        return $this->hasMany(I18nMessage::className(), ['language' => 'iso']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getIds()
-    {
-        return $this->hasMany(I18nSource::className(), ['id' => 'id'])->viaTable(
-            '{{%i18n_message}}',
-            ['language' => 'iso']
-        );
     }
 
     /**

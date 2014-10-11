@@ -6,14 +6,23 @@ $config = [
     'language' => 'ru-RU',
     'sourceLanguage' => 'en-US',
     'bootstrap' => ['log'],
+    'defaultRoute' => 'site', // default controller
+    'modules' => [
+        'cp' => [
+            'class' => 'app\modules\cp\Cp',
+        ],
+        'language' => [
+            'class' => 'app\modules\language\Language',
+        ],
+    ],
     'components' => [
         'request' => [
-            'class' => 'app\components\LangRequest',
+            'class' => 'app\modules\language\components\LangRequest',
             'cookieValidationKey' => 'pbrCfBk0ZjXzuV6c2VSRg0aEBoTk7XkC',
         ],
         'i18n' => [
             'translations' => [
-                'app' => [
+                '*' => [
                     'sourceLanguage' => 'ru-RU',
                     'class' => 'yii\i18n\DbMessageSource',
                     'messageTable' => '{{%i18n_message}}',
@@ -24,7 +33,7 @@ $config = [
             ],
         ],
         'urlManager' => [
-            'class' => 'app\components\LangUrlManager',
+            'class' => 'app\modules\language\components\LangUrlManager',
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'suffix' => '.html',
@@ -33,6 +42,7 @@ $config = [
                 '<language:\w+\-\w+>' => '/',
                 '<language:\w+\-\w+>/<controller:\w+>' => '<controller>',
                 '<language:\w+\-\w+>/<controller:\w+>/<action:\w+>' => '<controller>/<action>',
+                '<language:\w+\-\w+>/<module:\w+>/<controller:\w+>/<action:\w+>' => '<module><controller>/<action>',
             ],
         ],
         /*

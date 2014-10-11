@@ -4,7 +4,7 @@ use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
-use app\components\LanguageWidget;
+use app\modules\language\widgets\LanguageWidget;
 
 /* @var $this \yii\web\View */
 /* @var $content string */
@@ -40,7 +40,7 @@ AppAsset::register($this);
             'options' => ['class' => 'navbar-nav navbar-right'],
             'items' => [
                 ['label' => 'Home', 'url' => ['site/index']],
-                ['label' => 'Language', 'url' => ['language/index']],
+                ['label' => 'Language', 'url' => ['cp/language']],
             ],
         ]
     );

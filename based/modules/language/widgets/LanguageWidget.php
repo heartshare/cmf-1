@@ -6,11 +6,11 @@
  * Time: 22:30
  */
 
-namespace app\components;
+namespace app\modules\language\widgets;
 
 use yii;
 use yii\base\Widget;
-use app\models\Language;
+use app\modules\language\models\Language;
 use yii\bootstrap\ButtonDropdown;
 use yii\helpers\ArrayHelper;
 

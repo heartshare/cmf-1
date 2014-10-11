@@ -8,6 +8,6 @@ return [
     'password' => 'mysql_cmf',
     'charset' => 'utf8',
     'tablePrefix' => 'cmf_',
-    'enableSchemaCache' => true,
-    'schemaCacheDuration' => 5, // seconds
+    'enableSchemaCache' => YII_DEBUG ? false : true,
+    'schemaCacheDuration' => 300, // seconds
 ];

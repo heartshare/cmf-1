@@ -1,10 +1,10 @@
 <?php
 
-namespace app\controllers;
+namespace app\modules\language\controllers;
 
 use Yii;
-use app\models\Language;
-use yii\data\ActiveDataProvider;
+use app\modules\language\models\Language;
+use app\modules\language\models\LanguageSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -12,7 +12,7 @@ use yii\filters\VerbFilter;
 /**
  * LanguageController implements the CRUD actions for Language model.
  */
-class LanguageController extends Controller
+class CpController extends Controller
 {
     public function behaviors()
     {
@@ -32,13 +32,13 @@ class LanguageController extends Controller
      */
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => Language::find(),
-        ]);
+        $searchModel = new LanguageSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render(
             'index',
             [
+                'searchModel' => $searchModel,
                 'dataProvider' => $dataProvider,
             ]
         );
@@ -46,7 +46,7 @@ class LanguageController extends Controller
 
     /**
      * Displays a single Language model.
-     * @param integer $id
+     * @param string $id
      * @return mixed
      */
     public function actionView($id)
@@ -83,7 +83,7 @@ class LanguageController extends Controller
     /**
      * Updates an existing Language model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
+     * @param string $id
      * @return mixed
      */
     public function actionUpdate($id)
@@ -105,7 +105,7 @@ class LanguageController extends Controller
     /**
      * Deletes an existing Language model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
+     * @param string $id
      * @return mixed
      */
     public function actionDelete($id)
@@ -118,7 +118,7 @@ class LanguageController extends Controller
     /**
      * Finds the Language model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
+     * @param string $id
      * @return Language the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */

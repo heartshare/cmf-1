@@ -6,11 +6,11 @@
  * Time: 18:38
  */
 
-namespace app\components;
+namespace app\modules\language\components;
 
 use yii;
 use yii\web\Request;
-use app\models\Language;
+use app\modules\language\models\Language;
 use yii\helpers\ArrayHelper;
 
 class LangRequest extends Request

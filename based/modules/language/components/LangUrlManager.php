@@ -6,11 +6,11 @@
  * Time: 16:47
  */
 
-namespace app\components;
+namespace app\modules\language\components;
 
 use yii;
 use yii\web\UrlManager;
-use app\models\Language;
+use app\modules\language\models\Language;
 use yii\helpers\ArrayHelper;
 
 class LangUrlManager extends UrlManager
