@@ -46,6 +46,7 @@ AppAsset::register($this);
                     'label' => 'Administration',
                     'items' => [
                         ['label' => 'Language', 'url' => ['/cp/language']],
+                        ['label' => 'Translation', 'url' => ['/cp/translation']],
                     ],
                 ]
             ],

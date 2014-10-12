@@ -9,6 +9,7 @@ $config = [
     'bootstrap' => [
         'log',
         'language',
+        'translation',
     ],
     'defaultRoute' => 'site', // default controller
     'modules' => [
@@ -17,6 +18,9 @@ $config = [
         ],
         'language' => [
             'class' => 'app\modules\language\Language',
+        ],
+        'translation' => [
+            'class' => 'app\modules\translation\Translation',
         ],
     ],
     'components' => [
@@ -32,7 +36,10 @@ $config = [
                     'messageTable' => '{{%i18n_message}}',
                     'sourceMessageTable' => '{{%i18n_source}}',
                     'enableCaching' => YII_DEBUG ? false : true,
-                    'on missingTranslation' => ['app\components\TranslationEventHandler', 'handleMissingTranslation'],
+                    'on missingTranslation' => [
+                        'app\modules\translation\components\TranslationEventHandler',
+                        'handleMissingTranslation'
+                    ],
                 ],
             ],
         ],

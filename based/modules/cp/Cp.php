@@ -18,6 +18,9 @@ class Cp extends \yii\base\Module
             'language' => [
                 'class' => 'app\modules\language\Manage',
             ],
+            'translation' => [
+                'class' => 'app\modules\translation\Manage',
+            ]
         ];
     }
 }
