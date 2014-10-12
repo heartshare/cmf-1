@@ -10,10 +10,10 @@ $this->title = Yii::t(
     'app',
     'Create {modelClass}',
     [
-        'modelClass' => 'I18n Source',
+        'modelClass' => 'Translation',
     ]
 );
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'I18n Sources'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Translation'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="i18n-source-create">

@@ -9,10 +9,10 @@ $this->title = Yii::t(
         'app',
         'Update {modelClass}: ',
         [
-            'modelClass' => 'I18n Source',
+            'modelClass' => 'Translation',
         ]
     ) . ' ' . $model->id;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'I18n Sources'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Translation'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
