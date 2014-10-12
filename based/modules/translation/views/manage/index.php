@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use app\modules\translation\models\I18nMessage;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\modules\translation\models\I18nSourceSearch */
@@ -15,21 +16,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
-        <?=
-        Html::a(
-            Yii::t(
-                'app',
-                'Create {modelClass}',
-                [
-                    'modelClass' => 'Translation',
-                ]
-            ),
-            ['create'],
-            ['class' => 'btn btn-success']
-        ) ?>
-    </p>
-
     <?=
     GridView::widget(
         [
@@ -40,6 +26,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 'id',
                 'category',
                 'message',
+                [
+                    'attribute' => 'translation',
+                    'label' => (new I18nMessage())->attributeLabels()['translation'],
+                    'value' => function ($model) {
+                            return isset($model->i18nMessage->translation) ? $model->i18nMessage->translation : '';
+                        },
+                ],
                 ['class' => 'yii\grid\ActionColumn'],
             ],
         ]

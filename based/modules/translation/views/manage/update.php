@@ -11,9 +11,9 @@ $this->title = Yii::t(
         [
             'modelClass' => 'Translation',
         ]
-    ) . ' ' . $model->id;
+    ) . ' ' . $i18nSource->id;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Translation'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = ['label' => $i18nSource->id, 'url' => ['view', 'id' => $i18nSource->id]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
 <div class="i18n-source-update">
@@ -24,7 +24,8 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
     $this->render(
         '_form',
         [
-            'model' => $model,
+            'i18nSource' => $i18nSource,
+            'i18nMessage' => $i18nMessage,
         ]
     ) ?>
 

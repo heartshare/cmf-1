@@ -7,6 +7,9 @@ use app\modules\translation\models\I18nSource;
 use app\modules\translation\models\I18nSourceSearch;
 use app\modules\cp\components\Controller;
 use yii\web\NotFoundHttpException;
+use app\modules\language\models\Language;
+use yii\helpers\ArrayHelper;
+use app\modules\translation\models\I18nMessage;
 
 /**
  * ManageController implements the CRUD actions for I18nSource model.
@@ -42,29 +45,9 @@ class ManageController extends Controller
             'view',
             [
                 'model' => $this->findModel($id),
+                'language' => ArrayHelper::map(Language::listing(), 'iso', 'title'),
             ]
         );
-    }
-
-    /**
-     * Creates a new I18nSource model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
-        $model = new I18nSource();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render(
-                'create',
-                [
-                    'model' => $model,
-                ]
-            );
-        }
     }
 
     /**
@@ -75,18 +58,37 @@ class ManageController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $i18nSource = $this->findModel($id);
+        $i18nMessage = I18nMessage::find()
+            ->where(['id' => $id, 'language' => Language::getCurrent()])
+            ->one();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render(
-                'update',
-                [
-                    'model' => $model,
-                ]
-            );
+        if (yii::$app->request->isPost) {
+
+            $transaction = yii::$app->db->beginTransaction();
+
+            try {
+                $i18nSource->load(Yii::$app->request->post());
+                if ($i18nSource->save()) {
+                    $i18nMessage->load(Yii::$app->request->post());
+                    if ($i18nMessage->save()) {
+                        $transaction->commit();
+                    }
+                }
+                return $this->redirect(['view', 'id' => $id]);
+            } catch (\Exception $e) {
+                $transaction->rollBack();
+                return $this->redirect(['update', 'id' => $id]);
+            }
         }
+
+        return $this->render(
+            'update',
+            [
+                'i18nSource' => $i18nSource,
+                'i18nMessage' => $i18nMessage,
+            ]
+        );
     }
 
     /**

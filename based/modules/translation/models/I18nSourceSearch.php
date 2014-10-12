@@ -13,13 +13,18 @@ use app\modules\translation\models\I18nSource;
 class I18nSourceSearch extends I18nSource
 {
     /**
+     * @var null
+     */
+    public $translation = null;
+
+    /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
             [['id'], 'integer'],
-            [['category', 'message'], 'safe'],
+            [['category', 'message', 'translation'], 'safe'],
         ];
     }
 
@@ -41,7 +46,7 @@ class I18nSourceSearch extends I18nSource
      */
     public function search($params)
     {
-        $query = I18nSource::find();
+        $query = I18nSource::find()->joinWith('i18nMessage');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -57,7 +62,9 @@ class I18nSourceSearch extends I18nSource
             ]
         );
 
-        $query->andFilterWhere(['like', 'category', $this->category])
+        $query
+            ->andFilterWhere(['like', 'category', $this->category])
+            ->andFilterWhere(['like', 'translation', $this->translation])
             ->andFilterWhere(['like', 'message', $this->message]);
 
         return $dataProvider;

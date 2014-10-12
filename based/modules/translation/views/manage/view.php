@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use app\modules\translation\models\I18nMessage;
 
 /* @var $this yii\web\View */
 /* @var $model app\modules\translation\models\I18nSource */
@@ -38,6 +39,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 'id',
                 'category',
                 'message',
+                [
+                    'attribute' => 'language',
+                    'label' => (new I18nMessage())->attributeLabels()['language'],
+                    'value' => isset($language[$model->i18nMessage->language]) ? $language[$model->i18nMessage->language] : '',
+                ],
+                [
+                    'attribute' => 'translation',
+                    'label' => (new I18nMessage())->attributeLabels()['translation'],
+                    'value' => isset($model->i18nMessage->translation) ? $model->i18nMessage->translation : '',
+                ],
             ],
         ]
     ) ?>

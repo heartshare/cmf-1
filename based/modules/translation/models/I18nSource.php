@@ -3,6 +3,7 @@
 namespace app\modules\translation\models;
 
 use Yii;
+use app\modules\language\models\Language;
 
 /**
  * This is the model class for table "{{%i18n_source}}".
@@ -11,7 +12,7 @@ use Yii;
  * @property string $category
  * @property string $message
  *
- * @property I18nMessage[] $i18nMessages
+ * @property I18nMessage[] $i18nMessage
  * @property Language[] $languages
  */
 class I18nSource extends \yii\db\ActiveRecord
@@ -32,7 +33,8 @@ class I18nSource extends \yii\db\ActiveRecord
         return [
             [['category'], 'string', 'max' => 32],
             [['message'], 'string', 'max' => 128],
-            [['message'], 'unique']
+            [['message'], 'unique'],
+            [['category', 'message'], 'required'],
         ];
     }
 
@@ -51,9 +53,11 @@ class I18nSource extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getI18nMessages()
+    public function getI18nMessage()
     {
-        return $this->hasMany(I18nMessage::className(), ['id' => 'id']);
+        return $this
+            ->hasOne(I18nMessage::className(), ['id' => 'id'])
+            ->where(['language' => Language::getCurrent()]);
     }
 
     /**
@@ -61,9 +65,8 @@ class I18nSource extends \yii\db\ActiveRecord
      */
     public function getLanguages()
     {
-        return $this->hasMany(Language::className(), ['iso' => 'language'])->viaTable(
-            '{{{%i18n_message}}}',
-            ['id' => 'id']
-        );
+        return $this
+            ->hasMany(Language::className(), ['iso' => 'language'])
+            ->viaTable('{{{%i18n_message}}}', ['id' => 'id']);
     }
 }

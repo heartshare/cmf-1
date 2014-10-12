@@ -12,15 +12,17 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'category')->textInput(['maxlength' => 32]) ?>
+    <?= $form->field($i18nSource, 'category')->textInput(['maxlength' => 32]) ?>
 
-    <?= $form->field($model, 'message')->textInput(['maxlength' => 128]) ?>
+    <?= $form->field($i18nSource, 'message')->textInput(['maxlength' => 128]) ?>
+
+    <?= $form->field($i18nMessage, 'translation')->textInput(['maxlength' => 128]) ?>
 
     <div class="form-group">
         <?=
         Html::submitButton(
-            $model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'),
-            ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']
+            $i18nSource->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'),
+            ['class' => $i18nSource->isNewRecord ? 'btn btn-success' : 'btn btn-primary']
         ) ?>
     </div>
 

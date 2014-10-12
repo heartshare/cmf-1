@@ -11,6 +11,7 @@ namespace app\modules\translation\components;
 use yii\i18n\MissingTranslationEvent;
 use app\modules\translation\models\I18nSource;
 use app\modules\translation\models\I18nMessage;
+use app\modules\language\models\Language;
 
 class TranslationEventHandler
 {
@@ -25,14 +26,16 @@ class TranslationEventHandler
             $i18nSource->save();
         }
 
-        $i18nMessage = I18nMessage::findOne(['id' => $i18nSource->id, 'language' => $event->language]);
+        foreach (Language::listing() as $language) {
+            $i18nMessage = I18nMessage::findOne(['id' => $i18nSource->id, 'language' => $language['iso']]);
 
-        if ($i18nMessage === null) {
-            $i18nMessage = new I18nMessage();
-            $i18nMessage->id = $i18nSource->id;
-            $i18nMessage->language = $event->language;
-            $i18nMessage->translation = $event->message;
-            $i18nMessage->save();
+            if ($i18nMessage === null) {
+                $i18nMessage = new I18nMessage();
+                $i18nMessage->id = $i18nSource->id;
+                $i18nMessage->language = $language['iso'];
+                $i18nMessage->translation = $event->message;
+                $i18nMessage->save();
+            }
         }
     }
 }

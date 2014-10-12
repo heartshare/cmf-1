@@ -33,7 +33,8 @@ class I18nMessage extends \yii\db\ActiveRecord
             [['id', 'language'], 'required'],
             [['id'], 'integer'],
             [['language'], 'string', 'max' => 8],
-            [['translation'], 'string', 'max' => 128]
+            [['translation'], 'string', 'max' => 128],
+            [['translation'], 'required'],
         ];
     }
 
@@ -52,7 +53,7 @@ class I18nMessage extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getLanguage0()
+    public function getLanguage()
     {
         return $this->hasOne(Language::className(), ['iso' => 'language']);
     }
@@ -60,7 +61,7 @@ class I18nMessage extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getId0()
+    public function getId()
     {
         return $this->hasOne(I18nSource::className(), ['id' => 'id']);
     }
