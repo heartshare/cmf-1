@@ -92,8 +92,8 @@ $config = [
                         'to' => [
                             'webmaster@d7.home',
                         ],
-                        [
-                            'from' => 'logging@d7.home',
+                        'from' => [
+                            'logging@d7.home',
                         ],
                         'subject' => 'Logging',
                     ],
