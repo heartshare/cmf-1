@@ -72,7 +72,7 @@ AppAsset::register($this);
         <p class="pull-right">
             <?=
             Yii::t(
-                'app',
+                'yii',
                 'Framework {version_core} CMF {version_cmf}',
                 [
                     'version_core' => Yii::getVersion(),
