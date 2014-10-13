@@ -11,7 +11,7 @@ $config = [
         'language',
         'translation',
     ],
-    'defaultRoute' => 'site', // default controller
+    'defaultRoute' => 'index', // default controller
     'modules' => [
         'cp' => [
             'class' => 'app\modules\cp\Cp',
@@ -77,7 +77,7 @@ $config = [
             ],
         ],
         'errorHandler' => [
-            'errorAction' => 'site/error',
+            'errorAction' => 'index/error',
         ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',

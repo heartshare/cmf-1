@@ -5,5 +5,5 @@
  * Time: 15:43
  */
 $(window).error(function (msg, url, line) {
-    jQuery.post('/site/error.html', { msg: msg, url: url, line: line });
+    jQuery.post('/index/error.html', { msg: msg, url: url, line: line });
 });
