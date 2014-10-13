@@ -2,18 +2,17 @@
 
 use yii\helpers\Html;
 
-
 /* @var $this yii\web\View */
 /* @var $model app\modules\translation\models\I18nSource */
 
 $this->title = Yii::t(
-    'app',
+    'yii',
     'Create {modelClass}',
     [
-        'modelClass' => 'Translation',
+        'modelClass' => yii::t('translation', 'Translation'),
     ]
 );
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Translation'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('translation', 'Translation'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="i18n-source-create">

@@ -7,13 +7,13 @@ use yii\helpers\Html;
 /* @var $model app\modules\language\models\Language */
 
 $this->title = Yii::t(
-    'app',
+    'yii',
     'Create {modelClass}',
     [
-        'modelClass' => 'Language',
+        'modelClass' => Yii::t('language', 'Language'),
     ]
 );
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Languages'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('language', 'Languages'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="language-create">

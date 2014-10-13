@@ -6,13 +6,13 @@ use yii\helpers\Html;
 /* @var $model app\modules\translation\models\I18nSource */
 
 $this->title = Yii::t(
-        'app',
+        'yii',
         'Update {modelClass}: ',
         [
-            'modelClass' => 'Translation',
+            'modelClass' => yii::t('translation', 'Translation'),
         ]
     ) . ' ' . $i18nSource->id;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Translation'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('translation', 'Translation'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $i18nSource->id, 'url' => ['view', 'id' => $i18nSource->id]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>

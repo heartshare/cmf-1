@@ -8,7 +8,7 @@ use app\modules\translation\models\I18nMessage;
 /* @var $searchModel app\modules\translation\models\I18nSourceSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Translation');
+$this->title = Yii::t('translation', 'Translation');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="i18n-source-index">

@@ -2,6 +2,8 @@
 
 namespace app\modules\language;
 
+use yii;
+
 class Language extends \yii\base\Module implements \yii\base\BootstrapInterface
 {
     /**
@@ -14,6 +16,7 @@ class Language extends \yii\base\Module implements \yii\base\BootstrapInterface
         parent::init();
 
         // custom initialization code goes here
+        $this->registerTranslations();
     }
 
     /**
@@ -27,5 +30,14 @@ class Language extends \yii\base\Module implements \yii\base\BootstrapInterface
             ],
             false
         );
+    }
+
+    public function registerTranslations()
+    {
+        yii::$app->i18n->translations[$this->id] = [
+            'class' => 'yii\i18n\PhpMessageSource',
+            'sourceLanguage' => 'en-US',
+            'basePath' => '@app/modules/' . $this->id . '/messages',
+        ];
     }
 }

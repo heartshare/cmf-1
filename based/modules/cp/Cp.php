@@ -2,6 +2,8 @@
 
 namespace app\modules\cp;
 
+use yii;
+
 class Cp extends \yii\base\Module
 {
     /**
@@ -14,6 +16,21 @@ class Cp extends \yii\base\Module
         parent::init();
 
         // custom initialization code goes here
+        $this->registerModules();
+        $this->registerTranslations();
+    }
+
+    public function registerTranslations()
+    {
+        yii::$app->i18n->translations[$this->id] = [
+            'class' => 'yii\i18n\PhpMessageSource',
+            'sourceLanguage' => 'en-US',
+            'basePath' => '@app/modules/' . $this->id . '/messages',
+        ];
+    }
+
+    public function registerModules()
+    {
         $this->modules = [
             'language' => [
                 'class' => 'app\modules\language\Manage',

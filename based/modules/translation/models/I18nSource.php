@@ -44,9 +44,9 @@ class I18nSource extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'category' => Yii::t('app', 'Category'),
-            'message' => Yii::t('app', 'Message'),
+            'id' => Yii::t('translation', 'ID'),
+            'category' => Yii::t('translation', 'Category'),
+            'message' => Yii::t('translation', 'Message'),
         ];
     }
 

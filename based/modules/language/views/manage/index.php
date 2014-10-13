@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\modules\language\models\LanguageSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Languages');
+$this->title = Yii::t('language', 'Languages');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="language-index">
@@ -19,10 +19,10 @@ $this->params['breadcrumbs'][] = $this->title;
         <?=
         Html::a(
             Yii::t(
-                'app',
+                'yii',
                 'Create {modelClass}',
                 [
-                    'modelClass' => 'Language',
+                    'modelClass' => Yii::t('language', 'Language'),
                 ]
             ),
             ['create'],

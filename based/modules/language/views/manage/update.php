@@ -6,15 +6,15 @@ use yii\helpers\Html;
 /* @var $model app\modules\language\models\Language */
 
 $this->title = Yii::t(
-        'app',
+        'yii',
         'Update {modelClass}: ',
         [
-            'modelClass' => 'Language',
+            'modelClass' => Yii::t('language', 'Language'),
         ]
     ) . ' ' . $model->title;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Languages'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('language', 'Languages'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = Yii::t('app', 'Update');
+$this->params['breadcrumbs'][] = Yii::t('yii', 'Update');
 ?>
 <div class="language-update">
 

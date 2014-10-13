@@ -3,4 +3,4 @@
 $this->title = 'My Yii Application';
 ?>
 
-<?= Yii::t('app', 'Привет'); ?>
+<?= Yii::t('db', 'Привет'); ?>

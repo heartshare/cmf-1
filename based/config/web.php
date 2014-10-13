@@ -30,7 +30,7 @@ $config = [
         ],
         'i18n' => [
             'translations' => [
-                'app' => [
+                'db' => [
                     'sourceLanguage' => 'ru-RU',
                     'class' => 'yii\i18n\DbMessageSource',
                     'messageTable' => '{{%i18n_message}}',
@@ -40,6 +40,11 @@ $config = [
                         'app\modules\translation\components\TranslationEventHandler',
                         'handleMissingTranslation'
                     ],
+                ],
+                'yii' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'sourceLanguage' => 'en-US',
+                    'basePath' => '@app/messages',
                 ],
             ],
         ],

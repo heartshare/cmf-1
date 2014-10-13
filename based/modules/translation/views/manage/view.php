@@ -8,7 +8,7 @@ use app\modules\translation\models\I18nMessage;
 /* @var $model app\modules\translation\models\I18nSource */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Translation'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('translation', 'Translation'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="i18n-source-view">
@@ -16,15 +16,15 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('yii', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?=
         Html::a(
-            Yii::t('app', 'Delete'),
+            Yii::t('yii', 'Delete'),
             ['delete', 'id' => $model->id],
             [
                 'class' => 'btn btn-danger',
                 'data' => [
-                    'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
+                    'confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
                     'method' => 'post',
                 ],
             ]

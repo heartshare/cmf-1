@@ -43,10 +43,10 @@ AppAsset::register($this);
             'options' => ['class' => 'navbar-nav navbar-left'],
             'items' => [
                 [
-                    'label' => 'Administration',
+                    'label' => yii::t('cp', 'Administration'),
                     'items' => [
-                        ['label' => 'Language', 'url' => ['/cp/language']],
-                        ['label' => 'Translation', 'url' => ['/cp/translation']],
+                        ['label' => yii::t('language', 'Language'), 'url' => ['/cp/language']],
+                        ['label' => yii::t('translation', 'Translation'), 'url' => ['/cp/translation']],
                     ],
                 ]
             ],
