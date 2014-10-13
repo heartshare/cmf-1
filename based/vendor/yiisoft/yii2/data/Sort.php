@@ -188,13 +188,10 @@ class Sort extends Object
                     'desc' => [$attribute => SORT_DESC],
                 ];
             } elseif (!isset($attribute['asc'], $attribute['desc'])) {
-                $attributes[$name] = array_merge(
-                    [
-                        'asc' => [$name => SORT_ASC],
-                        'desc' => [$name => SORT_DESC],
-                    ],
-                    $attribute
-                );
+                $attributes[$name] = array_merge([
+                    'asc' => [$name => SORT_ASC],
+                    'desc' => [$name => SORT_DESC],
+                ], $attribute);
             } else {
                 $attributes[$name] = $attribute;
             }

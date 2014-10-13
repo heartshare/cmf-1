@@ -118,11 +118,7 @@ class NavBar extends Widget
         echo $this->renderToggleButton();
         if ($this->brandLabel !== false) {
             Html::addCssClass($this->brandOptions, 'navbar-brand');
-            echo Html::a(
-                $this->brandLabel,
-                $this->brandUrl === false ? Yii::$app->homeUrl : $this->brandUrl,
-                $this->brandOptions
-            );
+            echo Html::a($this->brandLabel, $this->brandUrl === false ? Yii::$app->homeUrl : $this->brandUrl, $this->brandOptions);
         }
         echo Html::endTag('div');
         Html::addCssClass($this->containerOptions, 'collapse');
@@ -156,13 +152,10 @@ class NavBar extends Widget
         $bar = Html::tag('span', '', ['class' => 'icon-bar']);
         $screenReader = "<span class=\"sr-only\">{$this->screenReaderToggleText}</span>";
 
-        return Html::button(
-            "{$screenReader}\n{$bar}\n{$bar}\n{$bar}",
-            [
-                'class' => 'navbar-toggle',
-                'data-toggle' => 'collapse',
-                'data-target' => "#{$this->containerOptions['id']}",
-            ]
-        );
+        return Html::button("{$screenReader}\n{$bar}\n{$bar}\n{$bar}", [
+            'class' => 'navbar-toggle',
+            'data-toggle' => 'collapse',
+            'data-target' => "#{$this->containerOptions['id']}",
+        ]);
     }
 }

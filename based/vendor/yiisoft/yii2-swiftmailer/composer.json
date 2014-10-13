@@ -22,9 +22,7 @@
         "swiftmailer/swiftmailer": "*"
     },
     "autoload": {
-        "psr-4": {
-            "yii\\swiftmailer\\": ""
-        }
+        "psr-4": { "yii\\swiftmailer\\": "" }
     },
     "extra": {
         "branch-alias": {

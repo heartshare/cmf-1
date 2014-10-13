@@ -181,11 +181,7 @@ class ActiveField extends \yii\widgets\ActiveField
             }
             if ($this->inputTemplate) {
                 $input = isset($this->parts['{input}']) ?
-                    $this->parts['{input}'] : Html::activeTextInput(
-                        $this->model,
-                        $this->attribute,
-                        $this->inputOptions
-                    );
+                    $this->parts['{input}'] : Html::activeTextInput($this->model, $this->attribute, $this->inputOptions);
                 $this->parts['{input}'] = strtr($this->inputTemplate, ['{input}' => $input]);
             }
         }
@@ -253,13 +249,9 @@ class ActiveField extends \yii\widgets\ActiveField
                     'labelOptions' => ['class' => 'checkbox-inline'],
                 ];
             }
-        } elseif (!isset($options['item'])) {
+        }  elseif (!isset($options['item'])) {
             $options['item'] = function ($index, $label, $name, $checked, $value) {
-                return '<div class="checkbox">' . Html::checkbox(
-                    $name,
-                    $checked,
-                    ['label' => $label, 'value' => $value]
-                ) . '</div>';
+                return '<div class="checkbox">' . Html::checkbox($name, $checked, ['label' => $label, 'value' => $value]) . '</div>';
             };
         }
         parent::checkboxList($items, $options);
@@ -283,13 +275,9 @@ class ActiveField extends \yii\widgets\ActiveField
                     'labelOptions' => ['class' => 'radio-inline'],
                 ];
             }
-        } elseif (!isset($options['item'])) {
+        }  elseif (!isset($options['item'])) {
             $options['item'] = function ($index, $label, $name, $checked, $value) {
-                return '<div class="radio">' . Html::radio(
-                    $name,
-                    $checked,
-                    ['label' => $label, 'value' => $value]
-                ) . '</div>';
+                return '<div class="radio">' . Html::radio($name, $checked, ['label' => $label, 'value' => $value]) . '</div>';
             };
         }
         parent::radioList($items, $options);

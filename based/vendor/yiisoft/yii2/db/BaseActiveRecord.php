@@ -546,11 +546,7 @@ abstract class BaseActiveRecord extends Model implements ActiveRecordInterface
             }
         } else {
             foreach ($this->_attributes as $name => $value) {
-                if (isset($names[$name]) && (!array_key_exists(
-                            $name,
-                            $this->_oldAttributes
-                        ) || $value !== $this->_oldAttributes[$name])
-                ) {
+                if (isset($names[$name]) && (!array_key_exists($name, $this->_oldAttributes) || $value !== $this->_oldAttributes[$name])) {
                     $attributes[$name] = $value;
                 }
             }
@@ -891,12 +887,9 @@ abstract class BaseActiveRecord extends Model implements ActiveRecordInterface
      */
     public function afterSave($insert, $changedAttributes)
     {
-        $this->trigger(
-            $insert ? self::EVENT_AFTER_INSERT : self::EVENT_AFTER_UPDATE,
-            new AfterSaveEvent([
-                'changedAttributes' => $changedAttributes
-            ])
-        );
+        $this->trigger($insert ? self::EVENT_AFTER_INSERT : self::EVENT_AFTER_UPDATE, new AfterSaveEvent([
+            'changedAttributes' => $changedAttributes
+        ]));
     }
 
     /**
@@ -1021,9 +1014,7 @@ abstract class BaseActiveRecord extends Model implements ActiveRecordInterface
     {
         $keys = $this->primaryKey();
         if (empty($keys)) {
-            throw new Exception(get_class(
-                $this
-            ) . ' does not have a primary key. You should either define a primary key for the corresponding table or override the primaryKey() method.');
+            throw new Exception(get_class($this) . ' does not have a primary key. You should either define a primary key for the corresponding table or override the primaryKey() method.');
         }
         if (count($keys) === 1 && !$asArray) {
             return isset($this->_oldAttributes[$keys[0]]) ? $this->_oldAttributes[$keys[0]] : null;
@@ -1130,9 +1121,7 @@ abstract class BaseActiveRecord extends Model implements ActiveRecordInterface
             $realName = lcfirst(substr($method->getName(), 3));
             if ($realName !== $name) {
                 if ($throwException) {
-                    throw new InvalidParamException('Relation names are case sensitive. ' . get_class(
-                        $this
-                    ) . " has a relation named \"$realName\" instead of \"$name\".");
+                    throw new InvalidParamException('Relation names are case sensitive. ' . get_class($this) . " has a relation named \"$realName\" instead of \"$name\".");
                 } else {
                     return null;
                 }
@@ -1149,15 +1138,15 @@ abstract class BaseActiveRecord extends Model implements ActiveRecordInterface
      * to be the corresponding primary key value(s) in the other model.
      * The model with the foreign key will be saved into database without performing validation.
      *
-     * If the relationship involves a pivot table, a new row will be inserted into the
-     * pivot table which contains the primary key values from both models.
+     * If the relationship involves a junction table, a new row will be inserted into the
+     * junction table which contains the primary key values from both models.
      *
      * Note that this method requires that the primary key value is not null.
      *
      * @param string $name the case sensitive name of the relationship
      * @param ActiveRecordInterface $model the model to be linked with the current one.
-     * @param array $extraColumns additional column values to be saved into the pivot table.
-     * This parameter is only meaningful for a relationship involving a pivot table
+     * @param array $extraColumns additional column values to be saved into the junction table.
+     * This parameter is only meaningful for a relationship involving a junction table
      * (i.e., a relation set with [[ActiveRelationTrait::via()]] or `[[ActiveQuery::viaTable()]]`.)
      * @throws InvalidCallException if the method is unable to link two models.
      */
@@ -1420,9 +1409,7 @@ abstract class BaseActiveRecord extends Model implements ActiveRecordInterface
         foreach ($link as $fk => $pk) {
             $value = $primaryModel->$pk;
             if ($value === null) {
-                throw new InvalidCallException('Unable to link models: the primary key of ' . get_class(
-                    $primaryModel
-                ) . ' is null.');
+                throw new InvalidCallException('Unable to link models: the primary key of ' . get_class($primaryModel) . ' is null.');
             }
             if (is_array($foreignModel->$fk)) { // relation via array valued attribute
                 $foreignModel->$fk = array_merge($foreignModel->$fk, [$value]);

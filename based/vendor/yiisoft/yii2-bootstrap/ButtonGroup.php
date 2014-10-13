@@ -83,14 +83,12 @@ class ButtonGroup extends Widget
             if (is_array($button)) {
                 $label = ArrayHelper::getValue($button, 'label');
                 $options = ArrayHelper::getValue($button, 'options');
-                $buttons[] = Button::widget(
-                    [
-                        'label' => $label,
-                        'options' => $options,
-                        'encodeLabel' => $this->encodeLabels,
-                        'view' => $this->getView()
-                    ]
-                );
+                $buttons[] = Button::widget([
+                    'label' => $label,
+                    'options' => $options,
+                    'encodeLabel' => $this->encodeLabels,
+                    'view' => $this->getView()
+                ]);
             } else {
                 $buttons[] = $button;
             }

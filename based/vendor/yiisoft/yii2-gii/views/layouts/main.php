@@ -21,23 +21,19 @@ $asset = yii\gii\GiiAsset::register($this);
 <body>
 <?php $this->beginBody() ?>
 <?php
-NavBar::begin(
-    [
-        'brandLabel' => Html::img($asset->baseUrl . '/logo.png'),
-        'brandUrl' => ['default/index'],
-        'options' => ['class' => 'navbar-inverse navbar-fixed-top'],
-    ]
-);
-echo Nav::widget(
-    [
-        'options' => ['class' => 'nav navbar-nav navbar-right'],
-        'items' => [
-            ['label' => 'Home', 'url' => ['default/index']],
-            ['label' => 'Help', 'url' => 'https://github.com/yiisoft/yii2/blob/master/docs/guide/gii.md'],
-            ['label' => 'Application', 'url' => Yii::$app->homeUrl],
-        ],
-    ]
-);
+NavBar::begin([
+    'brandLabel' => Html::img($asset->baseUrl . '/logo.png'),
+    'brandUrl' => ['default/index'],
+    'options' => ['class' => 'navbar-inverse navbar-fixed-top'],
+]);
+echo Nav::widget([
+    'options' => ['class' => 'nav navbar-nav navbar-right'],
+    'items' => [
+        ['label' => 'Home', 'url' => ['default/index']],
+        ['label' => 'Help', 'url' => 'http://www.yiiframework.com/doc-2.0/guide-tool-gii.html'],
+        ['label' => 'Application', 'url' => Yii::$app->homeUrl],
+    ],
+]);
 NavBar::end();
 ?>
 
@@ -48,7 +44,6 @@ NavBar::end();
 <footer class="footer">
     <div class="container">
         <p class="pull-left">A Product of <a href="http://www.yiisoft.com/">Yii Software LLC</a></p>
-
         <p class="pull-right"><?= Yii::powered() ?></p>
     </div>
 </footer>

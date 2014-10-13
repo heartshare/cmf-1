@@ -20,9 +20,7 @@
         "yiisoft/yii2": "*"
     },
     "autoload": {
-        "psr-4": {
-            "yii\\codeception\\": ""
-        }
+        "psr-4": { "yii\\codeception\\": "" }
     },
     "extra": {
         "branch-alias": {

@@ -121,9 +121,7 @@ class Instance
             if ($component instanceof $type || $type === null) {
                 return $component;
             } else {
-                throw new InvalidConfigException('"' . $reference->id . '" refers to a ' . get_class(
-                    $component
-                ) . " component. $type is expected.");
+                throw new InvalidConfigException('"' . $reference->id . '" refers to a ' . get_class($component) . " component. $type is expected.");
             }
         }
 

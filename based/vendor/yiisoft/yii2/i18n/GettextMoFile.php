@@ -110,10 +110,9 @@ class GettextMoFile extends GettextFile
 
 
             if (($context && $separatorPosition !== false && strncmp($id, $context, $separatorPosition) === 0) ||
-                (!$context && $separatorPosition === false)
-            ) {
+                (!$context && $separatorPosition === false)) {
                 if ($separatorPosition !== false) {
-                    $id = substr($id, $separatorPosition + 1);
+                    $id = substr($id, $separatorPosition+1);
                 }
 
                 $message = $this->readString($fileHandle, $targetLengths[$i], $targetOffsets[$i]);
@@ -245,7 +244,7 @@ class GettextMoFile extends GettextFile
      */
     protected function writeInteger($fileHandle, $integer)
     {
-        return $this->writeBytes($fileHandle, pack($this->useBigEndian ? 'N' : 'V', (int)$integer));
+        return $this->writeBytes($fileHandle, pack($this->useBigEndian ? 'N' : 'V', (int) $integer));
     }
 
     /**
@@ -272,6 +271,6 @@ class GettextMoFile extends GettextFile
      */
     protected function writeString($fileHandle, $string)
     {
-        return $this->writeBytes($fileHandle, $string . "\0");
+        return $this->writeBytes($fileHandle, $string. "\0");
     }
 }

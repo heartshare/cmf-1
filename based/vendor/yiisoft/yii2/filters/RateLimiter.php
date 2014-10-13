@@ -99,7 +99,7 @@ class RateLimiter extends ActionFilter
         list ($limit, $window) = $user->getRateLimit($request, $action);
         list ($allowance, $timestamp) = $user->loadAllowance($request, $action);
 
-        $allowance += (int)(($current - $timestamp) * $limit / $window);
+        $allowance += (int) (($current - $timestamp) * $limit / $window);
         if ($allowance > $limit) {
             $allowance = $limit;
         }
@@ -110,12 +110,7 @@ class RateLimiter extends ActionFilter
             throw new TooManyRequestsHttpException($this->errorMessage);
         } else {
             $user->saveAllowance($request, $action, $allowance - 1, $current);
-            $this->addRateLimitHeaders(
-                $response,
-                $limit,
-                $allowance - 1,
-                (int)(($limit - $allowance) * $window / $limit)
-            );
+            $this->addRateLimitHeaders($response, $limit, $allowance - 1, (int) (($limit - $allowance) * $window / $limit));
         }
     }
 

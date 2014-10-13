@@ -82,16 +82,13 @@ class MessageController extends Controller
             throw new Exception("The configuration file does not exist: $configFile");
         }
 
-        $config = array_merge(
-            [
-                'translator' => 'Yii::t',
-                'overwrite' => false,
-                'removeUnused' => false,
-                'sort' => false,
-                'format' => 'php',
-            ],
-            require($configFile)
-        );
+        $config = array_merge([
+            'translator' => 'Yii::t',
+            'overwrite' => false,
+            'removeUnused' => false,
+            'sort' => false,
+            'format' => 'php',
+        ], require($configFile));
 
         if (!isset($config['sourcePath'], $config['languages'])) {
             throw new Exception('The configuration file must specify "sourcePath" and "languages".');
@@ -127,22 +124,9 @@ class MessageController extends Controller
                 }
                 if ($config['format'] === 'po') {
                     $catalog = isset($config['catalog']) ? $config['catalog'] : 'messages';
-                    $this->saveMessagesToPO(
-                        $messages,
-                        $dir,
-                        $config['overwrite'],
-                        $config['removeUnused'],
-                        $config['sort'],
-                        $catalog
-                    );
+                    $this->saveMessagesToPO($messages, $dir, $config['overwrite'], $config['removeUnused'], $config['sort'], $catalog);
                 } else {
-                    $this->saveMessagesToPHP(
-                        $messages,
-                        $dir,
-                        $config['overwrite'],
-                        $config['removeUnused'],
-                        $config['sort']
-                    );
+                    $this->saveMessagesToPHP($messages, $dir, $config['overwrite'], $config['removeUnused'], $config['sort']);
                 }
             }
         } elseif ($config['format'] === 'db') {
@@ -217,11 +201,11 @@ class MessageController extends Controller
                 $savedFlag = true;
 
                 $db->createCommand()
-                    ->insert($sourceMessageTable, ['category' => $category, 'message' => $m])->execute();
+                   ->insert($sourceMessageTable, ['category' => $category, 'message' => $m])->execute();
                 $lastId = $db->getLastInsertID();
                 foreach ($languages as $language) {
                     $db->createCommand()
-                        ->insert($messageTable, ['id' => $lastId, 'language' => $language])->execute();
+                       ->insert($messageTable, ['id' => $lastId, 'language' => $language])->execute();
                 }
             }
         }
@@ -234,19 +218,19 @@ class MessageController extends Controller
         } else {
             if ($removeUnused) {
                 $db->createCommand()
-                    ->delete($sourceMessageTable, ['in', 'id', $obsolete])->execute();
+                   ->delete($sourceMessageTable, ['in', 'id', $obsolete])->execute();
                 echo "deleted.\n";
             } else {
                 $last_id = $db->getLastInsertID();
                 $db->createCommand()
-                    ->update(
-                        $sourceMessageTable,
-                        ['message' => new \yii\db\Expression("CONCAT('@@',message,'@@')")],
-                        ['in', 'id', $obsolete]
-                    )->execute();
+                   ->update(
+                       $sourceMessageTable,
+                       ['message' => new \yii\db\Expression("CONCAT('@@',message,'@@')")],
+                       ['in', 'id', $obsolete]
+                   )->execute();
                 foreach ($languages as $language) {
                     $db->createCommand()
-                        ->insert($messageTable, ['id' => $last_id, 'language' => $language])->execute();
+                       ->insert($messageTable, ['id' => $last_id, 'language' => $language])->execute();
                 }
                 echo "updated.\n";
             }
@@ -344,12 +328,7 @@ class MessageController extends Controller
             ksort($existingMessages);
             foreach ($existingMessages as $message => $translation) {
                 if (!isset($merged[$message]) && !isset($todo[$message]) && !$removeUnused) {
-                    if (!empty($translation) && strncmp($translation, '@@', 2) === 0 && substr_compare(
-                            $translation,
-                            '@@',
-                            -2
-                        ) === 0
-                    ) {
+                    if (!empty($translation) && strncmp($translation, '@@', 2) === 0 && substr_compare($translation, '@@', -2, 2) === 0) {
                         $todo[$message] = $translation;
                     } else {
                         $todo[$message] = '@@' . $translation . '@@';
@@ -462,15 +441,8 @@ EOD;
 
                 // add obsolete unused messages
                 foreach ($existingMessages as $message => $translation) {
-                    if (!isset($merged[$category . chr(4) . $message]) && !isset($todos[$category . chr(
-                            4
-                        ) . $message]) && !$removeUnused
-                    ) {
-                        if (!empty($translation) && substr($translation, 0, 2) === '@@' && substr(
-                                $translation,
-                                -2
-                            ) === '@@'
-                        ) {
+                    if (!isset($merged[$category . chr(4) . $message]) && !isset($todos[$category . chr(4) . $message]) && !$removeUnused) {
+                        if (!empty($translation) && substr($translation, 0, 2) === '@@' && substr($translation, -2) === '@@') {
                             $todos[$category . chr(4) . $message] = $translation;
                         } else {
                             $todos[$category . chr(4) . $message] = '@@' . $translation . '@@';

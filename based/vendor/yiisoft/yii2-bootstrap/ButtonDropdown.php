@@ -87,14 +87,12 @@ class ButtonDropdown extends Widget
             $options = $this->options;
             $this->options['data-toggle'] = 'dropdown';
             Html::addCssClass($this->options, 'dropdown-toggle');
-            $splitButton = Button::widget(
-                [
-                    'label' => '<span class="caret"></span>',
-                    'encodeLabel' => false,
-                    'options' => $this->options,
-                    'view' => $this->getView(),
-                ]
-            );
+            $splitButton = Button::widget([
+                'label' => '<span class="caret"></span>',
+                'encodeLabel' => false,
+                'options' => $this->options,
+                'view' => $this->getView(),
+            ]);
         } else {
             $label .= ' <span class="caret"></span>';
             $options = $this->options;
@@ -106,15 +104,13 @@ class ButtonDropdown extends Widget
             $splitButton = '';
         }
 
-        return Button::widget(
-            [
-                'tagName' => $this->tagName,
-                'label' => $label,
-                'options' => $options,
-                'encodeLabel' => false,
-                'view' => $this->getView(),
-            ]
-        ) . "\n" . $splitButton;
+        return Button::widget([
+            'tagName' => $this->tagName,
+            'label' => $label,
+            'options' => $options,
+            'encodeLabel' => false,
+            'view' => $this->getView(),
+        ]) . "\n" . $splitButton;
     }
 
     /**

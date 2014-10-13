@@ -10,7 +10,7 @@ namespace yii\db\cubrid;
 use yii\base\InvalidParamException;
 
 /**
- * QueryBuilder is the query builder for CUBRID databases (version 9.1.x and higher).
+ * QueryBuilder is the query builder for CUBRID databases (version 9.3.x and higher).
  *
  * @author Carsten Brandt <mail@cebe.cc>
  * @since 2.0
@@ -57,11 +57,9 @@ class QueryBuilder extends \yii\db\QueryBuilder
             $tableName = $this->db->quoteTableName($tableName);
             if ($value === null) {
                 $key = reset($table->primaryKey);
-                $value = (int)$this->db->createCommand(
-                        "SELECT MAX(`$key`) FROM " . $this->db->schema->quoteTableName($tableName)
-                    )->queryScalar() + 1;
+                $value = (int) $this->db->createCommand("SELECT MAX(`$key`) FROM " . $this->db->schema->quoteTableName($tableName))->queryScalar() + 1;
             } else {
-                $value = (int)$value;
+                $value = (int) $value;
             }
 
             return "ALTER TABLE " . $this->db->schema->quoteTableName($tableName) . " AUTO_INCREMENT=$value;";

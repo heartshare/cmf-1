@@ -172,15 +172,9 @@ class FixtureController extends \yii\console\controllers\FixtureController
      */
     public function options($actionID)
     {
-        return array_merge(
-            parent::options($actionID),
-            [
-                'templatePath',
-                'language',
-                'fixtureDataPath',
-                'count'
-            ]
-        );
+        return array_merge(parent::options($actionID), [
+            'templatePath', 'language', 'fixtureDataPath', 'count'
+        ]);
     }
 
     public function beforeAction($action)
@@ -211,7 +205,7 @@ class FixtureController extends \yii\console\controllers\FixtureController
     /**
      * Generates fixtures and fill them with Faker data.
      * For example,
-     *
+     * 
      * ~~~
      * //generate fixtures in russian language
      * yii fixture/generate user --count=5 --language=ru_RU
@@ -219,7 +213,7 @@ class FixtureController extends \yii\console\controllers\FixtureController
      * //generate several fixtures
      * yii fixture/generate user profile team
      * ~~~
-     *
+     * 
      * @throws \yii\base\InvalidParamException
      * @throws \yii\console\Exception
      */
@@ -287,7 +281,7 @@ class FixtureController extends \yii\console\controllers\FixtureController
         $generatedTemplates = [];
 
         foreach ($foundTemplates as $templateName) {
-            $this->generateFixtureFile($templateName, $templatePath, $fixtureDataPath);
+            $this->generateFixtureFile($templateName, $templatePath, $fixtureDataPath);            
             $generatedTemplates[] = $templateName;
         }
 
@@ -314,10 +308,7 @@ class FixtureController extends \yii\console\controllers\FixtureController
      */
     private function notifyNoTemplatesFound()
     {
-        $this->stdout(
-            "No fixtures template files matching input conditions were found under the path:\n\n",
-            Console::FG_RED
-        );
+        $this->stdout("No fixtures template files matching input conditions were found under the path:\n\n", Console::FG_RED);
         $this->stdout("\t " . Yii::getAlias($this->templatePath) . " \n\n", Console::FG_GREEN);
     }
 
@@ -453,7 +444,7 @@ class FixtureController extends \yii\console\controllers\FixtureController
 
         $content = $this->exportFixtures($fixtures);
 
-        file_put_contents($fixtureDataPath . '/' . $templateName . '.php', $content);
+        file_put_contents($fixtureDataPath . '/'. $templateName . '.php', $content);
     }
 
     /**

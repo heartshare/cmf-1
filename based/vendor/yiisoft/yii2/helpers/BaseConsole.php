@@ -19,36 +19,36 @@ use yii\console\Markdown;
  */
 class BaseConsole
 {
-    const FG_BLACK = 30;
-    const FG_RED = 31;
-    const FG_GREEN = 32;
+    const FG_BLACK  = 30;
+    const FG_RED    = 31;
+    const FG_GREEN  = 32;
     const FG_YELLOW = 33;
-    const FG_BLUE = 34;
+    const FG_BLUE   = 34;
     const FG_PURPLE = 35;
-    const FG_CYAN = 36;
-    const FG_GREY = 37;
+    const FG_CYAN   = 36;
+    const FG_GREY   = 37;
 
-    const BG_BLACK = 40;
-    const BG_RED = 41;
-    const BG_GREEN = 42;
+    const BG_BLACK  = 40;
+    const BG_RED    = 41;
+    const BG_GREEN  = 42;
     const BG_YELLOW = 43;
-    const BG_BLUE = 44;
+    const BG_BLUE   = 44;
     const BG_PURPLE = 45;
-    const BG_CYAN = 46;
-    const BG_GREY = 47;
+    const BG_CYAN   = 46;
+    const BG_GREY   = 47;
 
-    const RESET = 0;
-    const NORMAL = 0;
-    const BOLD = 1;
-    const ITALIC = 3;
-    const UNDERLINE = 4;
-    const BLINK = 5;
-    const NEGATIVE = 7;
-    const CONCEALED = 8;
+    const RESET       = 0;
+    const NORMAL      = 0;
+    const BOLD        = 1;
+    const ITALIC      = 3;
+    const UNDERLINE   = 4;
+    const BLINK       = 5;
+    const NEGATIVE    = 7;
+    const CONCEALED   = 8;
     const CROSSED_OUT = 9;
-    const FRAMED = 51;
-    const ENCIRCLED = 52;
-    const OVERLINED = 53;
+    const FRAMED      = 51;
+    const ENCIRCLED   = 52;
+    const OVERLINED   = 53;
 
 
     /**
@@ -58,7 +58,7 @@ class BaseConsole
      */
     public static function moveCursorUp($rows = 1)
     {
-        echo "\033[" . (int)$rows . 'A';
+        echo "\033[" . (int) $rows . 'A';
     }
 
     /**
@@ -68,7 +68,7 @@ class BaseConsole
      */
     public static function moveCursorDown($rows = 1)
     {
-        echo "\033[" . (int)$rows . 'B';
+        echo "\033[" . (int) $rows . 'B';
     }
 
     /**
@@ -78,7 +78,7 @@ class BaseConsole
      */
     public static function moveCursorForward($steps = 1)
     {
-        echo "\033[" . (int)$steps . 'C';
+        echo "\033[" . (int) $steps . 'C';
     }
 
     /**
@@ -88,7 +88,7 @@ class BaseConsole
      */
     public static function moveCursorBackward($steps = 1)
     {
-        echo "\033[" . (int)$steps . 'D';
+        echo "\033[" . (int) $steps . 'D';
     }
 
     /**
@@ -97,7 +97,7 @@ class BaseConsole
      */
     public static function moveCursorNextLine($lines = 1)
     {
-        echo "\033[" . (int)$lines . 'E';
+        echo "\033[" . (int) $lines . 'E';
     }
 
     /**
@@ -106,7 +106,7 @@ class BaseConsole
      */
     public static function moveCursorPrevLine($lines = 1)
     {
-        echo "\033[" . (int)$lines . 'F';
+        echo "\033[" . (int) $lines . 'F';
     }
 
     /**
@@ -117,9 +117,9 @@ class BaseConsole
     public static function moveCursorTo($column, $row = null)
     {
         if ($row === null) {
-            echo "\033[" . (int)$column . 'G';
+            echo "\033[" . (int) $column . 'G';
         } else {
-            echo "\033[" . (int)$row . ';' . (int)$column . 'H';
+            echo "\033[" . (int) $row . ';' . (int) $column . 'H';
         }
     }
 
@@ -130,7 +130,7 @@ class BaseConsole
      */
     public static function scrollUp($lines = 1)
     {
-        echo "\033[" . (int)$lines . "S";
+        echo "\033[" . (int) $lines . "S";
     }
 
     /**
@@ -140,7 +140,7 @@ class BaseConsole
      */
     public static function scrollDown($lines = 1)
     {
-        echo "\033[" . (int)$lines . "T";
+        echo "\033[" . (int) $lines . "T";
     }
 
     /**
@@ -334,8 +334,7 @@ class BaseConsole
      * @param string $string the string to measure
      * @return int the length of the string not counting ANSI format characters
      */
-    public static function ansiStrlen($string)
-    {
+    public static function ansiStrlen($string) {
         return mb_strlen(static::stripAnsiFormat($string));
     }
 
@@ -355,33 +354,33 @@ class BaseConsole
     public static function ansiToHtml($string, $styleMap = [])
     {
         $styleMap = [
-                // http://www.w3.org/TR/CSS2/syndata.html#value-def-color
-                self::FG_BLACK => ['color' => 'black'],
-                self::FG_BLUE => ['color' => 'blue'],
-                self::FG_CYAN => ['color' => 'aqua'],
-                self::FG_GREEN => ['color' => 'lime'],
-                self::FG_GREY => ['color' => 'silver'],
-                // http://meyerweb.com/eric/thoughts/2014/06/19/rebeccapurple/
-                // http://dev.w3.org/csswg/css-color/#valuedef-rebeccapurple
-                self::FG_PURPLE => ['color' => 'rebeccapurple'],
-                self::FG_RED => ['color' => 'red'],
-                self::FG_YELLOW => ['color' => 'yellow'],
-                self::BG_BLACK => ['background-color' => 'black'],
-                self::BG_BLUE => ['background-color' => 'blue'],
-                self::BG_CYAN => ['background-color' => 'aqua'],
-                self::BG_GREEN => ['background-color' => 'lime'],
-                self::BG_GREY => ['background-color' => 'silver'],
-                self::BG_PURPLE => ['background-color' => 'rebeccapurple'],
-                self::BG_RED => ['background-color' => 'red'],
-                self::BG_YELLOW => ['background-color' => 'yellow'],
-                self::BOLD => ['font-weight' => 'bold'],
-                self::ITALIC => ['font-style' => 'italic'],
-                self::UNDERLINE => ['text-decoration' => ['underline']],
-                self::OVERLINED => ['text-decoration' => ['overline']],
-                self::CROSSED_OUT => ['text-decoration' => ['line-through']],
-                self::BLINK => ['text-decoration' => ['blink']],
-                self::CONCEALED => ['visibility' => 'hidden'],
-            ] + $styleMap;
+            // http://www.w3.org/TR/CSS2/syndata.html#value-def-color
+            self::FG_BLACK =>    ['color' => 'black'],
+            self::FG_BLUE =>     ['color' => 'blue'],
+            self::FG_CYAN =>     ['color' => 'aqua'],
+            self::FG_GREEN =>    ['color' => 'lime'],
+            self::FG_GREY =>     ['color' => 'silver'],
+            // http://meyerweb.com/eric/thoughts/2014/06/19/rebeccapurple/
+            // http://dev.w3.org/csswg/css-color/#valuedef-rebeccapurple
+            self::FG_PURPLE =>   ['color' => 'rebeccapurple'],
+            self::FG_RED =>      ['color' => 'red'],
+            self::FG_YELLOW =>   ['color' => 'yellow'],
+            self::BG_BLACK =>    ['background-color' => 'black'],
+            self::BG_BLUE =>     ['background-color' => 'blue'],
+            self::BG_CYAN =>     ['background-color' => 'aqua'],
+            self::BG_GREEN =>    ['background-color' => 'lime'],
+            self::BG_GREY =>     ['background-color' => 'silver'],
+            self::BG_PURPLE =>   ['background-color' => 'rebeccapurple'],
+            self::BG_RED =>      ['background-color' => 'red'],
+            self::BG_YELLOW =>   ['background-color' => 'yellow'],
+            self::BOLD =>        ['font-weight' => 'bold'],
+            self::ITALIC =>      ['font-style' => 'italic'],
+            self::UNDERLINE =>   ['text-decoration' => ['underline']],
+            self::OVERLINED =>   ['text-decoration' => ['overline']],
+            self::CROSSED_OUT => ['text-decoration' => ['line-through']],
+            self::BLINK =>       ['text-decoration' => ['blink']],
+            self::CONCEALED =>   ['visibility' => 'hidden'],
+        ] + $styleMap;
 
         $tags = 0;
         $result = preg_replace_callback(
@@ -402,7 +401,7 @@ class BaseConsole
                 }
 
                 $return = '';
-                while ($reset && $tags > 0) {
+                while($reset && $tags > 0) {
                     $return .= '</span>';
                     $tags--;
                 }
@@ -434,7 +433,7 @@ class BaseConsole
                 }
 
                 $styleString = '';
-                foreach ($currentStyle as $name => $value) {
+                foreach($currentStyle as $name => $value) {
                     if (is_array($value)) {
                         $value = implode(' ', $value);
                     }
@@ -445,7 +444,7 @@ class BaseConsole
             },
             $string
         );
-        while ($tags > 0) {
+        while($tags > 0) {
             $result .= '</span>';
             $tags--;
         }
@@ -613,30 +612,22 @@ class BaseConsole
             $output = [];
             exec('mode con', $output);
             if (isset($output) && strpos($output[1], 'CON') !== false) {
-                return $size = [
-                    (int)preg_replace('~[^0-9]~', '', $output[3]),
-                    (int)preg_replace('~[^0-9]~', '', $output[4])
-                ];
+                return $size = [(int) preg_replace('~[^0-9]~', '', $output[3]), (int) preg_replace('~[^0-9]~', '', $output[4])];
             }
         } else {
             // try stty if available
             $stty = [];
-            if (exec('stty -a 2>&1', $stty) && preg_match(
-                    '/rows\s+(\d+);\s*columns\s+(\d+);/mi',
-                    implode(' ', $stty),
-                    $matches
-                )
-            ) {
+            if (exec('stty -a 2>&1', $stty) && preg_match('/rows\s+(\d+);\s*columns\s+(\d+);/mi', implode(' ', $stty), $matches)) {
                 return $size = [$matches[2], $matches[1]];
             }
 
             // fallback to tput, which may not be updated on terminal resize
-            if (($width = (int)exec('tput cols 2>&1')) > 0 && ($height = (int)exec('tput lines 2>&1')) > 0) {
+            if (($width = (int) exec('tput cols 2>&1')) > 0 && ($height = (int) exec('tput lines 2>&1')) > 0) {
                 return $size = [$width, $height];
             }
 
             // fallback to ENV variables, which may not be updated on terminal resize
-            if (($width = (int)getenv('COLUMNS')) > 0 && ($height = (int)getenv('LINES')) > 0) {
+            if (($width = (int) getenv('COLUMNS')) > 0 && ($height = (int) getenv('LINES')) > 0) {
                 return $size = [$width, $height];
             }
         }
@@ -734,15 +725,15 @@ class BaseConsole
     {
         $options = ArrayHelper::merge(
             [
-                'required' => false,
-                'default' => null,
-                'pattern' => null,
+                'required'  => false,
+                'default'   => null,
+                'pattern'   => null,
                 'validator' => null,
-                'error' => 'Invalid input.',
+                'error'     => 'Invalid input.',
             ],
             $options
         );
-        $error = null;
+        $error   = null;
 
         top:
         $input = $options['default']

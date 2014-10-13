@@ -216,7 +216,7 @@ class Command extends Component
         } catch (\Exception $e) {
             $message = $e->getMessage() . "\nFailed to prepare SQL: $sql";
             $errorInfo = $e instanceof \PDOException ? $e->errorInfo : null;
-            throw new Exception($message, $errorInfo, (int)$e->getCode(), $e);
+            throw new Exception($message, $errorInfo, (int) $e->getCode(), $e);
         }
     }
 
@@ -660,15 +660,7 @@ class Command extends Component
      */
     public function addForeignKey($name, $table, $columns, $refTable, $refColumns, $delete = null, $update = null)
     {
-        $sql = $this->db->getQueryBuilder()->addForeignKey(
-            $name,
-            $table,
-            $columns,
-            $refTable,
-            $refColumns,
-            $delete,
-            $update
-        );
+        $sql = $this->db->getQueryBuilder()->addForeignKey($name, $table, $columns, $refTable, $refColumns, $delete, $update);
 
         return $this->setSql($sql);
     }
@@ -832,7 +824,7 @@ class Command extends Component
                 if ($fetchMode === null) {
                     $fetchMode = $this->fetchMode;
                 }
-                $result = call_user_func_array([$this->pdoStatement, $method], (array)$fetchMode);
+                $result = call_user_func_array([$this->pdoStatement, $method], (array) $fetchMode);
                 $this->pdoStatement->closeCursor();
             }
 

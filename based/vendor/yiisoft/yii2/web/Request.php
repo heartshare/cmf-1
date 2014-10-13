@@ -323,10 +323,7 @@ class Request extends \yii\base\Request
     public function getIsFlash()
     {
         return isset($_SERVER['HTTP_USER_AGENT']) &&
-        (stripos($_SERVER['HTTP_USER_AGENT'], 'Shockwave') !== false || stripos(
-                $_SERVER['HTTP_USER_AGENT'],
-                'Flash'
-            ) !== false);
+            (stripos($_SERVER['HTTP_USER_AGENT'], 'Shockwave') !== false || stripos($_SERVER['HTTP_USER_AGENT'], 'Flash') !== false);
     }
 
     private $_rawBody;
@@ -692,19 +689,16 @@ class Request extends \yii\base\Request
 
         // try to encode in UTF8 if not so
         // http://w3.org/International/questions/qa-forms-utf-8.html
-        if (!preg_match(
-            '%^(?:
-                        [\x09\x0A\x0D\x20-\x7E]              # ASCII
-                        | [\xC2-\xDF][\x80-\xBF]             # non-overlong 2-byte
-                        | \xE0[\xA0-\xBF][\x80-\xBF]         # excluding overlongs
-                        | [\xE1-\xEC\xEE\xEF][\x80-\xBF]{2}  # straight 3-byte
-                        | \xED[\x80-\x9F][\x80-\xBF]         # excluding surrogates
-                        | \xF0[\x90-\xBF][\x80-\xBF]{2}      # planes 1-3
-                        | [\xF1-\xF3][\x80-\xBF]{3}          # planes 4-15
-                        | \xF4[\x80-\x8F][\x80-\xBF]{2}      # plane 16
-                        )*$%xs',
-            $pathInfo
-        )
+        if (!preg_match('%^(?:
+            [\x09\x0A\x0D\x20-\x7E]              # ASCII
+            | [\xC2-\xDF][\x80-\xBF]             # non-overlong 2-byte
+            | \xE0[\xA0-\xBF][\x80-\xBF]         # excluding overlongs
+            | [\xE1-\xEC\xEE\xEF][\x80-\xBF]{2}  # straight 3-byte
+            | \xED[\x80-\x9F][\x80-\xBF]         # excluding surrogates
+            | \xF0[\x90-\xBF][\x80-\xBF]{2}      # planes 1-3
+            | [\xF1-\xF3][\x80-\xBF]{3}          # planes 4-15
+            | \xF4[\x80-\x8F][\x80-\xBF]{2}      # plane 16
+            )*$%xs', $pathInfo)
         ) {
             $pathInfo = utf8_encode($pathInfo);
         }
@@ -725,7 +719,7 @@ class Request extends \yii\base\Request
             $pathInfo = substr($pathInfo, 1);
         }
 
-        return (string)$pathInfo;
+        return (string) $pathInfo;
     }
 
     /**
@@ -812,7 +806,7 @@ class Request extends \yii\base\Request
     public function getIsSecureConnection()
     {
         return isset($_SERVER['HTTPS']) && (strcasecmp($_SERVER['HTTPS'], 'on') === 0 || $_SERVER['HTTPS'] == 1)
-        || isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strcasecmp($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') === 0;
+            || isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strcasecmp($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') === 0;
     }
 
     /**
@@ -830,7 +824,7 @@ class Request extends \yii\base\Request
      */
     public function getServerPort()
     {
-        return (int)$_SERVER['SERVER_PORT'];
+        return (int) $_SERVER['SERVER_PORT'];
     }
 
     /**
@@ -897,8 +891,7 @@ class Request extends \yii\base\Request
     public function getPort()
     {
         if ($this->_port === null) {
-            $this->_port = !$this->getIsSecureConnection(
-            ) && isset($_SERVER['SERVER_PORT']) ? (int)$_SERVER['SERVER_PORT'] : 80;
+            $this->_port = !$this->getIsSecureConnection() && isset($_SERVER['SERVER_PORT']) ? (int) $_SERVER['SERVER_PORT'] : 80;
         }
 
         return $this->_port;
@@ -913,7 +906,7 @@ class Request extends \yii\base\Request
     public function setPort($value)
     {
         if ($value != $this->_port) {
-            $this->_port = (int)$value;
+            $this->_port = (int) $value;
             $this->_hostInfo = null;
         }
     }
@@ -930,8 +923,7 @@ class Request extends \yii\base\Request
     public function getSecurePort()
     {
         if ($this->_securePort === null) {
-            $this->_securePort = $this->getIsSecureConnection(
-            ) && isset($_SERVER['SERVER_PORT']) ? (int)$_SERVER['SERVER_PORT'] : 443;
+            $this->_securePort = $this->getIsSecureConnection() && isset($_SERVER['SERVER_PORT']) ? (int) $_SERVER['SERVER_PORT'] : 443;
         }
 
         return $this->_securePort;
@@ -946,7 +938,7 @@ class Request extends \yii\base\Request
     public function setSecurePort($value)
     {
         if ($value != $this->_securePort) {
-            $this->_securePort = (int)$value;
+            $this->_securePort = (int) $value;
             $this->_hostInfo = null;
         }
     }
@@ -1090,7 +1082,7 @@ class Request extends \yii\base\Request
                 if (strpos($param, '=') !== false) {
                     list ($key, $value) = explode('=', $param, 2);
                     if ($key === 'q') {
-                        $values['q'][2] = (double)$value;
+                        $values['q'][2] = (double) $value;
                     } else {
                         $values[$key] = $value;
                     }
@@ -1101,32 +1093,29 @@ class Request extends \yii\base\Request
             $accepts[] = $values;
         }
 
-        usort(
-            $accepts,
-            function ($a, $b) {
-                $a = $a['q']; // index, name, q
-                $b = $b['q'];
-                if ($a[2] > $b[2]) {
-                    return -1;
-                } elseif ($a[2] < $b[2]) {
-                    return 1;
-                } elseif ($a[1] === $b[1]) {
-                    return $a[0] > $b[0] ? 1 : -1;
-                } elseif ($a[1] === '*/*') {
-                    return 1;
-                } elseif ($b[1] === '*/*') {
-                    return -1;
+        usort($accepts, function ($a, $b) {
+            $a = $a['q']; // index, name, q
+            $b = $b['q'];
+            if ($a[2] > $b[2]) {
+                return -1;
+            } elseif ($a[2] < $b[2]) {
+                return 1;
+            } elseif ($a[1] === $b[1]) {
+                return $a[0] > $b[0] ? 1 : -1;
+            } elseif ($a[1] === '*/*') {
+                return 1;
+            } elseif ($b[1] === '*/*') {
+                return -1;
+            } else {
+                $wa = $a[1][strlen($a[1]) - 1] === '*';
+                $wb = $b[1][strlen($b[1]) - 1] === '*';
+                if ($wa xor $wb) {
+                    return $wa ? 1 : -1;
                 } else {
-                    $wa = $a[1][strlen($a[1]) - 1] === '*';
-                    $wb = $b[1][strlen($b[1]) - 1] === '*';
-                    if ($wa xor $wb) {
-                        return $wa ? 1 : -1;
-                    } else {
-                        return $a[0] > $b[0] ? 1 : -1;
-                    }
+                    return $a[0] > $b[0] ? 1 : -1;
                 }
             }
-        );
+        });
 
         $result = [];
         foreach ($accepts as $accept) {
@@ -1158,8 +1147,7 @@ class Request extends \yii\base\Request
 
                 if ($normalizedLanguage === $acceptableLanguage || // en-us==en-us
                     strpos($acceptableLanguage, $normalizedLanguage . '-') === 0 || // en==en-us
-                    strpos($normalizedLanguage, $acceptableLanguage . '-') === 0
-                ) { // en-us==en
+                    strpos($normalizedLanguage, $acceptableLanguage . '-') === 0) { // en-us==en
 
                     return $language;
                 }
@@ -1220,20 +1208,14 @@ class Request extends \yii\base\Request
         $cookies = [];
         if ($this->enableCookieValidation) {
             if ($this->cookieValidationKey == '') {
-                throw new InvalidConfigException(get_class(
-                    $this
-                ) . '::cookieValidationKey must be configured with a secret key.');
+                throw new InvalidConfigException(get_class($this) . '::cookieValidationKey must be configured with a secret key.');
             }
             foreach ($_COOKIE as $name => $value) {
-                if (is_string($value) && ($value = Yii::$app->getSecurity()->validateData(
-                        $value,
-                        $this->cookieValidationKey
-                    )) !== false
-                ) {
+                if (is_string($value) && ($value = Yii::$app->getSecurity()->validateData($value, $this->cookieValidationKey)) !== false) {
                     $cookies[$name] = new Cookie([
                         'name' => $name,
                         'value' => @unserialize($value),
-                        'expire' => null
+                        'expire'=> null
                     ]);
                 }
             }
@@ -1242,7 +1224,7 @@ class Request extends \yii\base\Request
                 $cookies[$name] = new Cookie([
                     'name' => $name,
                     'value' => $value,
-                    'expire' => null
+                    'expire'=> null
                 ]);
             }
         }
@@ -1305,7 +1287,6 @@ class Request extends \yii\base\Request
             $config['value'] = $token;
             Yii::$app->getResponse()->getCookies()->add(new Cookie($config));
         } else {
-            $token = Yii::$app->getSecurity()->generateRandomString();
             Yii::$app->getSession()->set($this->csrfParam, $token);
         }
         return $token;
@@ -1372,7 +1353,7 @@ class Request extends \yii\base\Request
         $trueToken = $this->loadCsrfToken();
 
         return $this->validateCsrfTokenInternal($this->getBodyParam($this->csrfParam), $trueToken)
-        || $this->validateCsrfTokenInternal($this->getCsrfTokenFromHeader(), $trueToken);
+            || $this->validateCsrfTokenInternal($this->getCsrfTokenFromHeader(), $trueToken);
     }
 
     /**

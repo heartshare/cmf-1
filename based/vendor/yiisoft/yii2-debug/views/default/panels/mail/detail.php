@@ -27,12 +27,10 @@ $listView->sorter = ['options' => ['class' => 'mail-sorter']];
 </div>
 
 <div id="email-form" style="display: none;">
-    <?php $form = ActiveForm::begin(
-        [
+    <?php $form = ActiveForm::begin([
             'method' => 'get',
             'action' => ['/debug/default/view', 'tag' => Yii::$app->request->get('tag'), 'panel' => 'mail'],
-        ]
-    ); ?>
+    ]); ?>
     <div class="row">
         <?= $form->field($searchModel, 'from', ['options' => ['class' => 'col-lg-6']])->textInput() ?>
 
@@ -46,9 +44,9 @@ $listView->sorter = ['options' => ['class' => 'mail-sorter']];
 
         <?= $form->field($searchModel, 'charset', ['options' => ['class' => 'col-lg-6']])->textInput() ?>
 
-        <?= $form->field($searchModel, 'subject', ['options' => ['class' => 'col-lg-6']])->textInput() ?>
+        <?= $form->field($searchModel, 'subject', ['options' => ['class' => 'col-lg-6']])->textInput()	?>
 
-        <?= $form->field($searchModel, 'body', ['options' => ['class' => 'col-lg-6']])->textInput() ?>
+        <?= $form->field($searchModel, 'body', ['options' => ['class' => 'col-lg-6']])->textInput()	?>
 
         <div class="form-group col-lg-12">
             <?= Html::submitButton('Filter', ['class' => 'btn btn-success']) ?>

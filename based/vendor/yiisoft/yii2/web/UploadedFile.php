@@ -201,14 +201,7 @@ class UploadedFile extends Object
             self::$_files = [];
             if (isset($_FILES) && is_array($_FILES)) {
                 foreach ($_FILES as $class => $info) {
-                    self::loadFilesRecursive(
-                        $class,
-                        $info['name'],
-                        $info['tmp_name'],
-                        $info['type'],
-                        $info['size'],
-                        $info['error']
-                    );
+                    self::loadFilesRecursive($class, $info['name'], $info['tmp_name'], $info['type'], $info['size'], $info['error']);
                 }
             }
         }
@@ -228,14 +221,7 @@ class UploadedFile extends Object
     {
         if (is_array($names)) {
             foreach ($names as $i => $name) {
-                self::loadFilesRecursive(
-                    $key . '[' . $i . ']',
-                    $name,
-                    $tempNames[$i],
-                    $types[$i],
-                    $sizes[$i],
-                    $errors[$i]
-                );
+                self::loadFilesRecursive($key . '[' . $i . ']', $name, $tempNames[$i], $types[$i], $sizes[$i], $errors[$i]);
             }
         } elseif ($errors !== UPLOAD_ERR_NO_FILE) {
             self::$_files[$key] = new static([

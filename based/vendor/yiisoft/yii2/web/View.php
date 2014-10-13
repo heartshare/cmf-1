@@ -173,14 +173,11 @@ class View extends \yii\base\View
 
         $content = ob_get_clean();
 
-        echo strtr(
-            $content,
-            [
-                self::PH_HEAD => $this->renderHeadHtml(),
-                self::PH_BODY_BEGIN => $this->renderBodyBeginHtml(),
-                self::PH_BODY_END => $this->renderBodyEndHtml($ajaxMode),
-            ]
-        );
+        echo strtr($content, [
+            self::PH_HEAD => $this->renderHeadHtml(),
+            self::PH_BODY_BEGIN => $this->renderBodyBeginHtml(),
+            self::PH_BODY_END => $this->renderBodyEndHtml($ajaxMode),
+        ]);
 
         $this->clear();
     }
@@ -223,7 +220,7 @@ class View extends \yii\base\View
      */
     public function getAssetManager()
     {
-        return $this->_assetManager ? : Yii::$app->getAssetManager();
+        return $this->_assetManager ?: Yii::$app->getAssetManager();
     }
 
     /**
@@ -356,7 +353,7 @@ class View extends \yii\base\View
      */
     public function registerCss($css, $options = [], $key = null)
     {
-        $key = $key ? : md5($css);
+        $key = $key ?: md5($css);
         $this->css[$key] = Html::style($css, $options);
     }
 
@@ -375,7 +372,7 @@ class View extends \yii\base\View
     public function registerCssFile($url, $options = [], $key = null)
     {
         $url = Yii::getAlias($url);
-        $key = $key ? : $url;
+        $key = $key ?: $url;
         $depends = ArrayHelper::remove($options, 'depends', []);
 
         if (empty($depends)) {
@@ -385,7 +382,7 @@ class View extends \yii\base\View
                 'baseUrl' => '',
                 'css' => [strncmp($url, '//', 2) === 0 ? $url : ltrim($url, '/')],
                 'cssOptions' => $options,
-                'depends' => (array)$depends,
+                'depends' => (array) $depends,
             ]);
             $this->registerAssetBundle($key);
         }
@@ -411,7 +408,7 @@ class View extends \yii\base\View
      */
     public function registerJs($js, $position = self::POS_READY, $key = null)
     {
-        $key = $key ? : md5($js);
+        $key = $key ?: md5($js);
         $this->js[$position][$key] = $js;
         if ($position === self::POS_READY || $position === self::POS_LOAD) {
             JqueryAsset::register($this);
@@ -439,7 +436,7 @@ class View extends \yii\base\View
     public function registerJsFile($url, $options = [], $key = null)
     {
         $url = Yii::getAlias($url);
-        $key = $key ? : $url;
+        $key = $key ?: $url;
         $depends = ArrayHelper::remove($options, 'depends', []);
 
         if (empty($depends)) {
@@ -450,7 +447,7 @@ class View extends \yii\base\View
                 'baseUrl' => '',
                 'js' => [strncmp($url, '//', 2) === 0 ? $url : ltrim($url, '/')],
                 'jsOptions' => $options,
-                'depends' => (array)$depends,
+                'depends' => (array) $depends,
             ]);
             $this->registerAssetBundle($key);
         }

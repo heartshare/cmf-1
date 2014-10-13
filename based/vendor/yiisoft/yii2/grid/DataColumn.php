@@ -127,12 +127,8 @@ class DataColumn extends Column
         }
 
         if ($this->attribute !== null && $this->enableSorting &&
-            ($sort = $provider->getSort()) !== false && $sort->hasAttribute($this->attribute)
-        ) {
-            return $sort->link(
-                $this->attribute,
-                array_merge($this->sortLinkOptions, ['label' => Html::encode($label)])
-            );
+            ($sort = $provider->getSort()) !== false && $sort->hasAttribute($this->attribute)) {
+            return $sort->link($this->attribute, array_merge($this->sortLinkOptions, ['label' => Html::encode($label)]));
         } else {
             return Html::encode($label);
         }
@@ -149,10 +145,7 @@ class DataColumn extends Column
 
         $model = $this->grid->filterModel;
 
-        if ($this->filter !== false && $model instanceof Model && $this->attribute !== null && $model->isAttributeActive(
-                $this->attribute
-            )
-        ) {
+        if ($this->filter !== false && $model instanceof Model && $this->attribute !== null && $model->isAttributeActive($this->attribute)) {
             if ($model->hasErrors($this->attribute)) {
                 Html::addCssClass($this->filterOptions, 'has-error');
                 $error = Html::error($model, $this->attribute, $this->grid->filterErrorOptions);

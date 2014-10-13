@@ -93,12 +93,9 @@ class ErrorHandler extends \yii\base\ErrorHandler
                     ini_set('display_errors', 1);
                 }
                 $file = $useErrorView ? $this->errorView : $this->exceptionView;
-                $response->data = $this->renderFile(
-                    $file,
-                    [
-                        'exception' => $exception,
-                    ]
-                );
+                $response->data = $this->renderFile($file, [
+                    'exception' => $exception,
+                ]);
             }
         } else {
             $response->data = $this->convertExceptionToArray($exception);
@@ -125,8 +122,7 @@ class ErrorHandler extends \yii\base\ErrorHandler
         }
 
         $array = [
-            'name' => ($exception instanceof Exception || $exception instanceof ErrorException) ? $exception->getName(
-                ) : 'Exception',
+            'name' => ($exception instanceof Exception || $exception instanceof ErrorException) ? $exception->getName() : 'Exception',
             'message' => $exception->getMessage(),
             'code' => $exception->getCode(),
         ];
@@ -247,25 +243,22 @@ class ErrorHandler extends \yii\base\ErrorHandler
                 return '';
             }
 
-            $half = (int)(($index == 1 ? $this->maxSourceLines : $this->maxTraceSourceLines) / 2);
+            $half = (int) (($index == 1 ? $this->maxSourceLines : $this->maxTraceSourceLines) / 2);
             $begin = $line - $half > 0 ? $line - $half : 0;
             $end = $line + $half < $lineCount ? $line + $half : $lineCount - 1;
         }
 
-        return $this->renderFile(
-            $this->callStackItemView,
-            [
-                'file' => $file,
-                'line' => $line,
-                'class' => $class,
-                'method' => $method,
-                'index' => $index,
-                'lines' => $lines,
-                'begin' => $begin,
-                'end' => $end,
-                'args' => $args,
-            ]
-        );
+        return $this->renderFile($this->callStackItemView, [
+            'file' => $file,
+            'line' => $line,
+            'class' => $class,
+            'method' => $method,
+            'index' => $index,
+            'lines' => $lines,
+            'begin' => $begin,
+            'end' => $end,
+            'args' => $args,
+        ]);
     }
 
     /**
@@ -302,7 +295,7 @@ class ErrorHandler extends \yii\base\ErrorHandler
      */
     public function createHttpStatusLink($statusCode, $statusDescription)
     {
-        return '<a href="http://en.wikipedia.org/wiki/List_of_HTTP_status_codes#' . (int)$statusCode . '" target="_blank">HTTP ' . (int)$statusCode . ' &ndash; ' . $statusDescription . '</a>';
+        return '<a href="http://en.wikipedia.org/wiki/List_of_HTTP_status_codes#' . (int) $statusCode . '" target="_blank">HTTP ' . (int) $statusCode . ' &ndash; ' . $statusDescription . '</a>';
     }
 
     /**
@@ -324,9 +317,7 @@ class ErrorHandler extends \yii\base\ErrorHandler
             foreach ($serverUrls as $url => $keywords) {
                 foreach ($keywords as $keyword) {
                     if (stripos($_SERVER['SERVER_SOFTWARE'], $keyword) !== false) {
-                        return '<a href="' . $url . '" target="_blank">' . $this->htmlEncode(
-                            $_SERVER['SERVER_SOFTWARE']
-                        ) . '</a>';
+                        return '<a href="' . $url . '" target="_blank">' . $this->htmlEncode($_SERVER['SERVER_SOFTWARE']) . '</a>';
                     }
                 }
             }
@@ -342,9 +333,7 @@ class ErrorHandler extends \yii\base\ErrorHandler
      */
     public function createFrameworkVersionLink()
     {
-        return '<a href="http://github.com/yiisoft/yii2/" target="_blank">' . $this->htmlEncode(
-            Yii::getVersion()
-        ) . '</a>';
+        return '<a href="http://github.com/yiisoft/yii2/" target="_blank">' . $this->htmlEncode(Yii::getVersion()) . '</a>';
     }
 
     /**
@@ -360,8 +349,8 @@ class ErrorHandler extends \yii\base\ErrorHandler
 
         foreach ($args as $key => $value) {
             $count++;
-            if ($count >= 5) {
-                if ($count > 5) {
+            if($count>=5) {
+                if($count>5) {
                     unset($args[$key]);
                 } else {
                     $args[$key] = '...';
@@ -385,7 +374,7 @@ class ErrorHandler extends \yii\base\ErrorHandler
                 $args[$key] = '[' . $this->argumentsToString($value) . ']';
             } elseif ($value === null) {
                 $args[$key] = '<span class="keyword">null</span>';
-            } elseif (is_resource($value)) {
+            } elseif(is_resource($value)) {
                 $args[$key] = '<span class="keyword">resource</span>';
             } else {
                 $args[$key] = '<span class="number">' . $value . '</span>';

@@ -137,7 +137,7 @@ class Progress extends Widget
     /**
      * Generates a bar
      * @param integer $percent the percentage of the bar
-     * @param string $label , optional, the label to display at the bar
+     * @param string $label, optional, the label to display at the bar
      * @param array $options the HTML attributes of the bar
      * @return string the rendering result.
      */
@@ -155,13 +155,9 @@ class Progress extends Widget
 
         $out = Html::beginTag('div', $options);
         $out .= $label;
-        $out .= Html::tag(
-            'span',
-            \Yii::t('yii', '{percent}% Complete', ['percent' => $percent]),
-            [
-                'class' => 'sr-only'
-            ]
-        );
+        $out .= Html::tag('span', \Yii::t('yii', '{percent}% Complete', ['percent' => $percent]), [
+            'class' => 'sr-only'
+        ]);
         $out .= Html::endTag('div');
 
         return $out;

@@ -55,21 +55,25 @@ class BaseHtml
         'class',
         'name',
         'value',
+
         'href',
         'src',
         'action',
         'method',
+
         'selected',
         'checked',
         'readonly',
         'disabled',
         'multiple',
+
         'size',
         'maxlength',
         'width',
         'height',
         'rows',
         'cols',
+
         'alt',
         'title',
         'rel',
@@ -255,7 +259,7 @@ class BaseHtml
         $request = Yii::$app->getRequest();
         if ($request instanceof Request && $request->enableCsrfValidation) {
             return static::tag('meta', '', ['name' => 'csrf-param', 'content' => $request->csrfParam]) . "\n    "
-            . static::tag('meta', '', ['name' => 'csrf-token', 'content' => $request->getCsrfToken()]) . "\n";
+                . static::tag('meta', '', ['name' => 'csrf-token', 'content' => $request->getCsrfToken()]) . "\n";
         } else {
             return '';
         }
@@ -476,7 +480,7 @@ class BaseHtml
     {
         $options['type'] = $type;
         $options['name'] = $name;
-        $options['value'] = $value === null ? null : (string)$value;
+        $options['value'] = $value === null ? null : (string) $value;
         return static::tag('input', '', $options);
     }
 
@@ -628,7 +632,7 @@ class BaseHtml
      */
     public static function radio($name, $checked = false, $options = [])
     {
-        $options['checked'] = (boolean)$checked;
+        $options['checked'] = (boolean) $checked;
         $value = array_key_exists('value', $options) ? $options['value'] : '1';
         if (isset($options['uncheck'])) {
             // add a hidden field so that if the radio button is not selected, it still submits a value
@@ -641,11 +645,7 @@ class BaseHtml
             $label = $options['label'];
             $labelOptions = isset($options['labelOptions']) ? $options['labelOptions'] : [];
             unset($options['label'], $options['labelOptions']);
-            $content = static::label(
-                static::input('radio', $name, $value, $options) . ' ' . $label,
-                null,
-                $labelOptions
-            );
+            $content = static::label(static::input('radio', $name, $value, $options) . ' ' . $label, null, $labelOptions);
             return $hidden . $content;
         } else {
             return $hidden . static::input('radio', $name, $value, $options);
@@ -674,7 +674,7 @@ class BaseHtml
      */
     public static function checkbox($name, $checked = false, $options = [])
     {
-        $options['checked'] = (boolean)$checked;
+        $options['checked'] = (boolean) $checked;
         $value = array_key_exists('value', $options) ? $options['value'] : '1';
         if (isset($options['uncheck'])) {
             // add a hidden field so that if the checkbox is not selected, it still submits a value
@@ -687,11 +687,7 @@ class BaseHtml
             $label = $options['label'];
             $labelOptions = isset($options['labelOptions']) ? $options['labelOptions'] : [];
             unset($options['label'], $options['labelOptions']);
-            $content = static::label(
-                static::input('checkbox', $name, $value, $options) . ' ' . $label,
-                null,
-                $labelOptions
-            );
+            $content = static::label(static::input('checkbox', $name, $value, $options) . ' ' . $label, null, $labelOptions);
             return $hidden . $content;
         } else {
             return $hidden . static::input('checkbox', $name, $value, $options);
@@ -789,13 +785,13 @@ class BaseHtml
         if (!array_key_exists('size', $options)) {
             $options['size'] = 4;
         }
-        if (!empty($options['multiple']) && !empty($name) && substr_compare($name, '[]', -2)) {
+        if (!empty($options['multiple']) && !empty($name) && substr_compare($name, '[]', -2, 2)) {
             $name .= '[]';
         }
         $options['name'] = $name;
         if (isset($options['unselect'])) {
             // add a hidden field so that if the list box has no option being selected, it still submits a value
-            if (!empty($name) && substr_compare($name, '[]', -2) === 0) {
+            if (!empty($name) && substr_compare($name, '[]', -2, 2) === 0) {
                 $name = substr($name, 0, -2);
             }
             $hidden = static::hiddenInput($name, $options['unselect']);
@@ -858,17 +854,10 @@ class BaseHtml
             if ($formatter !== null) {
                 $lines[] = call_user_func($formatter, $index, $label, $name, $checked, $value);
             } else {
-                $lines[] = static::checkbox(
-                    $name,
-                    $checked,
-                    array_merge(
-                        $itemOptions,
-                        [
-                            'value' => $value,
-                            'label' => $encode ? static::encode($label) : $label,
-                        ]
-                    )
-                );
+                $lines[] = static::checkbox($name, $checked, array_merge($itemOptions, [
+                    'value' => $value,
+                    'label' => $encode ? static::encode($label) : $label,
+                ]));
             }
             $index++;
         }
@@ -932,17 +921,10 @@ class BaseHtml
             if ($formatter !== null) {
                 $lines[] = call_user_func($formatter, $index, $label, $name, $checked, $value);
             } else {
-                $lines[] = static::radio(
-                    $name,
-                    $checked,
-                    array_merge(
-                        $itemOptions,
-                        [
-                            'value' => $value,
-                            'label' => $encode ? static::encode($label) : $label,
-                        ]
-                    )
-                );
+                $lines[] = static::radio($name, $checked, array_merge($itemOptions, [
+                    'value' => $value,
+                    'label' => $encode ? static::encode($label) : $label,
+                ]));
             }
             $index++;
         }
@@ -1080,10 +1062,7 @@ class BaseHtml
      */
     public static function errorSummary($models, $options = [])
     {
-        $header = isset($options['header']) ? $options['header'] : '<p>' . Yii::t(
-                'yii',
-                'Please fix the following errors:'
-            ) . '</p>';
+        $header = isset($options['header']) ? $options['header'] : '<p>' . Yii::t('yii', 'Please fix the following errors:') . '</p>';
         $footer = isset($options['footer']) ? $options['footer'] : '';
         $encode = !isset($options['encode']) || $options['encode'] !== false;
         unset($options['header'], $options['footer'], $options['encode']);
@@ -1102,10 +1081,7 @@ class BaseHtml
         if (empty($lines)) {
             // still render the placeholder for client-side validation use
             $content = "<ul></ul>";
-            $options['style'] = isset($options['style']) ? rtrim(
-                    $options['style'],
-                    ';'
-                ) . '; display:none' : 'display:none';
+            $options['style'] = isset($options['style']) ? rtrim($options['style'], ';') . '; display:none' : 'display:none';
         } else {
             $content = "<ul><li>" . implode("</li>\n<li>", $lines) . "</li></ul>";
         }
@@ -1231,7 +1207,7 @@ class BaseHtml
         // add a hidden field so that if a model only has a file field, we can
         // still use isset($_POST[$modelClass]) to detect if the input is submitted
         return static::activeHiddenInput($model, $attribute, ['id' => null, 'value' => ''])
-        . static::activeInput('file', $model, $attribute, $options);
+            . static::activeInput('file', $model, $attribute, $options);
     }
 
     /**
@@ -1570,11 +1546,7 @@ class BaseHtml
         $lines = [];
         $encodeSpaces = ArrayHelper::remove($tagOptions, 'encodeSpaces', false);
         if (isset($tagOptions['prompt'])) {
-            $prompt = $encodeSpaces ? str_replace(
-                ' ',
-                '&nbsp;',
-                static::encode($tagOptions['prompt'])
-            ) : static::encode($tagOptions['prompt']);
+            $prompt = $encodeSpaces ? str_replace(' ', '&nbsp;', static::encode($tagOptions['prompt'])) : static::encode($tagOptions['prompt']);
             $lines[] = static::tag('option', $prompt, ['value' => '']);
         }
 
@@ -1592,15 +1564,11 @@ class BaseHtml
                 $lines[] = static::tag('optgroup', "\n" . $content . "\n", $groupAttrs);
             } else {
                 $attrs = isset($options[$key]) ? $options[$key] : [];
-                $attrs['value'] = (string)$key;
+                $attrs['value'] = (string) $key;
                 $attrs['selected'] = $selection !== null &&
-                    (!is_array($selection) && !strcmp($key, $selection)
+                        (!is_array($selection) && !strcmp($key, $selection)
                         || is_array($selection) && in_array($key, $selection));
-                $lines[] = static::tag(
-                    'option',
-                    ($encodeSpaces ? str_replace(' ', '&nbsp;', static::encode($value)) : static::encode($value)),
-                    $attrs
-                );
+                $lines[] = static::tag('option', ($encodeSpaces ? str_replace(' ', '&nbsp;', static::encode($value)) : static::encode($value)), $attrs);
             }
         }
 
@@ -1735,9 +1703,9 @@ class BaseHtml
                     }
                 }
             }
-            $style = static::cssStyleFromArray(array_merge($oldStyle, $newStyle));
+            $style = array_merge($oldStyle, $newStyle);
         }
-        $options['style'] = $style;
+        $options['style'] = is_array($style) ? static::cssStyleFromArray($style) : $style;
     }
 
     /**
@@ -1758,7 +1726,7 @@ class BaseHtml
     {
         if (!empty($options['style'])) {
             $style = static::cssStyleToArray($options['style']);
-            foreach ((array)$properties as $property) {
+            foreach ((array) $properties as $property) {
                 unset($style[$property]);
             }
             $options['style'] = static::cssStyleFromArray($style);

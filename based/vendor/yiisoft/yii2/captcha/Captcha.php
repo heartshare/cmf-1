@@ -90,13 +90,10 @@ class Captcha extends InputWidget
             $route = [$route, 'v' => uniqid()];
         }
         $image = Html::img($route, $this->imageOptions);
-        echo strtr(
-            $this->template,
-            [
-                '{input}' => $input,
-                '{image}' => $image,
-            ]
-        );
+        echo strtr($this->template, [
+            '{input}' => $input,
+            '{image}' => $image,
+        ]);
     }
 
     /**

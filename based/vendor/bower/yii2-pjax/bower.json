@@ -1,12 +1,12 @@
 {
-    "name": "pjax",
-    "version": "1.8.0",
-    "main": "./jquery.pjax.js",
-    "dependencies": {
-        "jquery": ">=1.8"
-    },
-    "ignore": [
-        ".travis.yml",
-        "test/"
-    ]
+  "name": "yii2-pjax",
+  "version": "2.0.1",
+  "main": "./jquery.pjax.js",
+  "dependencies": {
+    "jquery": ">=1.8"
+  },
+  "ignore": [
+    ".travis.yml",
+    "test/"
+  ]
 }

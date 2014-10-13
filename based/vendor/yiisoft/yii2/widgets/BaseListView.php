@@ -113,15 +113,11 @@ abstract class BaseListView extends Widget
     public function run()
     {
         if ($this->dataProvider->getCount() > 0 || $this->showOnEmpty) {
-            $content = preg_replace_callback(
-                "/{\\w+}/",
-                function ($matches) {
-                    $content = $this->renderSection($matches[0]);
+            $content = preg_replace_callback("/{\\w+}/", function ($matches) {
+                $content = $this->renderSection($matches[0]);
 
-                    return $content === false ? $matches[0] : $content;
-                },
-                $this->layout
-            );
+                return $content === false ? $matches[0] : $content;
+            }, $this->layout);
         } else {
             $content = $this->renderEmpty();
         }
@@ -159,11 +155,7 @@ abstract class BaseListView extends Widget
     public function renderEmpty()
     {
         $tag = ArrayHelper::remove($this->emptyTextOptions, 'tag', 'div');
-        return Html::tag(
-            $tag,
-            ($this->emptyText === null ? Yii::t('yii', 'No results found.') : $this->emptyText),
-            $this->emptyTextOptions
-        );
+        return Html::tag($tag, ($this->emptyText === null ? Yii::t('yii', 'No results found.') : $this->emptyText), $this->emptyTextOptions);
     }
 
     /**
@@ -186,58 +178,38 @@ abstract class BaseListView extends Widget
             $page = $pagination->getPage() + 1;
             $pageCount = $pagination->pageCount;
             if (($summaryContent = $this->summary) === null) {
-                return Html::tag(
-                    $tag,
-                    Yii::t(
-                        'yii',
-                        'Showing <b>{begin, number}-{end, number}</b> of <b>{totalCount, number}</b> {totalCount, plural, one{item} other{items}}.',
-                        [
-                            'begin' => $begin,
-                            'end' => $end,
-                            'count' => $count,
-                            'totalCount' => $totalCount,
-                            'page' => $page,
-                            'pageCount' => $pageCount,
-                        ]
-                    ),
-                    $this->summaryOptions
-                );
+                return Html::tag($tag, Yii::t('yii', 'Showing <b>{begin, number}-{end, number}</b> of <b>{totalCount, number}</b> {totalCount, plural, one{item} other{items}}.', [
+                        'begin' => $begin,
+                        'end' => $end,
+                        'count' => $count,
+                        'totalCount' => $totalCount,
+                        'page' => $page,
+                        'pageCount' => $pageCount,
+                    ]), $this->summaryOptions);
             }
         } else {
             $begin = $page = $pageCount = 1;
             $end = $totalCount = $count;
             if (($summaryContent = $this->summary) === null) {
-                return Html::tag(
-                    $tag,
-                    Yii::t(
-                        'yii',
-                        'Total <b>{count, number}</b> {count, plural, one{item} other{items}}.',
-                        [
-                            'begin' => $begin,
-                            'end' => $end,
-                            'count' => $count,
-                            'totalCount' => $totalCount,
-                            'page' => $page,
-                            'pageCount' => $pageCount,
-                        ]
-                    ),
-                    $this->summaryOptions
-                );
+                return Html::tag($tag, Yii::t('yii', 'Total <b>{count, number}</b> {count, plural, one{item} other{items}}.', [
+                    'begin' => $begin,
+                    'end' => $end,
+                    'count' => $count,
+                    'totalCount' => $totalCount,
+                    'page' => $page,
+                    'pageCount' => $pageCount,
+                ]), $this->summaryOptions);
             }
         }
 
-        return Yii::$app->getI18n()->format(
-            $summaryContent,
-            [
-                'begin' => $begin,
-                'end' => $end,
-                'count' => $count,
-                'totalCount' => $totalCount,
-                'page' => $page,
-                'pageCount' => $pageCount,
-            ],
-            Yii::$app->language
-        );
+        return Yii::$app->getI18n()->format($summaryContent, [
+            'begin' => $begin,
+            'end' => $end,
+            'count' => $count,
+            'totalCount' => $totalCount,
+            'page' => $page,
+            'pageCount' => $pageCount,
+        ], Yii::$app->language);
     }
 
     /**

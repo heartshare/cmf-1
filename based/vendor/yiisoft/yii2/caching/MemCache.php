@@ -121,12 +121,10 @@ class MemCache extends Cache
     protected function addServers($cache, $servers)
     {
         if (empty($servers)) {
-            $servers = [
-                new MemCacheServer([
-                    'host' => '127.0.0.1',
-                    'port' => 11211,
-                ])
-            ];
+            $servers = [new MemCacheServer([
+                'host' => '127.0.0.1',
+                'port' => 11211,
+            ])];
         } else {
             foreach ($servers as $server) {
                 if ($server->host === null) {
@@ -170,7 +168,7 @@ class MemCache extends Cache
         $paramCount = $class->getMethod('addServer')->getNumberOfParameters();
         foreach ($servers as $server) {
             // $timeout is used for memcache versions that do not have $timeoutms parameter
-            $timeout = (int)($server->timeout / 1000) + (($server->timeout % 1000 > 0) ? 1 : 0);
+            $timeout = (int) ($server->timeout / 1000) + (($server->timeout % 1000 > 0) ? 1 : 0);
             if ($paramCount === 9) {
                 $cache->addServer(
                     $server->host,
@@ -284,12 +282,7 @@ class MemCache extends Cache
     {
         $expire = $duration > 0 ? $duration + time() : 0;
 
-        return $this->useMemcached ? $this->_cache->set($key, $value, $expire) : $this->_cache->set(
-            $key,
-            $value,
-            0,
-            $expire
-        );
+        return $this->useMemcached ? $this->_cache->set($key, $value, $expire) : $this->_cache->set($key, $value, 0, $expire);
     }
 
     /**
@@ -322,12 +315,7 @@ class MemCache extends Cache
     {
         $expire = $duration > 0 ? $duration + time() : 0;
 
-        return $this->useMemcached ? $this->_cache->add($key, $value, $expire) : $this->_cache->add(
-            $key,
-            $value,
-            0,
-            $expire
-        );
+        return $this->useMemcached ? $this->_cache->add($key, $value, $expire) : $this->_cache->add($key, $value, 0, $expire);
     }
 
     /**

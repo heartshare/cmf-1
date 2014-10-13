@@ -63,7 +63,6 @@ abstract class Generator extends Model
      * @return string name of the code generator
      */
     abstract public function getName();
-
     /**
      * Generates the code based on the current user input and the specified code template files.
      * This is the main method that child classes should implement.
@@ -254,11 +253,7 @@ abstract class Generator extends Model
      */
     public function getStickyDataFile()
     {
-        return Yii::$app->getRuntimePath() . '/gii-' . Yii::getVersion() . '/' . str_replace(
-            '\\',
-            '-',
-            get_class($this)
-        ) . '.json';
+        return Yii::$app->getRuntimePath() . '/gii-' . Yii::getVersion() . '/' . str_replace('\\', '-', get_class($this)) . '.json';
     }
 
     /**
@@ -267,7 +262,7 @@ abstract class Generator extends Model
      * @param array $answers
      * @param string $results this parameter receives a value from this method indicating the log messages
      * generated while saving the code files.
-     * @return boolean whether there is any error while saving the code files.
+     * @return boolean whether files are successfully saved without any error.
      */
     public function save($files, $answers, &$results)
     {
@@ -290,7 +285,7 @@ abstract class Generator extends Model
         $lines[] = "done!\n";
         $results = implode("\n", $lines);
 
-        return $hasError;
+        return !$hasError;
     }
 
     /**
@@ -355,15 +350,8 @@ abstract class Generator extends Model
         try {
             if (class_exists($class)) {
                 if (isset($params['extends'])) {
-                    if (ltrim($class, '\\') !== ltrim($params['extends'], '\\') && !is_subclass_of(
-                            $class,
-                            $params['extends']
-                        )
-                    ) {
-                        $this->addError(
-                            $attribute,
-                            "'$class' must extend from {$params['extends']} or its child class."
-                        );
+                    if (ltrim($class, '\\') !== ltrim($params['extends'], '\\') && !is_subclass_of($class, $params['extends'])) {
+                        $this->addError($attribute, "'$class' must extend from {$params['extends']} or its child class.");
                     }
                 }
             } else {
@@ -518,12 +506,9 @@ abstract class Generator extends Model
         } else {
             // No I18N, replace placeholders by real words, if any
             if (!empty($placeholders)) {
-                $phKeys = array_map(
-                    function ($word) {
-                        return '{' . $word . '}';
-                    },
-                    array_keys($placeholders)
-                );
+                $phKeys = array_map(function($word) {
+                    return '{' . $word . '}';
+                }, array_keys($placeholders));
                 $phValues = array_values($placeholders);
                 $str = "'" . str_replace($phKeys, $phValues, $string) . "'";
             } else {

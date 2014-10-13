@@ -50,14 +50,11 @@ class LogPanel extends Panel
         $searchModel = new Log();
         $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams(), $this->getModels());
 
-        return Yii::$app->view->render(
-            'panels/log/detail',
-            [
-                'dataProvider' => $dataProvider,
-                'panel' => $this,
-                'searchModel' => $searchModel,
-            ]
-        );
+        return Yii::$app->view->render('panels/log/detail', [
+            'dataProvider' => $dataProvider,
+            'panel' => $this,
+            'searchModel' => $searchModel,
+        ]);
     }
 
     /**
@@ -66,10 +63,7 @@ class LogPanel extends Panel
     public function save()
     {
         $target = $this->module->logTarget;
-        $messages = $target->filterMessages(
-            $target->messages,
-            Logger::LEVEL_ERROR | Logger::LEVEL_INFO | Logger::LEVEL_WARNING | Logger::LEVEL_TRACE
-        );
+        $messages = $target->filterMessages($target->messages, Logger::LEVEL_ERROR | Logger::LEVEL_INFO | Logger::LEVEL_WARNING | Logger::LEVEL_TRACE);
         return ['messages' => $messages];
     }
 
@@ -86,7 +80,7 @@ class LogPanel extends Panel
             $this->_models = [];
 
             foreach ($this->data['messages'] as $message) {
-                $this->_models[] = [
+                $this->_models[] = 	[
                     'message' => $message[0],
                     'level' => $message[1],
                     'category' => $message[2],

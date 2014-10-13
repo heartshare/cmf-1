@@ -1,14 +1,14 @@
 /**
- * @license Input Mask plugin for jquery
- * http://github.com/RobinHerbots/jquery.inputmask
- * Copyright (c) 2010 - 2014 Robin Herbots
- * Licensed under the MIT license (http://www.opensource.org/licenses/mit-license.php)
- * Version: 0.0.0
- *
- *  THIS IS A TEMPORARY HACK TO BE COMPATIBLE WITH MULTIPLE MASKS LIKE IN VERSION 2.X - WHEN THE ALTERNATOR SYNTAX IS IMPLEMENTED inputmask-multi WILL BE DELETED!!
- *
- *
- */
+* @license Input Mask plugin for jquery
+* http://github.com/RobinHerbots/jquery.inputmask
+* Copyright (c) 2010 - 2014 Robin Herbots
+* Licensed under the MIT license (http://www.opensource.org/licenses/mit-license.php)
+* Version: 0.0.0
+*
+*  THIS IS A TEMPORARY HACK TO BE COMPATIBLE WITH MULTIPLE MASKS LIKE IN VERSION 2.X - WHEN THE ALTERNATOR SYNTAX IS IMPLEMENTED inputmask-multi WILL BE DELETED!!
+*
+*
+*/
 (function (factory) {
     if (typeof define === 'function' && define.amd) {
         define(['jquery', './jquery.inputmask'], factory);
@@ -29,15 +29,12 @@
                 el = null;
                 return isSupported;
             }
-
             var PasteEventType = isInputEventSupported('paste') ? 'paste' : isInputEventSupported('input') ? 'input' : "propertychange",
                 isRTL, el, $el, elmasks, activeMasksetIndex;
 
             function PatchValhookMulti(type) {
                 if ($.valHooks[type] == undefined || $.valHooks[type].inputmaskmultipatch != true) {
-                    var valueGet = $.valHooks[type] && $.valHooks[type].get ? $.valHooks[type].get : function (elem) {
-                        return elem.value;
-                    };
+                    var valueGet = $.valHooks[type] && $.valHooks[type].get ? $.valHooks[type].get : function (elem) { return elem.value; };
                     var valueSet = $.valHooks[type] && $.valHooks[type].set ? $.valHooks[type].set : function (elem, value) {
                         elem.value = value;
                         return elem;
@@ -125,8 +122,7 @@
                     if ($.isFunction(opts.determineActiveMasksetIndex))
                         activeMasksetIndex = opts.determineActiveMasksetIndex.call($el, eventType, elmasks);
                     else {
-                        var lpc = -1, cp = -1, lvp = -1;
-                        ;
+                        var lpc = -1, cp = -1, lvp = -1;;
                         $.each(elmasks, function (ndx, lmsk) {
                             var data = $(lmsk).data('_inputmask');
                             var maskset = data["maskset"];
@@ -137,9 +133,9 @@
                                 validPositionCount++;
                             }
                             if (validPositionCount > lpc
-                                || (validPositionCount == lpc && cp > caretPos && lvp > lastValidPosition)
-                                || (validPositionCount == lpc && cp == caretPos && lvp < lastValidPosition)
-                                ) {
+                                    || (validPositionCount == lpc && cp > caretPos && lvp > lastValidPosition)
+                                    || (validPositionCount == lpc && cp == caretPos && lvp < lastValidPosition)
+                            ) {
                                 //console.log("lvp " + lastValidPosition + " vpc " + validPositionCount + " caret " + caretPos + " ams " + ndx);
                                 lpc = validPositionCount;
                                 cp = caretPos;

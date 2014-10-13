@@ -83,22 +83,13 @@ class StringValidator extends Validator
             $this->message = Yii::t('yii', '{attribute} must be a string.');
         }
         if ($this->min !== null && $this->tooShort === null) {
-            $this->tooShort = Yii::t(
-                'yii',
-                '{attribute} should contain at least {min, number} {min, plural, one{character} other{characters}}.'
-            );
+            $this->tooShort = Yii::t('yii', '{attribute} should contain at least {min, number} {min, plural, one{character} other{characters}}.');
         }
         if ($this->max !== null && $this->tooLong === null) {
-            $this->tooLong = Yii::t(
-                'yii',
-                '{attribute} should contain at most {max, number} {max, plural, one{character} other{characters}}.'
-            );
+            $this->tooLong = Yii::t('yii', '{attribute} should contain at most {max, number} {max, plural, one{character} other{characters}}.');
         }
         if ($this->length !== null && $this->notEqual === null) {
-            $this->notEqual = Yii::t(
-                'yii',
-                '{attribute} should contain {length, number} {length, plural, one{character} other{characters}}.'
-            );
+            $this->notEqual = Yii::t('yii', '{attribute} should contain {length, number} {length, plural, one{character} other{characters}}.');
         }
     }
 
@@ -160,47 +151,31 @@ class StringValidator extends Validator
         $label = $object->getAttributeLabel($attribute);
 
         $options = [
-            'message' => Yii::$app->getI18n()->format(
-                    $this->message,
-                    [
-                        'attribute' => $label,
-                    ],
-                    Yii::$app->language
-                ),
+            'message' => Yii::$app->getI18n()->format($this->message, [
+                'attribute' => $label,
+            ], Yii::$app->language),
         ];
 
         if ($this->min !== null) {
             $options['min'] = $this->min;
-            $options['tooShort'] = Yii::$app->getI18n()->format(
-                $this->tooShort,
-                [
-                    'attribute' => $label,
-                    'min' => $this->min,
-                ],
-                Yii::$app->language
-            );
+            $options['tooShort'] = Yii::$app->getI18n()->format($this->tooShort, [
+                'attribute' => $label,
+                'min' => $this->min,
+            ], Yii::$app->language);
         }
         if ($this->max !== null) {
             $options['max'] = $this->max;
-            $options['tooLong'] = Yii::$app->getI18n()->format(
-                $this->tooLong,
-                [
-                    'attribute' => $label,
-                    'max' => $this->max,
-                ],
-                Yii::$app->language
-            );
+            $options['tooLong'] = Yii::$app->getI18n()->format($this->tooLong, [
+                'attribute' => $label,
+                'max' => $this->max,
+            ], Yii::$app->language);
         }
         if ($this->length !== null) {
             $options['is'] = $this->length;
-            $options['notEqual'] = Yii::$app->getI18n()->format(
-                $this->notEqual,
-                [
-                    'attribute' => $label,
-                    'length' => $this->length,
-                ],
-                Yii::$app->language
-            );
+            $options['notEqual'] = Yii::$app->getI18n()->format($this->notEqual, [
+                'attribute' => $label,
+                'length' => $this->length,
+            ], Yii::$app->language);
         }
         if ($this->skipOnEmpty) {
             $options['skipOnEmpty'] = 1;

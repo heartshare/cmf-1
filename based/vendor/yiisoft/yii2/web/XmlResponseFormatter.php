@@ -93,11 +93,11 @@ class XmlResponseFormatter extends Component implements ResponseFormatterInterfa
                 } else {
                     $child = new DOMElement(is_int($name) ? $this->itemTag : $name);
                     $element->appendChild($child);
-                    $child->appendChild(new DOMText((string)$value));
+                    $child->appendChild(new DOMText((string) $value));
                 }
             }
         } else {
-            $element->appendChild(new DOMText((string)$data));
+            $element->appendChild(new DOMText((string) $data));
         }
     }
 }

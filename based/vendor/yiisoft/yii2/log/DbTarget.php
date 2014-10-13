@@ -83,15 +83,13 @@ class DbTarget extends Target
             if (!is_string($text)) {
                 $text = VarDumper::export($text);
             }
-            $command->bindValues(
-                [
-                    ':level' => $level,
-                    ':category' => $category,
-                    ':log_time' => $timestamp,
-                    ':prefix' => $this->getMessagePrefix($message),
-                    ':message' => $text,
-                ]
-            )->execute();
+            $command->bindValues([
+                ':level' => $level,
+                ':category' => $category,
+                ':log_time' => $timestamp,
+                ':prefix' => $this->getMessagePrefix($message),
+                ':message' => $text,
+            ])->execute();
         }
     }
 }

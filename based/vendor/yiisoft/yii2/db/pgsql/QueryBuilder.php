@@ -83,9 +83,7 @@ class QueryBuilder extends \yii\db\QueryBuilder
      */
     public function renameTable($oldName, $newName)
     {
-        return 'ALTER TABLE ' . $this->db->quoteTableName($oldName) . ' RENAME TO ' . $this->db->quoteTableName(
-            $newName
-        );
+        return 'ALTER TABLE ' . $this->db->quoteTableName($oldName) . ' RENAME TO ' . $this->db->quoteTableName($newName);
     }
 
     /**
@@ -109,7 +107,7 @@ class QueryBuilder extends \yii\db\QueryBuilder
                 $key = reset($table->primaryKey);
                 $value = "(SELECT COALESCE(MAX(\"{$key}\"),0) FROM {$tableName})+1";
             } else {
-                $value = (int)$value;
+                $value = (int) $value;
             }
 
             return "SELECT SETVAL('$sequence',$value,false)";
@@ -158,8 +156,8 @@ class QueryBuilder extends \yii\db\QueryBuilder
     public function alterColumn($table, $column, $type)
     {
         return 'ALTER TABLE ' . $this->db->quoteTableName($table) . ' ALTER COLUMN '
-        . $this->db->quoteColumnName($column) . ' TYPE '
-        . $this->getColumnType($type);
+            . $this->db->quoteColumnName($column) . ' TYPE '
+            . $this->getColumnType($type);
     }
 
     /**

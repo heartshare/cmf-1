@@ -42,10 +42,7 @@ class GenerateAction extends \yii\base\Action
     {
         $this->controller->stdout("Code not generated. Please fix the following errors:\n\n", Console::FG_RED);
         foreach ($this->generator->errors as $attribute => $errors) {
-            echo ' - ' . $this->controller->ansiFormat($attribute, Console::FG_CYAN) . ': ' . implode(
-                    '; ',
-                    $errors
-                ) . "\n";
+            echo ' - ' . $this->controller->ansiFormat($attribute, Console::FG_CYAN) . ': ' . implode('; ', $errors) . "\n";
         }
         echo "\n";
     }
@@ -74,15 +71,12 @@ class GenerateAction extends \yii\base\Action
                     if ($skipAll !== null) {
                         $answers[$file->id] = !$skipAll;
                     } else {
-                        $answer = $this->controller->select(
-                            "Do you want to overwrite this file?",
-                            [
-                                'y' => 'Overwrite this file.',
-                                'n' => 'Skip this file.',
-                                'ya' => 'Overwrite this and the rest of the changed files.',
-                                'na' => 'Skip this and the rest of the changed files.',
-                            ]
-                        );
+                        $answer = $this->controller->select("Do you want to overwrite this file?", [
+                            'y' => 'Overwrite this file.',
+                            'n' => 'Skip this file.',
+                            'ya' => 'Overwrite this and the rest of the changed files.',
+                            'na' => 'Skip this and the rest of the changed files.',
+                        ]);
                         $answers[$file->id] = $answer === 'y' || $answer === 'ya';
                         if ($answer === 'ya') {
                             $skipAll = false;

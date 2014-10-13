@@ -98,14 +98,10 @@ class EmailValidator extends Validator
             'pattern' => new JsExpression($this->pattern),
             'fullPattern' => new JsExpression($this->fullPattern),
             'allowName' => $this->allowName,
-            'message' => Yii::$app->getI18n()->format(
-                    $this->message,
-                    [
-                        'attribute' => $object->getAttributeLabel($attribute),
-                    ],
-                    Yii::$app->language
-                ),
-            'enableIDN' => (boolean)$this->enableIDN,
+            'message' => Yii::$app->getI18n()->format($this->message, [
+                'attribute' => $object->getAttributeLabel($attribute),
+            ], Yii::$app->language),
+            'enableIDN' => (boolean) $this->enableIDN,
         ];
         if ($this->skipOnEmpty) {
             $options['skipOnEmpty'] = 1;

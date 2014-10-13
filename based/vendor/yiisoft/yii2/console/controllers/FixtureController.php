@@ -73,14 +73,9 @@ class FixtureController extends Controller
      */
     public function options($actionID)
     {
-        return array_merge(
-            parent::options($actionID),
-            [
-                'namespace',
-                'globalFixtures',
-                'append'
-            ]
-        );
+        return array_merge(parent::options($actionID), [
+            'namespace', 'globalFixtures', 'append'
+        ]);
     }
 
     /**
@@ -106,7 +101,7 @@ class FixtureController extends Controller
      * @throws Exception if the specified fixture does not exist.
      */
     public function actionLoad()
-    {
+    {        
         $fixturesInput = func_get_args();
         $filtered = $this->filterFixtures($fixturesInput);
         $except = $filtered['except'];
@@ -381,7 +376,7 @@ class FixtureController extends Controller
     }
 
     /**
-     * Finds fixtures to be loaded, for example "User", if no fixtures were specified then all of them
+     * Finds fixtures to be loaded, for example "User", if no fixtures were specified then all of them 
      * will be searching by suffix "Fixture.php".
      * @param array $fixtures fixtures to be loaded
      * @return array Array of found fixtures. These may differ from input parameter as not all fixtures may exists.
@@ -438,7 +433,7 @@ class FixtureController extends Controller
      * Filters fixtures by splitting them in two categories: one that should be applied and not.
      * If fixture is prefixed with "-", for example "-User", that means that fixture should not be loaded,
      * if it is not prefixed it is considered as one to be loaded. Returs array:
-     *
+     * 
      * ~~~
      * [
      *     'apply' => [
@@ -465,7 +460,7 @@ class FixtureController extends Controller
             if (mb_strpos($fixture, '-') !== false) {
                 $filtered['except'][] = str_replace('-', '', $fixture);
             } else {
-                $filtered['apply'][] = $fixture;
+                $filtered['apply'][] = $fixture;                
             }
         }
 

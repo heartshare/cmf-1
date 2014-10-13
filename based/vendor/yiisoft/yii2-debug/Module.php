@@ -115,20 +115,14 @@ class Module extends \yii\base\Module implements BootstrapInterface
         $this->logTarget = Yii::$app->getLog()->targets['debug'] = new LogTarget($this);
 
         // delay attaching event handler to the view component after it is fully configured
-        $app->on(
-            Application::EVENT_BEFORE_REQUEST,
-            function () use ($app) {
-                $app->getView()->on(View::EVENT_END_BODY, [$this, 'renderToolbar']);
-            }
-        );
+        $app->on(Application::EVENT_BEFORE_REQUEST, function () use ($app) {
+            $app->getView()->on(View::EVENT_END_BODY, [$this, 'renderToolbar']);
+        });
 
-        $app->getUrlManager()->addRules(
-            [
-                $this->id => $this->id,
-                $this->id . '/<controller:\w+>/<action:\w+>' => $this->id . '/<controller>/<action>',
-            ],
-            false
-        );
+        $app->getUrlManager()->addRules([
+            $this->id => $this->id,
+            $this->id . '/<controller:\w+>/<action:\w+>' => $this->id . '/<controller>/<action>',
+        ], false);
     }
 
     /**
@@ -178,12 +172,9 @@ class Module extends \yii\base\Module implements BootstrapInterface
         if (!$this->checkAccess() || Yii::$app->getRequest()->getIsAjax()) {
             return;
         }
-        $url = Url::toRoute(
-            [
-                '/' . $this->id . '/default/toolbar',
-                'tag' => $this->logTarget->tag,
-            ]
-        );
+        $url = Url::toRoute(['/' . $this->id . '/default/toolbar',
+            'tag' => $this->logTarget->tag,
+        ]);
         echo '<div id="yii-debug-toolbar" data-url="' . $url . '" style="display:none"></div>';
         /* @var $view View */
         $view = $event->sender;
@@ -199,19 +190,11 @@ class Module extends \yii\base\Module implements BootstrapInterface
     {
         $ip = Yii::$app->getRequest()->getUserIP();
         foreach ($this->allowedIPs as $filter) {
-            if ($filter === '*' || $filter === $ip || (($pos = strpos($filter, '*')) !== false && !strncmp(
-                        $ip,
-                        $filter,
-                        $pos
-                    ))
-            ) {
+            if ($filter === '*' || $filter === $ip || (($pos = strpos($filter, '*')) !== false && !strncmp($ip, $filter, $pos))) {
                 return true;
             }
         }
-        Yii::warning(
-            'Access to debugger is denied due to IP address restriction. The requesting IP address is ' . $ip,
-            __METHOD__
-        );
+        Yii::warning('Access to debugger is denied due to IP address restriction. The requesting IP address is ' . $ip, __METHOD__);
         return false;
     }
 

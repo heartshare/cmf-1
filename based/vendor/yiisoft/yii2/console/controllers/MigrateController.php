@@ -145,20 +145,14 @@ class MigrateController extends BaseMigrateController
     {
         $tableName = $this->db->schema->getRawTableName($this->migrationTable);
         echo "Creating migration history table \"$tableName\"...";
-        $this->db->createCommand()->createTable(
-            $this->migrationTable,
-            [
-                'version' => 'varchar(180) NOT NULL PRIMARY KEY',
-                'apply_time' => 'integer',
-            ]
-        )->execute();
-        $this->db->createCommand()->insert(
-            $this->migrationTable,
-            [
-                'version' => self::BASE_MIGRATION,
-                'apply_time' => time(),
-            ]
-        )->execute();
+        $this->db->createCommand()->createTable($this->migrationTable, [
+            'version' => 'varchar(180) NOT NULL PRIMARY KEY',
+            'apply_time' => 'integer',
+        ])->execute();
+        $this->db->createCommand()->insert($this->migrationTable, [
+            'version' => self::BASE_MIGRATION,
+            'apply_time' => time(),
+        ])->execute();
         echo "done.\n";
     }
 
@@ -168,13 +162,10 @@ class MigrateController extends BaseMigrateController
     protected function addMigrationHistory($version)
     {
         $command = $this->db->createCommand();
-        $command->insert(
-            $this->migrationTable,
-            [
-                'version' => $version,
-                'apply_time' => time(),
-            ]
-        )->execute();
+        $command->insert($this->migrationTable, [
+            'version' => $version,
+            'apply_time' => time(),
+        ])->execute();
     }
 
     /**
@@ -183,11 +174,8 @@ class MigrateController extends BaseMigrateController
     protected function removeMigrationHistory($version)
     {
         $command = $this->db->createCommand();
-        $command->delete(
-            $this->migrationTable,
-            [
-                'version' => $version,
-            ]
-        )->execute();
+        $command->delete($this->migrationTable, [
+            'version' => $version,
+        ])->execute();
     }
 }

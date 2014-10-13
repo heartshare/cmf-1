@@ -52,7 +52,7 @@ class BaseJson
         if (is_array($json)) {
             throw new InvalidParamException('Invalid JSON data.');
         }
-        $decode = json_decode((string)$json, $asArray);
+        $decode = json_decode((string) $json, $asArray);
         switch (json_last_error()) {
             case JSON_ERROR_NONE:
                 break;

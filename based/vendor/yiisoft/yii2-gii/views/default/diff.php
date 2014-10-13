@@ -7,8 +7,7 @@
         <div class="alert alert-danger">Diff is not supported for this file type.</div>
     <?php elseif (empty($diff)): ?>
         <div class="alert alert-success">Identical.</div>
-    <?php
-    else: ?>
+    <?php else: ?>
         <div class="content"><?= $diff ?></div>
     <?php endif; ?>
 </div>

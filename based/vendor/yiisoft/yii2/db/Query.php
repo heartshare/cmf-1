@@ -159,15 +159,13 @@ class Query extends Component implements QueryInterface
      */
     public function batch($batchSize = 100, $db = null)
     {
-        return Yii::createObject(
-            [
-                'class' => BatchQueryResult::className(),
-                'query' => $this,
-                'batchSize' => $batchSize,
-                'db' => $db,
-                'each' => false,
-            ]
-        );
+        return Yii::createObject([
+            'class' => BatchQueryResult::className(),
+            'query' => $this,
+            'batchSize' => $batchSize,
+            'db' => $db,
+            'each' => false,
+        ]);
     }
 
     /**
@@ -188,15 +186,13 @@ class Query extends Component implements QueryInterface
      */
     public function each($batchSize = 100, $db = null)
     {
-        return Yii::createObject(
-            [
-                'class' => BatchQueryResult::className(),
-                'query' => $this,
-                'batchSize' => $batchSize,
-                'db' => $db,
-                'each' => true,
-            ]
-        );
+        return Yii::createObject([
+            'class' => BatchQueryResult::className(),
+            'query' => $this,
+            'batchSize' => $batchSize,
+            'db' => $db,
+            'each' => true,
+        ]);
     }
 
     /**
@@ -290,7 +286,7 @@ class Query extends Component implements QueryInterface
      * Make sure you properly quote column names in the expression.
      * @param Connection $db the database connection used to generate the SQL statement.
      * If this parameter is not given, the `db` application component will be used.
-     * @return integer the sum of the specified column values
+     * @return mixed the sum of the specified column values
      */
     public function sum($q, $db = null)
     {
@@ -303,7 +299,7 @@ class Query extends Component implements QueryInterface
      * Make sure you properly quote column names in the expression.
      * @param Connection $db the database connection used to generate the SQL statement.
      * If this parameter is not given, the `db` application component will be used.
-     * @return integer the average of the specified column values.
+     * @return mixed the average of the specified column values.
      */
     public function average($q, $db = null)
     {
@@ -316,7 +312,7 @@ class Query extends Component implements QueryInterface
      * Make sure you properly quote column names in the expression.
      * @param Connection $db the database connection used to generate the SQL statement.
      * If this parameter is not given, the `db` application component will be used.
-     * @return integer the minimum of the specified column values.
+     * @return mixed the minimum of the specified column values.
      */
     public function min($q, $db = null)
     {
@@ -329,7 +325,7 @@ class Query extends Component implements QueryInterface
      * Make sure you properly quote column names in the expression.
      * @param Connection $db the database connection used to generate the SQL statement.
      * If this parameter is not given, the `db` application component will be used.
-     * @return integer the maximum of the specified column values.
+     * @return mixed the maximum of the specified column values.
      */
     public function max($q, $db = null)
     {
@@ -736,7 +732,7 @@ class Query extends Component implements QueryInterface
      */
     public function union($sql, $all = false)
     {
-        $this->union[] = ['query' => $sql, 'all' => $all];
+        $this->union[] = [ 'query' => $sql, 'all' => $all ];
         return $this;
     }
 

@@ -185,14 +185,10 @@ class DbCache extends Cache
     protected function setValue($key, $value, $duration)
     {
         $command = $this->db->createCommand()
-            ->update(
-                $this->cacheTable,
-                [
-                    'expire' => $duration > 0 ? $duration + time() : 0,
-                    'data' => [$value, \PDO::PARAM_LOB],
-                ],
-                ['id' => $key]
-            );
+            ->update($this->cacheTable, [
+                'expire' => $duration > 0 ? $duration + time() : 0,
+                'data' => [$value, \PDO::PARAM_LOB],
+            ], ['id' => $key]);
 
         if ($command->execute()) {
             $this->gc();
@@ -218,14 +214,11 @@ class DbCache extends Cache
 
         try {
             $this->db->createCommand()
-                ->insert(
-                    $this->cacheTable,
-                    [
-                        'id' => $key,
-                        'expire' => $duration > 0 ? $duration + time() : 0,
-                        'data' => [$value, \PDO::PARAM_LOB],
-                    ]
-                )->execute();
+                ->insert($this->cacheTable, [
+                    'id' => $key,
+                    'expire' => $duration > 0 ? $duration + time() : 0,
+                    'data' => [$value, \PDO::PARAM_LOB],
+                ])->execute();
 
             return true;
         } catch (\Exception $e) {

@@ -126,11 +126,7 @@ class Controller extends \yii\base\Controller
         }
 
         if (!empty($missing)) {
-            throw new Exception(Yii::t(
-                'yii',
-                'Missing required arguments: {params}',
-                ['params' => implode(', ', $missing)]
-            ));
+            throw new Exception(Yii::t('yii', 'Missing required arguments: {params}', ['params' => implode(', ', $missing)]));
         }
 
         return $args;
@@ -347,7 +343,7 @@ class Controller extends \yii\base\Controller
     {
         $method = $this->getActionMethodReflection($action);
         $tags = $this->parseDocCommentTags($method);
-        $params = isset($tags['param']) ? (array)$tags['param'] : [];
+        $params = isset($tags['param']) ? (array) $tags['param'] : [];
 
         $args = [];
         foreach ($method->getParameters() as $i => $reflection) {
@@ -464,11 +460,7 @@ class Controller extends \yii\base\Controller
     protected function parseDocCommentTags($reflection)
     {
         $comment = $reflection->getDocComment();
-        $comment = "@description \n" . strtr(
-                trim(preg_replace('/^\s*\**( |\t)?/m', '', trim($comment, '/'))),
-                "\r",
-                ''
-            );
+        $comment = "@description \n" . strtr(trim(preg_replace('/^\s*\**( |\t)?/m', '', trim($comment, '/'))), "\r", '');
         $parts = preg_split('/^\s*@/m', $comment, -1, PREG_SPLIT_NO_EMPTY);
         $tags = [];
         foreach ($parts as $part) {
@@ -509,11 +501,7 @@ class Controller extends \yii\base\Controller
      */
     protected function parseDocCommentDetail($reflection)
     {
-        $comment = strtr(
-            trim(preg_replace('/^\s*\**( |\t)?/m', '', trim($reflection->getDocComment(), '/'))),
-            "\r",
-            ''
-        );
+        $comment = strtr(trim(preg_replace('/^\s*\**( |\t)?/m', '', trim($reflection->getDocComment(), '/'))), "\r", '');
         if (preg_match('/^\s*@\w+/m', $comment, $matches, PREG_OFFSET_CAPTURE)) {
             $comment = trim(substr($comment, 0, $matches[0][1]));
         }

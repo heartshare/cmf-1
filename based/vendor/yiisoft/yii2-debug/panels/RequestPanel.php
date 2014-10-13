@@ -78,9 +78,7 @@ class RequestPanel extends Panel
         }
         if (Yii::$app->requestedAction) {
             if (Yii::$app->requestedAction instanceof InlineAction) {
-                $action = get_class(
-                        Yii::$app->requestedAction->controller
-                    ) . '::' . Yii::$app->requestedAction->actionMethod . '()';
+                $action = get_class(Yii::$app->requestedAction->controller) . '::' . Yii::$app->requestedAction->actionMethod . '()';
             } else {
                 $action = get_class(Yii::$app->requestedAction) . '::run()';
             }
@@ -93,15 +91,14 @@ class RequestPanel extends Panel
             'statusCode' => Yii::$app->getResponse()->getStatusCode(),
             'requestHeaders' => $requestHeaders,
             'responseHeaders' => $responseHeaders,
-            'route' => Yii::$app->requestedAction ? Yii::$app->requestedAction->getUniqueId(
-                ) : Yii::$app->requestedRoute,
+            'route' => Yii::$app->requestedAction ? Yii::$app->requestedAction->getUniqueId() : Yii::$app->requestedRoute,
             'action' => $action,
             'actionParams' => Yii::$app->requestedParams,
             'requestBody' => Yii::$app->getRequest()->getRawBody() == '' ? [] : [
-                    'Content Type' => Yii::$app->getRequest()->getContentType(),
-                    'Raw' => Yii::$app->getRequest()->getRawBody(),
-                    'Decoded to Params' => Yii::$app->getRequest()->getBodyParams(),
-                ],
+                'Content Type' => Yii::$app->getRequest()->getContentType(),
+                'Raw' => Yii::$app->getRequest()->getRawBody(),
+                'Decoded to Params' => Yii::$app->getRequest()->getBodyParams(),
+            ],
             'SERVER' => empty($_SERVER) ? [] : $_SERVER,
             'GET' => empty($_GET) ? [] : $_GET,
             'POST' => empty($_POST) ? [] : $_POST,

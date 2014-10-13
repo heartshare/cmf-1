@@ -207,12 +207,9 @@ class Menu extends Widget
 
             $menu = $this->renderItem($item);
             if (!empty($item['items'])) {
-                $menu .= strtr(
-                    $this->submenuTemplate,
-                    [
-                        '{items}' => $this->renderItems($item['items']),
-                    ]
-                );
+                $menu .= strtr($this->submenuTemplate, [
+                    '{items}' => $this->renderItems($item['items']),
+                ]);
             }
             $lines[] = Html::tag($tag, $menu, $options);
         }
@@ -231,22 +228,16 @@ class Menu extends Widget
         if (isset($item['url'])) {
             $template = ArrayHelper::getValue($item, 'template', $this->linkTemplate);
 
-            return strtr(
-                $template,
-                [
-                    '{url}' => Url::to($item['url']),
-                    '{label}' => $item['label'],
-                ]
-            );
+            return strtr($template, [
+                '{url}' => Url::to($item['url']),
+                '{label}' => $item['label'],
+            ]);
         } else {
             $template = ArrayHelper::getValue($item, 'template', $this->labelTemplate);
 
-            return strtr(
-                $template,
-                [
-                    '{label}' => $item['label'],
-                ]
-            );
+            return strtr($template, [
+                '{label}' => $item['label'],
+            ]);
         }
     }
 

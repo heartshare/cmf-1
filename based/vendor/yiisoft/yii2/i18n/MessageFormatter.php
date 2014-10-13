@@ -229,12 +229,7 @@ class MessageFormatter extends Component
                     if (is_array($subtokens[$k]) || !is_array($subtokens[++$k])) {
                         return false;
                     }
-                    $subpattern = $this->replaceNamedArguments(
-                        implode(',', $subtokens[$k]),
-                        $givenParams,
-                        $resultingParams,
-                        $map
-                    );
+                    $subpattern = $this->replaceNamedArguments(implode(',', $subtokens[$k]), $givenParams, $resultingParams, $map);
                     $subtokens[$k] = $quote . '{' . $quote . $subpattern . $quote . '}' . $quote;
                 }
                 $token[2] = implode('', $subtokens);
@@ -374,7 +369,7 @@ class MessageFormatter extends Component
                 if ($message !== false) {
                     return $this->fallbackFormat($message, $args, $locale);
                 }
-                break;
+            break;
             case 'plural':
                 /* http://icu-project.org/apiref/icu4c/classicu_1_1PluralFormat.html
                 pluralStyle = [offsetValue] (selector '{' message '}')+
@@ -398,17 +393,11 @@ class MessageFormatter extends Component
                     $selector = trim($plural[$i++]);
 
                     if ($i == 1 && strncmp($selector, 'offset:', 7) === 0) {
-                        $offset = (int)trim(
-                            mb_substr(
-                                $selector,
-                                7,
-                                ($pos = mb_strpos(str_replace(["\n", "\r", "\t"], ' ', $selector), ' ', 7)) - 7
-                            )
-                        );
+                        $offset = (int) trim(mb_substr($selector, 7, ($pos = mb_strpos(str_replace(["\n", "\r", "\t"], ' ', $selector), ' ', 7)) - 7));
                         $selector = trim(mb_substr($selector, $pos + 1));
                     }
                     if ($message === false && $selector == 'other' ||
-                        $selector[0] == '=' && (int)mb_substr($selector, 1) == $arg ||
+                        $selector[0] == '=' && (int) mb_substr($selector, 1) == $arg ||
                         $selector == 'one' && $arg - $offset == 1
                     ) {
                         $message = implode(',', str_replace('#', $arg - $offset, $plural[$i]));

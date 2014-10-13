@@ -151,9 +151,9 @@ class Pagination extends Object implements Linkable
         if ($pageSize < 1) {
             return $this->totalCount > 0 ? 1 : 0;
         } else {
-            $totalCount = $this->totalCount < 0 ? 0 : (int)$this->totalCount;
+            $totalCount = $this->totalCount < 0 ? 0 : (int) $this->totalCount;
 
-            return (int)(($totalCount + $pageSize - 1) / $pageSize);
+            return (int) (($totalCount + $pageSize - 1) / $pageSize);
         }
     }
 
@@ -167,7 +167,7 @@ class Pagination extends Object implements Linkable
     public function getPage($recalculate = false)
     {
         if ($this->_page === null || $recalculate) {
-            $page = (int)$this->getQueryParam($this->pageParam, 1) - 1;
+            $page = (int) $this->getQueryParam($this->pageParam, 1) - 1;
             $this->setPage($page, true);
         }
 
@@ -185,7 +185,7 @@ class Pagination extends Object implements Linkable
         if ($value === null) {
             $this->_page = null;
         } else {
-            $value = (int)$value;
+            $value = (int) $value;
             if ($validatePage && $this->validatePage) {
                 $pageCount = $this->getPageCount();
                 if ($value >= $pageCount) {
@@ -213,7 +213,7 @@ class Pagination extends Object implements Linkable
                 $pageSize = $this->defaultPageSize;
                 $this->setPageSize($pageSize);
             } else {
-                $pageSize = (int)$this->getQueryParam($this->pageSizeParam, $this->defaultPageSize);
+                $pageSize = (int) $this->getQueryParam($this->pageSizeParam, $this->defaultPageSize);
                 $this->setPageSize($pageSize, true);
             }
         }
@@ -230,11 +230,8 @@ class Pagination extends Object implements Linkable
         if ($value === null) {
             $this->_pageSize = null;
         } else {
-            $value = (int)$value;
-            if ($validatePageSize && count(
-                    $this->pageSizeLimit
-                ) === 2 && isset($this->pageSizeLimit[0], $this->pageSizeLimit[1])
-            ) {
+            $value = (int) $value;
+            if ($validatePageSize && count($this->pageSizeLimit) === 2 && isset($this->pageSizeLimit[0], $this->pageSizeLimit[1])) {
                 if ($value < $this->pageSizeLimit[0]) {
                     $value = $this->pageSizeLimit[0];
                 } elseif ($value > $this->pageSizeLimit[1]) {
@@ -257,8 +254,8 @@ class Pagination extends Object implements Linkable
      */
     public function createUrl($page, $pageSize = null, $absolute = false)
     {
-        $page = (int)$page;
-        $pageSize = (int)$pageSize;
+        $page = (int) $page;
+        $pageSize = (int) $pageSize;
         if (($params = $this->params) === null) {
             $request = Yii::$app->getRequest();
             $params = $request instanceof Request ? $request->getQueryParams() : [];

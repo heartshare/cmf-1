@@ -90,7 +90,7 @@ class AttributeBehavior extends Behavior
     public function evaluateAttributes($event)
     {
         if (!empty($this->attributes[$event->name])) {
-            $attributes = (array)$this->attributes[$event->name];
+            $attributes = (array) $this->attributes[$event->name];
             $value = $this->getValue($event);
             foreach ($attributes as $attribute) {
                 // ignore attribute names which are not string (e.g. when set by TimestampBehavior::updatedAtAttribute)

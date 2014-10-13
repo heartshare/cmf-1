@@ -206,10 +206,7 @@ class ActiveForm extends Widget
     {
         $options = [
             'encodeErrorSummary' => $this->encodeErrorSummary,
-            'errorSummary' => '.' . implode(
-                    '.',
-                    preg_split('/\s+/', $this->errorSummaryCssClass, -1, PREG_SPLIT_NO_EMPTY)
-                ),
+            'errorSummary' => '.' . implode('.', preg_split('/\s+/', $this->errorSummaryCssClass, -1, PREG_SPLIT_NO_EMPTY)),
             'validateOnSubmit' => $this->validateOnSubmit,
             'errorCssClass' => $this->errorCssClass,
             'successCssClass' => $this->successCssClass,
@@ -222,19 +219,16 @@ class ActiveForm extends Widget
         }
 
         // only get the options that are different from the default ones (set in yii.activeForm.js)
-        return array_diff_assoc(
-            $options,
-            [
-                'encodeErrorSummary' => true,
-                'errorSummary' => '.error-summary',
-                'validateOnSubmit' => true,
-                'errorCssClass' => 'has-error',
-                'successCssClass' => 'has-success',
-                'validatingCssClass' => 'validating',
-                'ajaxParam' => 'ajax',
-                'ajaxDataType' => 'json',
-            ]
-        );
+        return array_diff_assoc($options, [
+            'encodeErrorSummary' => true,
+            'errorSummary' => '.error-summary',
+            'validateOnSubmit' => true,
+            'errorCssClass' => 'has-error',
+            'successCssClass' => 'has-success',
+            'validatingCssClass' => 'validating',
+            'ajaxParam' => 'ajax',
+            'ajaxDataType' => 'json',
+        ]);
     }
 
     /**
@@ -278,17 +272,11 @@ class ActiveForm extends Widget
         if (!isset($config['class'])) {
             $config['class'] = $this->fieldClass;
         }
-        return Yii::createObject(
-            ArrayHelper::merge(
-                $config,
-                $options,
-                [
-                    'model' => $model,
-                    'attribute' => $attribute,
-                    'form' => $this,
-                ]
-            )
-        );
+        return Yii::createObject(ArrayHelper::merge($config, $options, [
+            'model' => $model,
+            'attribute' => $attribute,
+            'form' => $this,
+        ]));
     }
 
     /**

@@ -109,9 +109,7 @@ class Mailer extends BaseMailer
     public function setTransport($transport)
     {
         if (!is_array($transport) && !is_object($transport)) {
-            throw new InvalidConfigException('"' . get_class(
-                $this
-            ) . '::transport" should be either object or array, "' . gettype($transport) . '" given.');
+            throw new InvalidConfigException('"' . get_class($this) . '::transport" should be either object or array, "' . gettype($transport) . '" given.');
         }
         $this->_transport = $transport;
     }

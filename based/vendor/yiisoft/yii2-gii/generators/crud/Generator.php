@@ -61,50 +61,22 @@ class Generator extends \yii\gii\Generator
      */
     public function rules()
     {
-        return array_merge(
-            parent::rules(),
-            [
-                [
-                    ['moduleID', 'controllerClass', 'modelClass', 'searchModelClass', 'baseControllerClass'],
-                    'filter',
-                    'filter' => 'trim'
-                ],
-                [['modelClass', 'controllerClass', 'baseControllerClass', 'indexWidgetType'], 'required'],
-                [
-                    ['searchModelClass'],
-                    'compare',
-                    'compareAttribute' => 'modelClass',
-                    'operator' => '!==',
-                    'message' => 'Search Model Class must not be equal to Model Class.'
-                ],
-                [
-                    ['modelClass', 'controllerClass', 'baseControllerClass', 'searchModelClass'],
-                    'match',
-                    'pattern' => '/^[\w\\\\]*$/',
-                    'message' => 'Only word characters and backslashes are allowed.'
-                ],
-                [['modelClass'], 'validateClass', 'params' => ['extends' => BaseActiveRecord::className()]],
-                [['baseControllerClass'], 'validateClass', 'params' => ['extends' => Controller::className()]],
-                [
-                    ['controllerClass'],
-                    'match',
-                    'pattern' => '/Controller$/',
-                    'message' => 'Controller class name must be suffixed with "Controller".'
-                ],
-                [
-                    ['controllerClass'],
-                    'match',
-                    'pattern' => '/(^|\\\\)[A-Z][^\\\\]+Controller$/',
-                    'message' => 'Controller class name must start with an uppercase letter.'
-                ],
-                [['controllerClass', 'searchModelClass'], 'validateNewClass'],
-                [['indexWidgetType'], 'in', 'range' => ['grid', 'list']],
-                [['modelClass'], 'validateModelClass'],
-                [['moduleID'], 'validateModuleID'],
-                [['enableI18N'], 'boolean'],
-                [['messageCategory'], 'validateMessageCategory', 'skipOnEmpty' => false],
-            ]
-        );
+        return array_merge(parent::rules(), [
+            [['moduleID', 'controllerClass', 'modelClass', 'searchModelClass', 'baseControllerClass'], 'filter', 'filter' => 'trim'],
+            [['modelClass', 'controllerClass', 'baseControllerClass', 'indexWidgetType'], 'required'],
+            [['searchModelClass'], 'compare', 'compareAttribute' => 'modelClass', 'operator' => '!==', 'message' => 'Search Model Class must not be equal to Model Class.'],
+            [['modelClass', 'controllerClass', 'baseControllerClass', 'searchModelClass'], 'match', 'pattern' => '/^[\w\\\\]*$/', 'message' => 'Only word characters and backslashes are allowed.'],
+            [['modelClass'], 'validateClass', 'params' => ['extends' => BaseActiveRecord::className()]],
+            [['baseControllerClass'], 'validateClass', 'params' => ['extends' => Controller::className()]],
+            [['controllerClass'], 'match', 'pattern' => '/Controller$/', 'message' => 'Controller class name must be suffixed with "Controller".'],
+            [['controllerClass'], 'match', 'pattern' => '/(^|\\\\)[A-Z][^\\\\]+Controller$/', 'message' => 'Controller class name must start with an uppercase letter.'],
+            [['controllerClass', 'searchModelClass'], 'validateNewClass'],
+            [['indexWidgetType'], 'in', 'range' => ['grid', 'list']],
+            [['modelClass'], 'validateModelClass'],
+            [['moduleID'], 'validateModuleID'],
+            [['enableI18N'], 'boolean'],
+            [['messageCategory'], 'validateMessageCategory', 'skipOnEmpty' => false],
+        ]);
     }
 
     /**
@@ -112,17 +84,14 @@ class Generator extends \yii\gii\Generator
      */
     public function attributeLabels()
     {
-        return array_merge(
-            parent::attributeLabels(),
-            [
-                'modelClass' => 'Model Class',
-                'moduleID' => 'Module ID',
-                'controllerClass' => 'Controller Class',
-                'baseControllerClass' => 'Base Controller Class',
-                'indexWidgetType' => 'Widget Used in Index Page',
-                'searchModelClass' => 'Search Model Class',
-            ]
-        );
+        return array_merge(parent::attributeLabels(), [
+            'modelClass' => 'Model Class',
+            'moduleID' => 'Module ID',
+            'controllerClass' => 'Controller Class',
+            'baseControllerClass' => 'Base Controller Class',
+            'indexWidgetType' => 'Widget Used in Index Page',
+            'searchModelClass' => 'Search Model Class',
+        ]);
     }
 
     /**
@@ -130,24 +99,22 @@ class Generator extends \yii\gii\Generator
      */
     public function hints()
     {
-        return array_merge(
-            parent::hints(),
-            [
-                'modelClass' => 'This is the ActiveRecord class associated with the table that CRUD will be built upon.
+        return array_merge(parent::hints(), [
+            'modelClass' => 'This is the ActiveRecord class associated with the table that CRUD will be built upon.
                 You should provide a fully qualified class name, e.g., <code>app\models\Post</code>.',
-                'controllerClass' => 'This is the name of the controller class to be generated. You should
-                provide a fully qualified namespaced class, .e.g, <code>app\controllers\PostController</code>.
-                The controller class name should follow the CamelCase scheme with an uppercase first letter',
-                'baseControllerClass' => 'This is the class that the new CRUD controller class will extend from.
+            'controllerClass' => 'This is the name of the controller class to be generated. You should
+                provide a fully qualified namespaced class (e.g. <code>app\controllers\PostController</code>),
+                and class name should be in CamelCase with an uppercase first letter. Make sure the class
+                is using the same namespace as specified by your application\'s controllerNamespace property.',
+            'baseControllerClass' => 'This is the class that the new CRUD controller class will extend from.
                 You should provide a fully qualified class name, e.g., <code>yii\web\Controller</code>.',
-                'moduleID' => 'This is the ID of the module that the generated controller will belong to.
+            'moduleID' => 'This is the ID of the module that the generated controller will belong to.
                 If not set, it means the controller will belong to the application.',
-                'indexWidgetType' => 'This is the widget type to be used in the index page to display list of the models.
+            'indexWidgetType' => 'This is the widget type to be used in the index page to display list of the models.
                 You may choose either <code>GridView</code> or <code>ListView</code>',
-                'searchModelClass' => 'This is the name of the search model class to be generated. You should provide a fully
+            'searchModelClass' => 'This is the name of the search model class to be generated. You should provide a fully
                 qualified namespaced class name, e.g., <code>app\models\PostSearch</code>.',
-            ]
-        );
+        ]);
     }
 
     /**
@@ -240,7 +207,7 @@ class Generator extends \yii\gii\Generator
     {
         $module = empty($this->moduleID) ? Yii::$app : Yii::$app->getModule($this->moduleID);
 
-        return $module->getViewPath() . '/' . $this->getControllerID();
+        return $module->getViewPath() . '/' . $this->getControllerID() ;
     }
 
     public function getNameAttribute()
@@ -289,7 +256,7 @@ class Generator extends \yii\gii\Generator
                     $dropDownOptions[$enumValue] = Inflector::humanize($enumValue);
                 }
                 return "\$form->field(\$model, '$attribute')->dropDownList("
-                . preg_replace("/\n\s*/", ' ', VarDumper::export($dropDownOptions)) . ", ['prompt' => ''])";
+                    . preg_replace("/\n\s*/", ' ', VarDumper::export($dropDownOptions)).", ['prompt' => ''])";
             } elseif ($column->phpType !== 'string' || $column->size === null) {
                 return "\$form->field(\$model, '$attribute')->$input()";
             } else {

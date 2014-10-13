@@ -163,22 +163,14 @@ class Carousel extends Widget
     public function renderControls()
     {
         if (isset($this->controls[0], $this->controls[1])) {
-            return Html::a(
-                $this->controls[0],
-                '#' . $this->options['id'],
-                [
-                    'class' => 'left carousel-control',
-                    'data-slide' => 'prev',
-                ]
-            ) . "\n"
-            . Html::a(
-                $this->controls[1],
-                '#' . $this->options['id'],
-                [
-                    'class' => 'right carousel-control',
-                    'data-slide' => 'next',
-                ]
-            );
+            return Html::a($this->controls[0], '#' . $this->options['id'], [
+                'class' => 'left carousel-control',
+                'data-slide' => 'prev',
+            ]) . "\n"
+            . Html::a($this->controls[1], '#' . $this->options['id'], [
+                'class' => 'right carousel-control',
+                'data-slide' => 'next',
+            ]);
         } elseif ($this->controls === false) {
             return '';
         } else {

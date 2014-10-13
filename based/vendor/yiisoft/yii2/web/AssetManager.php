@@ -217,14 +217,11 @@ class AssetManager extends Component
     protected function loadDummyBundle($name)
     {
         if (!isset($this->_dummyBundles[$name])) {
-            $this->_dummyBundles[$name] = $this->loadBundle(
-                $name,
-                [
-                    'js' => [],
-                    'css' => [],
-                    'depends' => [],
-                ]
-            );
+            $this->_dummyBundles[$name] = $this->loadBundle($name, [
+                'js' => [],
+                'css' => [],
+                'depends' => [],
+            ]);
         }
         return $this->_dummyBundles[$name];
     }
@@ -435,10 +432,7 @@ class AssetManager extends Component
             if (!is_dir($dstDir)) {
                 symlink($src, $dstDir);
             }
-        } elseif (!is_dir(
-                $dstDir
-            ) || !empty($options['forceCopy']) || (!isset($options['forceCopy']) && $this->forceCopy)
-        ) {
+        } elseif (!is_dir($dstDir) || !empty($options['forceCopy']) || (!isset($options['forceCopy']) && $this->forceCopy)) {
             $opts = [
                 'dirMode' => $this->dirMode,
                 'fileMode' => $this->fileMode,

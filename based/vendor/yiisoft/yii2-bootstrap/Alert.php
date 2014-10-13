@@ -141,14 +141,11 @@ class Alert extends Widget
         Html::addCssClass($this->options, 'in');
 
         if ($this->closeButton !== false) {
-            $this->closeButton = array_merge(
-                [
-                    'data-dismiss' => 'alert',
-                    'aria-hidden' => 'true',
-                    'class' => 'close',
-                ],
-                $this->closeButton
-            );
+            $this->closeButton = array_merge([
+                'data-dismiss' => 'alert',
+                'aria-hidden' => 'true',
+                'class' => 'close',
+            ], $this->closeButton);
         }
     }
 }

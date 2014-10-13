@@ -16,16 +16,17 @@ use yii\console\Exception;
 /**
  * Allows you to flush cache.
  *
- * ~~~
- * #see list of available components to flush
- * yii cache
+ * see list of available components to flush:
  *
- * #flush particular components specified by their names
- * yii cache/flush first second third
+ *     yii cache
  *
- * #flush all cache components that can be found in the system
- * yii cache/flush-all
- * ~~~
+ * flush particular components specified by their names:
+ *
+ *     yii cache/flush first second third
+ *
+ * flush all cache components that can be found in the system
+ *
+ *     yii cache/flush-all
  *
  * @author Alexander Makarov <sam@rmcreative.ru>
  * @author Mark Jebri <mark.github@yandex.ru>
@@ -55,12 +56,12 @@ class CacheController extends Controller
      * # flushes caches specified by their id: "first", "second", "third"
      * yii cache/flush first second third
      * ~~~
-     *
+     * 
      */
     public function actionFlush()
     {
         $cachesInput = func_get_args();
-
+        
         if (empty($cachesInput)) {
             throw new Exception("You should specify cache components names");
         }
@@ -88,7 +89,7 @@ class CacheController extends Controller
             $cachesInfo[] = [
                 'name' => $name,
                 'class' => $class,
-                'is_flushed' => Yii::$app->get($name)->flush(),
+                'is_flushed' =>  Yii::$app->get($name)->flush(),
             ];
         }
 
@@ -112,7 +113,7 @@ class CacheController extends Controller
             $cachesInfo[] = [
                 'name' => $name,
                 'class' => $class,
-                'is_flushed' => Yii::$app->get($name)->flush(),
+                'is_flushed' =>  Yii::$app->get($name)->flush(),
             ];
         }
 
@@ -158,7 +159,7 @@ class CacheController extends Controller
     }
 
     /**
-     *
+     * 
      * @param array $caches
      */
     private function notifyFlushed($caches)
@@ -166,7 +167,7 @@ class CacheController extends Controller
         $this->stdout("The following cache components were processed:\n\n", Console::FG_YELLOW);
 
         foreach ($caches as $cache) {
-            $this->stdout("\t* " . $cache['name'] . " (" . $cache['class'] . ")", Console::FG_GREEN);
+            $this->stdout("\t* " . $cache['name'] ." (" . $cache['class'] . ")", Console::FG_GREEN);
 
             if (!$cache['is_flushed']) {
                 $this->stdout(" - not flushed\n", Console::FG_RED);

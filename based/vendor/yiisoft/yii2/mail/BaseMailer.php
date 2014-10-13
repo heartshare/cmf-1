@@ -115,9 +115,7 @@ abstract class BaseMailer extends Component implements MailerInterface, ViewCont
     public function setView($view)
     {
         if (!is_array($view) && !is_object($view)) {
-            throw new InvalidConfigException('"' . get_class(
-                $this
-            ) . '::view" should be either object or configuration array, "' . gettype($view) . '" given.');
+            throw new InvalidConfigException('"' . get_class($this) . '::view" should be either object or configuration array, "' . gettype($view) . '" given.');
         }
         $this->_view = $view;
     }
@@ -336,10 +334,7 @@ abstract class BaseMailer extends Component implements MailerInterface, ViewCont
     {
         $time = microtime(true);
 
-        return date('Ymd-His-', $time) . sprintf('%04d', (int)(($time - (int)$time) * 10000)) . '-' . sprintf(
-            '%04d',
-            mt_rand(0, 10000)
-        ) . '.eml';
+        return date('Ymd-His-', $time) . sprintf('%04d', (int) (($time - (int) $time) * 10000)) . '-' . sprintf('%04d', mt_rand(0, 10000)) . '.eml';
     }
 
     /**

@@ -153,9 +153,9 @@ class Schema extends \yii\db\Schema
                     $column->enumValues = $values;
                 } else {
                     $values = explode(',', $matches[2]);
-                    $column->size = $column->precision = (int)$values[0];
+                    $column->size = $column->precision = (int) $values[0];
                     if (isset($values[1])) {
-                        $column->scale = (int)$values[1];
+                        $column->scale = (int) $values[1];
                     }
                     if ($column->size === 1 && $type === 'bit') {
                         $column->type = 'boolean';
@@ -176,7 +176,7 @@ class Schema extends \yii\db\Schema
             if ($column->type === 'timestamp' && $info['Default'] === 'CURRENT_TIMESTAMP') {
                 $column->defaultValue = new Expression('CURRENT_TIMESTAMP');
             } elseif (isset($type) && $type === 'bit') {
-                $column->defaultValue = bindec(trim($info['Default'], 'b\''));
+                $column->defaultValue = bindec(trim($info['Default'],'b\''));
             } else {
                 $column->defaultValue = $column->phpTypecast($info['Default']);
             }

@@ -122,13 +122,11 @@ class QueryBuilder extends \yii\db\QueryBuilder
             if ($value === null) {
                 $key = reset($table->primaryKey);
                 $tableName = $db->quoteTableName($tableName);
-                $value = $this->db->useMaster(
-                    function (Connection $db) use ($key, $tableName) {
-                        return $db->createCommand("SELECT MAX('$key') FROM $tableName")->queryScalar();
-                    }
-                );
+                $value = $this->db->useMaster(function (Connection $db) use ($key, $tableName) {
+                    return $db->createCommand("SELECT MAX('$key') FROM $tableName")->queryScalar();
+                });
             } else {
-                $value = (int)$value - 1;
+                $value = (int) $value - 1;
             }
             try {
                 $db->createCommand("UPDATE sqlite_sequence SET seq='$value' WHERE name='{$table->name}'")->execute();
@@ -152,7 +150,7 @@ class QueryBuilder extends \yii\db\QueryBuilder
      */
     public function checkIntegrity($check = true, $schema = '', $table = '')
     {
-        return 'PRAGMA foreign_keys=' . (int)$check;
+        return 'PRAGMA foreign_keys='.(int)$check;
     }
 
     /**

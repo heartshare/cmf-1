@@ -42,14 +42,11 @@ class MailPanel extends Panel
     public function init()
     {
         parent::init();
-        Event::on(
-            BaseMailer::className(),
-            BaseMailer::EVENT_AFTER_SEND,
-            function ($event) {
+        Event::on(BaseMailer::className(), BaseMailer::EVENT_AFTER_SEND, function ($event) {
 
-                /* @var $message MessageInterface */
-                $message = $event->message;
-                $messageData = [
+            /* @var $message MessageInterface */
+            $message = $event->message;
+            $messageData = [
                     'isSuccessful' => $event->isSuccessful,
                     'from' => $this->convertParams($message->getFrom()),
                     'to' => $this->convertParams($message->getTo()),
@@ -58,43 +55,42 @@ class MailPanel extends Panel
                     'bcc' => $this->convertParams($message->getBcc()),
                     'subject' => $message->getSubject(),
                     'charset' => $message->getCharset(),
-                ];
+            ];
 
-                // add more information when message is a SwiftMailer message
-                if ($message instanceof \yii\swiftmailer\Message) {
-                    /* @var $swiftMessage \Swift_Message */
-                    $swiftMessage = $message->getSwiftMessage();
+            // add more information when message is a SwiftMailer message
+            if ($message instanceof \yii\swiftmailer\Message) {
+                /* @var $swiftMessage \Swift_Message */
+                $swiftMessage = $message->getSwiftMessage();
 
-                    $body = $swiftMessage->getBody();
-                    if (empty($body)) {
-                        $parts = $swiftMessage->getChildren();
-                        foreach ($parts as $part) {
-                            if (!($part instanceof \Swift_Mime_Attachment)) {
-                                /* @var $part \Swift_Mime_MimePart */
-                                if ($part->getContentType() == 'text/plain') {
-                                    $messageData['charset'] = $part->getCharset();
-                                    $body = $part->getBody();
-                                    break;
-                                }
+                $body = $swiftMessage->getBody();
+                if (empty($body)) {
+                    $parts = $swiftMessage->getChildren();
+                    foreach ($parts as $part) {
+                        if (!($part instanceof \Swift_Mime_Attachment)) {
+                            /* @var $part \Swift_Mime_MimePart */
+                            if ($part->getContentType() == 'text/plain') {
+                                $messageData['charset'] = $part->getCharset();
+                                $body = $part->getBody();
+                                break;
                             }
                         }
                     }
-
-                    $messageData['body'] = $body;
-                    $messageData['time'] = $swiftMessage->getDate();
-                    $messageData['headers'] = $swiftMessage->getHeaders();
-
                 }
 
-                // store message as file
-                $fileName = $event->sender->generateMessageFileName();
-                FileHelper::createDirectory(Yii::getAlias($this->mailPath));
-                file_put_contents(Yii::getAlias($this->mailPath) . '/' . $fileName, $message->toString());
-                $messageData['file'] = $fileName;
+                $messageData['body'] = $body;
+                $messageData['time'] = $swiftMessage->getDate();
+                $messageData['headers'] = $swiftMessage->getHeaders();
 
-                $this->_messages[] = $messageData;
             }
-        );
+
+            // store message as file
+            $fileName = $event->sender->generateMessageFileName();
+            FileHelper::createDirectory(Yii::getAlias($this->mailPath));
+            file_put_contents(Yii::getAlias($this->mailPath) . '/' . $fileName, $message->toString());
+            $messageData['file'] = $fileName;
+
+            $this->_messages[] = $messageData;
+        });
     }
 
     /**
@@ -121,14 +117,11 @@ class MailPanel extends Panel
         $searchModel = new Mail();
         $dataProvider = $searchModel->search(Yii::$app->request->get(), $this->data);
 
-        return Yii::$app->view->render(
-            'panels/mail/detail',
-            [
+        return Yii::$app->view->render('panels/mail/detail', [
                 'panel' => $this,
                 'dataProvider' => $dataProvider,
                 'searchModel' => $searchModel
-            ]
-        );
+        ]);
     }
 
     /**

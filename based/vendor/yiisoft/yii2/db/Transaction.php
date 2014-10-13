@@ -113,10 +113,7 @@ class Transaction extends \yii\base\Object
             if ($isolationLevel !== null) {
                 $this->db->getSchema()->setTransactionIsolationLevel($isolationLevel);
             }
-            Yii::trace(
-                'Begin transaction' . ($isolationLevel ? ' with isolation level ' . $isolationLevel : ''),
-                __METHOD__
-            );
+            Yii::trace('Begin transaction' . ($isolationLevel ? ' with isolation level ' . $isolationLevel : ''), __METHOD__);
 
             $this->db->trigger(Connection::EVENT_BEGIN_TRANSACTION);
             $this->db->pdo->beginTransaction();

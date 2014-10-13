@@ -7,7 +7,10 @@
 
 namespace yii\i18n;
 
+use DateInterval;
 use DateTime;
+use DateTimeInterface;
+use DateTimeZone;
 use IntlDateFormatter;
 use NumberFormatter;
 use Yii;
@@ -66,6 +69,9 @@ class Formatter extends Component
      * e.g. `UTC`, `Europe/Berlin` or `America/Chicago`.
      * Refer to the [php manual](http://www.php.net/manual/en/timezones.php) for available timezones.
      * If this property is not set, [[\yii\base\Application::timeZone]] will be used.
+     *
+     * Note that the input timezone is assumed to be UTC always if no timezone is included in the input date value.
+     * Make sure to store datetime values in UTC in your database.
      */
     public $timeZone;
     /**
@@ -204,8 +210,12 @@ class Formatter extends Component
         }
         $this->_intlLoaded = extension_loaded('intl');
         if (!$this->_intlLoaded) {
-            $this->decimalSeparator = '.';
-            $this->thousandSeparator = ',';
+            if ($this->decimalSeparator === null) {
+                $this->decimalSeparator = '.';
+            }
+            if ($this->thousandSeparator === null) {
+                $this->thousandSeparator = ',';
+            }
         }
     }
 
@@ -250,6 +260,7 @@ class Formatter extends Component
     /**
      * Formats the value as is without any formatting.
      * This method simply returns back the parameter without any format.
+     * The only exception is a `null` value which will be formatted using [[nullDisplay]].
      * @param mixed $value the value to be formatted.
      * @return string the formatted result.
      */
@@ -321,35 +332,38 @@ class Formatter extends Component
     /**
      * Formats the value as a mailto link.
      * @param mixed $value the value to be formatted.
+     * @param array $options the tag options in terms of name-value pairs. See [[Html::mailto()]].
      * @return string the formatted result.
      */
-    public function asEmail($value)
+    public function asEmail($value, $options = [])
     {
         if ($value === null) {
             return $this->nullDisplay;
         }
-        return Html::mailto(Html::encode($value), $value);
+        return Html::mailto(Html::encode($value), $value, $options);
     }
 
     /**
      * Formats the value as an image tag.
      * @param mixed $value the value to be formatted.
+     * @param array $options the tag options in terms of name-value pairs. See [[Html::img()]].
      * @return string the formatted result.
      */
-    public function asImage($value)
+    public function asImage($value, $options = [])
     {
         if ($value === null) {
             return $this->nullDisplay;
         }
-        return Html::img($value);
+        return Html::img($value, $options);
     }
 
     /**
      * Formats the value as a hyperlink.
      * @param mixed $value the value to be formatted.
+     * @param array $options the tag options in terms of name-value pairs. See [[Html::a()]].
      * @return string the formatted result.
      */
-    public function asUrl($value)
+    public function asUrl($value, $options = [])
     {
         if ($value === null) {
             return $this->nullDisplay;
@@ -359,7 +373,7 @@ class Formatter extends Component
             $url = 'http://' . $url;
         }
 
-        return Html::a(Html::encode($value), $url);
+        return Html::a(Html::encode($value), $url, $options);
     }
 
     /**
@@ -387,8 +401,9 @@ class Formatter extends Component
      * types of value are supported:
      *
      * - an integer representing a UNIX timestamp
-     * - a string that can be parsed into a UNIX timestamp via `strtotime()`
-     * - a PHP DateTime object
+     * - a string that can be [parsed to create a DateTime object](http://php.net/manual/en/datetime.formats.php).
+     *   The timestamp is assumed to be in UTC unless a timezone is explicitly given.
+     * - a PHP [DateTime](http://php.net/manual/en/class.datetime.php) object
      *
      * @param string $format the format used to convert the value into a date string.
      * If null, [[dateFormat]] will be used.
@@ -399,9 +414,9 @@ class Formatter extends Component
      * Alternatively this can be a string prefixed with `php:` representing a format that can be recognized by the
      * PHP [date()](http://php.net/manual/de/function.date.php)-function.
      *
+     * @return string the formatted result.
      * @throws InvalidParamException if the input value can not be evaluated as a date value.
      * @throws InvalidConfigException if the date format is invalid.
-     * @return string the formatted result.
      * @see dateFormat
      */
     public function asDate($value, $format = null)
@@ -418,8 +433,9 @@ class Formatter extends Component
      * types of value are supported:
      *
      * - an integer representing a UNIX timestamp
-     * - a string that can be parsed into a UNIX timestamp via `strtotime()`
-     * - a PHP DateTime object
+     * - a string that can be [parsed to create a DateTime object](http://php.net/manual/en/datetime.formats.php).
+     *   The timestamp is assumed to be in UTC unless a timezone is explicitly given.
+     * - a PHP [DateTime](http://php.net/manual/en/class.datetime.php) object
      *
      * @param string $format the format used to convert the value into a date string.
      * If null, [[timeFormat]] will be used.
@@ -430,9 +446,9 @@ class Formatter extends Component
      * Alternatively this can be a string prefixed with `php:` representing a format that can be recognized by the
      * PHP [date()](http://php.net/manual/de/function.date.php)-function.
      *
+     * @return string the formatted result.
      * @throws InvalidParamException if the input value can not be evaluated as a date value.
      * @throws InvalidConfigException if the date format is invalid.
-     * @return string the formatted result.
      * @see timeFormat
      */
     public function asTime($value, $format = null)
@@ -449,8 +465,9 @@ class Formatter extends Component
      * types of value are supported:
      *
      * - an integer representing a UNIX timestamp
-     * - a string that can be parsed into a UNIX timestamp via `strtotime()`
-     * - a PHP DateTime object
+     * - a string that can be [parsed to create a DateTime object](http://php.net/manual/en/datetime.formats.php).
+     *   The timestamp is assumed to be in UTC unless a timezone is explicitly given.
+     * - a PHP [DateTime](http://php.net/manual/en/class.datetime.php) object
      *
      * @param string $format the format used to convert the value into a date string.
      * If null, [[dateFormat]] will be used.
@@ -461,9 +478,9 @@ class Formatter extends Component
      * Alternatively this can be a string prefixed with `php:` representing a format that can be recognized by the
      * PHP [date()](http://php.net/manual/de/function.date.php)-function.
      *
+     * @return string the formatted result.
      * @throws InvalidParamException if the input value can not be evaluated as a date value.
      * @throws InvalidConfigException if the date format is invalid.
-     * @return string the formatted result.
      * @see datetimeFormat
      */
     public function asDatetime($value, $format = null)
@@ -478,14 +495,21 @@ class Formatter extends Component
      * @var array map of short format names to IntlDateFormatter constant values.
      */
     private $_dateFormats = [
-        'short' => 3, // IntlDateFormatter::SHORT,
+        'short'  => 3, // IntlDateFormatter::SHORT,
         'medium' => 2, // IntlDateFormatter::MEDIUM,
-        'long' => 1, // IntlDateFormatter::LONG,
-        'full' => 0, // IntlDateFormatter::FULL,
+        'long'   => 1, // IntlDateFormatter::LONG,
+        'full'   => 0, // IntlDateFormatter::FULL,
     ];
 
     /**
-     * @param integer $value normalized datetime value
+     * @param integer|string|DateTime $value the value to be formatted. The following
+     * types of value are supported:
+     *
+     * - an integer representing a UNIX timestamp
+     * - a string that can be [parsed to create a DateTime object](http://php.net/manual/en/datetime.formats.php).
+     *   The timestamp is assumed to be in UTC unless a timezone is explicitly given.
+     * - a PHP [DateTime](http://php.net/manual/en/class.datetime.php) object
+     *
      * @param string $format the format used to convert the value into a date string.
      * @param string $type 'date', 'time', or 'datetime'.
      * @throws InvalidConfigException if the date format is invalid.
@@ -524,7 +548,7 @@ class Formatter extends Component
                 $format = FormatConverter::convertDateIcuToPhp($format, $type, $this->locale);
             }
             if ($this->timeZone != null) {
-                $timestamp->setTimezone(new \DateTimeZone($this->timeZone));
+                $timestamp->setTimezone(new DateTimeZone($this->timeZone));
             }
             return $timestamp->format($format);
         }
@@ -533,13 +557,20 @@ class Formatter extends Component
     /**
      * Normalizes the given datetime value as a DateTime object that can be taken by various date/time formatting methods.
      *
-     * @param mixed $value the datetime value to be normalized.
+     * @param integer|string|DateTime $value the datetime value to be normalized. The following
+     * types of value are supported:
+     *
+     * - an integer representing a UNIX timestamp
+     * - a string that can be [parsed to create a DateTime object](http://php.net/manual/en/datetime.formats.php).
+     *   The timestamp is assumed to be in UTC unless a timezone is explicitly given.
+     * - a PHP [DateTime](http://php.net/manual/en/class.datetime.php) object
+     *
      * @return DateTime the normalized datetime value
      * @throws InvalidParamException if the input value can not be evaluated as a date value.
      */
     protected function normalizeDatetimeValue($value)
     {
-        if ($value === null || $value instanceof DateTime) {
+        if ($value === null || $value instanceof DateTime || $value instanceof DateTimeInterface) {
             // skip any processing
             return $value;
         }
@@ -548,23 +579,19 @@ class Formatter extends Component
         }
         try {
             if (is_numeric($value)) { // process as unix timestamp
-                if (($timestamp = DateTime::createFromFormat('U', $value)) === false) {
+                if (($timestamp = DateTime::createFromFormat('U', $value, new DateTimeZone('UTC'))) === false) {
                     throw new InvalidParamException("Failed to parse '$value' as a UNIX timestamp.");
                 }
                 return $timestamp;
-            } elseif (($timestamp = DateTime::createFromFormat('Y-m-d', $value)) !== false) { // try Y-m-d format
+            } elseif (($timestamp = DateTime::createFromFormat('Y-m-d', $value, new DateTimeZone('UTC'))) !== false) { // try Y-m-d format (support invalid dates like 2012-13-01)
                 return $timestamp;
-            } elseif (($timestamp = DateTime::createFromFormat(
-                    'Y-m-d H:i:s',
-                    $value
-                )) !== false
-            ) { // try Y-m-d H:i:s format
+            } elseif (($timestamp = DateTime::createFromFormat('Y-m-d H:i:s', $value, new DateTimeZone('UTC'))) !== false) { // try Y-m-d H:i:s format (support invalid dates like 2012-13-01 12:63:12)
                 return $timestamp;
             }
             // finally try to create a DateTime object with the value
-            $timestamp = new DateTime($value);
+            $timestamp = new DateTime($value, new DateTimeZone('UTC'));
             return $timestamp;
-        } catch (\Exception $e) {
+        } catch(\Exception $e) {
             throw new InvalidParamException("'$value' is not a valid date time value: " . $e->getMessage()
                 . "\n" . print_r(DateTime::getLastErrors(), true), $e->getCode(), $e);
         }
@@ -572,13 +599,13 @@ class Formatter extends Component
 
     /**
      * Formats a date, time or datetime in a float number as UNIX timestamp (seconds since 01-01-1970).
-     * @param integer|string|DateTime|\DateInterval $value the value to be formatted. The following
+     * @param integer|string|DateTime $value the value to be formatted. The following
      * types of value are supported:
      *
      * - an integer representing a UNIX timestamp
-     * - a string that can be parsed into a UNIX timestamp via `strtotime()` or that can be passed to a DateInterval constructor.
-     * - a PHP DateTime object
-     * - a PHP DateInterval object (a positive time interval will refer to the past, a negative one to the future)
+     * - a string that can be [parsed to create a DateTime object](http://php.net/manual/en/datetime.formats.php).
+     *   The timestamp is assumed to be in UTC unless a timezone is explicitly given.
+     * - a PHP [DateTime](http://php.net/manual/en/class.datetime.php) object
      *
      * @return string the formatted result.
      */
@@ -594,15 +621,23 @@ class Formatter extends Component
     /**
      * Formats the value as the time interval between a date and now in human readable form.
      *
-     * @param integer|string|DateTime|\DateInterval $value the value to be formatted. The following
+     * This method can be used in three different ways:
+     *
+     * 1. Using a timestamp that is relative to `now`.
+     * 2. Using a timestamp that is relative to the `$referenceTime`.
+     * 3. Using a `DateInterval` object.
+     *
+     * @param integer|string|DateTime|DateInterval $value the value to be formatted. The following
      * types of value are supported:
      *
      * - an integer representing a UNIX timestamp
-     * - a string that can be parsed into a UNIX timestamp via `strtotime()` or that can be passed to a DateInterval constructor.
-     * - a PHP DateTime object
+     * - a string that can be [parsed to create a DateTime object](http://php.net/manual/en/datetime.formats.php).
+     *   The timestamp is assumed to be in UTC unless a timezone is explicitly given.
+     * - a PHP [DateTime](http://php.net/manual/en/class.datetime.php) object
      * - a PHP DateInterval object (a positive time interval will refer to the past, a negative one to the future)
      *
-     * @param integer|string|DateTime|\DateInterval $referenceTime if specified the value is used instead of `now`.
+     * @param integer|string|DateTime $referenceTime if specified the value is used as a reference time instead of `now`
+     * when `$value` is not a `DateInterval` object.
      * @return string the formatted result.
      * @throws InvalidParamException if the input value can not be evaluated as a date value.
      */
@@ -612,7 +647,7 @@ class Formatter extends Component
             return $this->nullDisplay;
         }
 
-        if ($value instanceof \DateInterval) {
+        if ($value instanceof DateInterval) {
             $interval = $value;
         } else {
             $timestamp = $this->normalizeDatetimeValue($value);
@@ -621,13 +656,13 @@ class Formatter extends Component
                 // $value is not a valid date/time value, so we try
                 // to create a DateInterval with it
                 try {
-                    $interval = new \DateInterval($value);
+                    $interval = new DateInterval($value);
                 } catch (\Exception $e) {
                     // invalid date/time and invalid interval
                     return $this->nullDisplay;
                 }
             } else {
-                $timezone = new \DateTimeZone($this->timeZone);
+                $timezone = new DateTimeZone($this->timeZone);
 
                 if ($referenceTime === null) {
                     $dateNow = new DateTime('now', $timezone);
@@ -644,104 +679,44 @@ class Formatter extends Component
 
         if ($interval->invert) {
             if ($interval->y >= 1) {
-                return Yii::t(
-                    'yii',
-                    'in {delta, plural, =1{a year} other{# years}}',
-                    ['delta' => $interval->y],
-                    $this->locale
-                );
+                return Yii::t('yii', 'in {delta, plural, =1{a year} other{# years}}', ['delta' => $interval->y], $this->locale);
             }
             if ($interval->m >= 1) {
-                return Yii::t(
-                    'yii',
-                    'in {delta, plural, =1{a month} other{# months}}',
-                    ['delta' => $interval->m],
-                    $this->locale
-                );
+                return Yii::t('yii', 'in {delta, plural, =1{a month} other{# months}}', ['delta' => $interval->m], $this->locale);
             }
             if ($interval->d >= 1) {
-                return Yii::t(
-                    'yii',
-                    'in {delta, plural, =1{a day} other{# days}}',
-                    ['delta' => $interval->d],
-                    $this->locale
-                );
+                return Yii::t('yii', 'in {delta, plural, =1{a day} other{# days}}', ['delta' => $interval->d], $this->locale);
             }
             if ($interval->h >= 1) {
-                return Yii::t(
-                    'yii',
-                    'in {delta, plural, =1{an hour} other{# hours}}',
-                    ['delta' => $interval->h],
-                    $this->locale
-                );
+                return Yii::t('yii', 'in {delta, plural, =1{an hour} other{# hours}}', ['delta' => $interval->h], $this->locale);
             }
             if ($interval->i >= 1) {
-                return Yii::t(
-                    'yii',
-                    'in {delta, plural, =1{a minute} other{# minutes}}',
-                    ['delta' => $interval->i],
-                    $this->locale
-                );
+                return Yii::t('yii', 'in {delta, plural, =1{a minute} other{# minutes}}', ['delta' => $interval->i], $this->locale);
             }
             if ($interval->s == 0) {
                 return Yii::t('yii', 'just now', [], $this->locale);
             }
-            return Yii::t(
-                'yii',
-                'in {delta, plural, =1{a second} other{# seconds}}',
-                ['delta' => $interval->s],
-                $this->locale
-            );
+            return Yii::t('yii', 'in {delta, plural, =1{a second} other{# seconds}}', ['delta' => $interval->s], $this->locale);
         } else {
             if ($interval->y >= 1) {
-                return Yii::t(
-                    'yii',
-                    '{delta, plural, =1{a year} other{# years}} ago',
-                    ['delta' => $interval->y],
-                    $this->locale
-                );
+                return Yii::t('yii', '{delta, plural, =1{a year} other{# years}} ago', ['delta' => $interval->y], $this->locale);
             }
             if ($interval->m >= 1) {
-                return Yii::t(
-                    'yii',
-                    '{delta, plural, =1{a month} other{# months}} ago',
-                    ['delta' => $interval->m],
-                    $this->locale
-                );
+                return Yii::t('yii', '{delta, plural, =1{a month} other{# months}} ago', ['delta' => $interval->m], $this->locale);
             }
             if ($interval->d >= 1) {
-                return Yii::t(
-                    'yii',
-                    '{delta, plural, =1{a day} other{# days}} ago',
-                    ['delta' => $interval->d],
-                    $this->locale
-                );
+                return Yii::t('yii', '{delta, plural, =1{a day} other{# days}} ago', ['delta' => $interval->d], $this->locale);
             }
             if ($interval->h >= 1) {
-                return Yii::t(
-                    'yii',
-                    '{delta, plural, =1{an hour} other{# hours}} ago',
-                    ['delta' => $interval->h],
-                    $this->locale
-                );
+                return Yii::t('yii', '{delta, plural, =1{an hour} other{# hours}} ago', ['delta' => $interval->h], $this->locale);
             }
             if ($interval->i >= 1) {
-                return Yii::t(
-                    'yii',
-                    '{delta, plural, =1{a minute} other{# minutes}} ago',
-                    ['delta' => $interval->i],
-                    $this->locale
-                );
+                return Yii::t('yii', '{delta, plural, =1{a minute} other{# minutes}} ago', ['delta' => $interval->i], $this->locale);
             }
             if ($interval->s == 0) {
                 return Yii::t('yii', 'just now', [], $this->locale);
             }
-            return Yii::t(
-                'yii',
-                '{delta, plural, =1{a second} other{# seconds}} ago',
-                ['delta' => $interval->s],
-                $this->locale
-            );
+            return Yii::t('yii', '{delta, plural, =1{a second} other{# seconds}} ago', ['delta' => $interval->s], $this->locale);
         }
     }
 
@@ -766,9 +741,10 @@ class Formatter extends Component
         $value = $this->normalizeNumericValue($value);
         if ($this->_intlLoaded) {
             $f = $this->createNumberFormatter(NumberFormatter::DECIMAL, null, $options, $textOptions);
+            $f->setAttribute(NumberFormatter::FRACTION_DIGITS, 0);
             return $f->format($value, NumberFormatter::TYPE_INT64);
         } else {
-            return number_format((int)$value, 0, $this->decimalSeparator, $this->thousandSeparator);
+            return number_format((int) $value, 0, $this->decimalSeparator, $this->thousandSeparator);
         }
     }
 
@@ -799,7 +775,7 @@ class Formatter extends Component
             $f = $this->createNumberFormatter(NumberFormatter::DECIMAL, $decimals, $options, $textOptions);
             return $f->format($value);
         } else {
-            if ($decimals === null) {
+            if ($decimals === null){
                 $decimals = 2;
             }
             return number_format($value, $decimals, $this->decimalSeparator, $this->thousandSeparator);
@@ -828,7 +804,7 @@ class Formatter extends Component
             $f = $this->createNumberFormatter(NumberFormatter::PERCENT, $decimals, $options, $textOptions);
             return $f->format($value);
         } else {
-            if ($decimals === null) {
+            if ($decimals === null){
                 $decimals = 0;
             }
             $value = $value * 100;
@@ -853,7 +829,7 @@ class Formatter extends Component
         }
         $value = $this->normalizeNumericValue($value);
 
-        if ($this->_intlLoaded) {
+        if ($this->_intlLoaded){
             $f = $this->createNumberFormatter(NumberFormatter::SCIENTIFIC, $decimals, $options, $textOptions);
             return $f->format($value);
         } else {
@@ -924,7 +900,7 @@ class Formatter extends Component
             return $this->nullDisplay;
         }
         $value = $this->normalizeNumericValue($value);
-        if ($this->_intlLoaded) {
+        if ($this->_intlLoaded){
             $f = $this->createNumberFormatter(NumberFormatter::SPELLOUT);
             return $f->format($value);
         } else {
@@ -948,7 +924,7 @@ class Formatter extends Component
             return $this->nullDisplay;
         }
         $value = $this->normalizeNumericValue($value);
-        if ($this->_intlLoaded) {
+        if ($this->_intlLoaded){
             $f = $this->createNumberFormatter(NumberFormatter::ORDINAL);
             return $f->format($value);
         } else {
@@ -983,33 +959,21 @@ class Formatter extends Component
 
         if ($this->sizeFormatBase == 1024) {
             switch ($position) {
-                case 0:
-                    return Yii::t('yii', '{nFormatted} B', $params, $this->locale);
-                case 1:
-                    return Yii::t('yii', '{nFormatted} KiB', $params, $this->locale);
-                case 2:
-                    return Yii::t('yii', '{nFormatted} MiB', $params, $this->locale);
-                case 3:
-                    return Yii::t('yii', '{nFormatted} GiB', $params, $this->locale);
-                case 4:
-                    return Yii::t('yii', '{nFormatted} TiB', $params, $this->locale);
-                default:
-                    return Yii::t('yii', '{nFormatted} PiB', $params, $this->locale);
+                case 0:  return Yii::t('yii', '{nFormatted} B', $params, $this->locale);
+                case 1:  return Yii::t('yii', '{nFormatted} KiB', $params, $this->locale);
+                case 2:  return Yii::t('yii', '{nFormatted} MiB', $params, $this->locale);
+                case 3:  return Yii::t('yii', '{nFormatted} GiB', $params, $this->locale);
+                case 4:  return Yii::t('yii', '{nFormatted} TiB', $params, $this->locale);
+                default: return Yii::t('yii', '{nFormatted} PiB', $params, $this->locale);
             }
         } else {
             switch ($position) {
-                case 0:
-                    return Yii::t('yii', '{nFormatted} B', $params, $this->locale);
-                case 1:
-                    return Yii::t('yii', '{nFormatted} KB', $params, $this->locale);
-                case 2:
-                    return Yii::t('yii', '{nFormatted} MB', $params, $this->locale);
-                case 3:
-                    return Yii::t('yii', '{nFormatted} GB', $params, $this->locale);
-                case 4:
-                    return Yii::t('yii', '{nFormatted} TB', $params, $this->locale);
-                default:
-                    return Yii::t('yii', '{nFormatted} PB', $params, $this->locale);
+                case 0:  return Yii::t('yii', '{nFormatted} B', $params, $this->locale);
+                case 1:  return Yii::t('yii', '{nFormatted} KB', $params, $this->locale);
+                case 2:  return Yii::t('yii', '{nFormatted} MB', $params, $this->locale);
+                case 3:  return Yii::t('yii', '{nFormatted} GB', $params, $this->locale);
+                case 4:  return Yii::t('yii', '{nFormatted} TB', $params, $this->locale);
+                default: return Yii::t('yii', '{nFormatted} PB', $params, $this->locale);
             }
         }
     }
@@ -1039,83 +1003,21 @@ class Formatter extends Component
 
         if ($this->sizeFormatBase == 1024) {
             switch ($position) {
-                case 0:
-                    return Yii::t('yii', '{nFormatted} {n, plural, =1{byte} other{bytes}}', $params, $this->locale);
-                case 1:
-                    return Yii::t(
-                        'yii',
-                        '{nFormatted} {n, plural, =1{kibibyte} other{kibibytes}}',
-                        $params,
-                        $this->locale
-                    );
-                case 2:
-                    return Yii::t(
-                        'yii',
-                        '{nFormatted} {n, plural, =1{mebibyte} other{mebibytes}}',
-                        $params,
-                        $this->locale
-                    );
-                case 3:
-                    return Yii::t(
-                        'yii',
-                        '{nFormatted} {n, plural, =1{gibibyte} other{gibibytes}}',
-                        $params,
-                        $this->locale
-                    );
-                case 4:
-                    return Yii::t(
-                        'yii',
-                        '{nFormatted} {n, plural, =1{tebibyte} other{tebibytes}}',
-                        $params,
-                        $this->locale
-                    );
-                default:
-                    return Yii::t(
-                        'yii',
-                        '{nFormatted} {n, plural, =1{pebibyte} other{pebibytes}}',
-                        $params,
-                        $this->locale
-                    );
+                case 0:  return Yii::t('yii', '{nFormatted} {n, plural, =1{byte} other{bytes}}', $params, $this->locale);
+                case 1:  return Yii::t('yii', '{nFormatted} {n, plural, =1{kibibyte} other{kibibytes}}', $params, $this->locale);
+                case 2:  return Yii::t('yii', '{nFormatted} {n, plural, =1{mebibyte} other{mebibytes}}', $params, $this->locale);
+                case 3:  return Yii::t('yii', '{nFormatted} {n, plural, =1{gibibyte} other{gibibytes}}', $params, $this->locale);
+                case 4:  return Yii::t('yii', '{nFormatted} {n, plural, =1{tebibyte} other{tebibytes}}', $params, $this->locale);
+                default: return Yii::t('yii', '{nFormatted} {n, plural, =1{pebibyte} other{pebibytes}}', $params, $this->locale);
             }
         } else {
             switch ($position) {
-                case 0:
-                    return Yii::t('yii', '{nFormatted} {n, plural, =1{byte} other{bytes}}', $params, $this->locale);
-                case 1:
-                    return Yii::t(
-                        'yii',
-                        '{nFormatted} {n, plural, =1{kilobyte} other{kilobytes}}',
-                        $params,
-                        $this->locale
-                    );
-                case 2:
-                    return Yii::t(
-                        'yii',
-                        '{nFormatted} {n, plural, =1{megabyte} other{megabytes}}',
-                        $params,
-                        $this->locale
-                    );
-                case 3:
-                    return Yii::t(
-                        'yii',
-                        '{nFormatted} {n, plural, =1{gigabyte} other{gigabytes}}',
-                        $params,
-                        $this->locale
-                    );
-                case 4:
-                    return Yii::t(
-                        'yii',
-                        '{nFormatted} {n, plural, =1{terabyte} other{terabytes}}',
-                        $params,
-                        $this->locale
-                    );
-                default:
-                    return Yii::t(
-                        'yii',
-                        '{nFormatted} {n, plural, =1{petabyte} other{petabytes}}',
-                        $params,
-                        $this->locale
-                    );
+                case 0:  return Yii::t('yii', '{nFormatted} {n, plural, =1{byte} other{bytes}}', $params, $this->locale);
+                case 1:  return Yii::t('yii', '{nFormatted} {n, plural, =1{kilobyte} other{kilobytes}}', $params, $this->locale);
+                case 2:  return Yii::t('yii', '{nFormatted} {n, plural, =1{megabyte} other{megabytes}}', $params, $this->locale);
+                case 3:  return Yii::t('yii', '{nFormatted} {n, plural, =1{gigabyte} other{gigabytes}}', $params, $this->locale);
+                case 4:  return Yii::t('yii', '{nFormatted} {n, plural, =1{terabyte} other{terabytes}}', $params, $this->locale);
+                default: return Yii::t('yii', '{nFormatted} {n, plural, =1{petabyte} other{petabytes}}', $params, $this->locale);
             }
         }
     }
@@ -1123,7 +1025,7 @@ class Formatter extends Component
     private function formatSizeNumber($value, $decimals, $options, $textOptions)
     {
         if (is_string($value) && is_numeric($value)) {
-            $value = (int)$value;
+            $value = (int) $value;
         }
         if (!is_numeric($value)) {
             throw new InvalidParamException("'$value' is not a numeric value.");
@@ -1173,7 +1075,7 @@ class Formatter extends Component
             return 0;
         }
         if (is_string($value) && is_numeric($value)) {
-            $value = (float)$value;
+            $value = (float) $value;
         }
         if (!is_numeric($value)) {
             throw new InvalidParamException("'$value' is not a numeric value.");
@@ -1210,17 +1112,17 @@ class Formatter extends Component
             $formatter->setAttribute(NumberFormatter::MIN_FRACTION_DIGITS, $decimals);
         }
 
-        foreach ($this->numberFormatterOptions as $name => $value) {
-            $formatter->setAttribute($name, $value);
-        }
-        foreach ($options as $name => $value) {
-            $formatter->setAttribute($name, $value);
-        }
         foreach ($this->numberFormatterTextOptions as $name => $attribute) {
             $formatter->setTextAttribute($name, $attribute);
         }
         foreach ($textOptions as $name => $attribute) {
             $formatter->setTextAttribute($name, $attribute);
+        }
+        foreach ($this->numberFormatterOptions as $name => $value) {
+            $formatter->setAttribute($name, $value);
+        }
+        foreach ($options as $name => $value) {
+            $formatter->setAttribute($name, $value);
         }
         return $formatter;
     }

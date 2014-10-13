@@ -99,9 +99,9 @@ class Generator extends \yii\gii\Generator
     public function attributeLabels()
     {
         return [
-            'vendorName' => 'Vendor Name',
+            'vendorName'  => 'Vendor Name',
             'packageName' => 'Package Name',
-            'license' => 'License',
+            'license'     => 'License',
         ];
     }
 
@@ -111,12 +111,12 @@ class Generator extends \yii\gii\Generator
     public function hints()
     {
         return [
-            'vendorName' => 'This refers to the name of the publisher, your GitHub user name is usually a good choice, eg. <code>myself</code>.',
+            'vendorName'  => 'This refers to the name of the publisher, your GitHub user name is usually a good choice, eg. <code>myself</code>.',
             'packageName' => 'This is the name of the extension on packagist, eg. <code>yii2-foobar</code>.',
-            'namespace' => 'PSR-4, eg. <code>myself\foobar\</code> This will be added to your autoloading by composer. Do not use yii, yii2 or yiisoft in the namespace.',
-            'keywords' => 'Comma separated keywords for this extension.',
-            'outputPath' => 'The temporary location of the generated files.',
-            'title' => 'A more descriptive name of your application for the README file.',
+            'namespace'   => 'PSR-4, eg. <code>myself\foobar\</code> This will be added to your autoloading by composer. Do not use yii, yii2 or yiisoft in the namespace.',
+            'keywords'    => 'Comma separated keywords for this extension.',
+            'outputPath'  => 'The temporary location of the generated files.',
+            'title'       => 'A more descriptive name of your application for the README file.',
             'description' => 'A sentence or subline describing the main purpose of the extension.',
         ];
     }

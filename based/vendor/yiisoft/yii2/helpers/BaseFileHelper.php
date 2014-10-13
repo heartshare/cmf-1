@@ -418,12 +418,7 @@ class BaseFileHelper
         $path = str_replace('\\', '/', $path);
 
         if (!empty($options['except'])) {
-            if (($except = self::lastExcludeMatchingFromList(
-                    $options['basePath'],
-                    $path,
-                    $options['except']
-                )) !== null
-            ) {
+            if (($except = self::lastExcludeMatchingFromList($options['basePath'], $path, $options['except'])) !== null) {
                 return $except['flags'] & self::PATTERN_NEGATIVE;
             }
         }
@@ -582,26 +577,13 @@ class BaseFileHelper
             }
 
             if ($exclude['flags'] & self::PATTERN_NODIR) {
-                if (self::matchBasename(
-                    basename($path),
-                    $exclude['pattern'],
-                    $exclude['firstWildcard'],
-                    $exclude['flags']
-                )
-                ) {
+                if (self::matchBasename(basename($path), $exclude['pattern'], $exclude['firstWildcard'], $exclude['flags'])) {
                     return $exclude;
                 }
                 continue;
             }
 
-            if (self::matchPathname(
-                $path,
-                $basePath,
-                $exclude['pattern'],
-                $exclude['firstWildcard'],
-                $exclude['flags']
-            )
-            ) {
+            if (self::matchPathname($path, $basePath, $exclude['pattern'], $exclude['firstWildcard'], $exclude['flags'])) {
                 return $exclude;
             }
         }
@@ -648,10 +630,7 @@ class BaseFileHelper
             $result['flags'] |= self::PATTERN_NODIR;
         }
         $result['firstWildcard'] = self::firstWildcardInPattern($pattern);
-        if ($pattern[0] == '*' && self::firstWildcardInPattern(
-                StringHelper::byteSubstr($pattern, 1, StringHelper::byteLength($pattern))
-            ) === false
-        ) {
+        if ($pattern[0] == '*' && self::firstWildcardInPattern(StringHelper::byteSubstr($pattern, 1, StringHelper::byteLength($pattern))) === false) {
             $result['flags'] |= self::PATTERN_ENDSWITH;
         }
         $result['pattern'] = $pattern;
@@ -670,7 +649,7 @@ class BaseFileHelper
         $wildcardSearch = function ($r, $c) use ($pattern) {
             $p = strpos($pattern, $c);
 
-            return $r === false ? $p : ($p === false ? $r : min($r, $p));
+            return $r===false ? $p : ($p===false ? $r : min($r, $p));
         };
 
         return array_reduce($wildcards, $wildcardSearch, false);

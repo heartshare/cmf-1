@@ -3,6 +3,7 @@
 $config = [
     'id' => 'basic',
     'charset' => 'UTF-8',
+    'timeZone' => 'Europe/Moscow',
     'basePath' => dirname(__DIR__),
     'language' => 'ru-RU',
     'sourceLanguage' => 'en-US',

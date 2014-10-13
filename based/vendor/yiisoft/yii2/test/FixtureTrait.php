@@ -162,8 +162,8 @@ trait FixtureTrait
     protected function createFixtures(array $fixtures)
     {
         // normalize fixture configurations
-        $config = []; // configuration provided in test case
-        $aliases = []; // class name => alias or class name
+        $config = [];  // configuration provided in test case
+        $aliases = [];  // class name => alias or class name
         foreach ($fixtures as $name => $fixture) {
             if (!is_array($fixture)) {
                 $class = ltrim($fixture, '\\');
@@ -185,7 +185,7 @@ trait FixtureTrait
             if ($fixture instanceof Fixture) {
                 $class = get_class($fixture);
                 $name = isset($aliases[$class]) ? $aliases[$class] : $class;
-                unset($instances[$name]); // unset so that the fixture is added to the last in the next line
+                unset($instances[$name]);  // unset so that the fixture is added to the last in the next line
                 $instances[$name] = $fixture;
             } else {
                 $class = ltrim($fixture['class'], '\\');

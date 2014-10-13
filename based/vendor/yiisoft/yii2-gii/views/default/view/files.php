@@ -27,24 +27,24 @@ use yii\gii\CodeFile;
 
     <table class="table table-bordered table-striped table-condensed">
         <thead>
-        <tr>
-            <th class="file">Code File</th>
-            <th class="action">Action</th>
-            <?php
-            $fileChangeExists = false;
-            foreach ($files as $file) {
-                if ($file->operation !== CodeFile::OP_SKIP) {
-                    $fileChangeExists = true;
-                    echo '<th><input type="checkbox" id="check-all"></th>';
-                    break;
+            <tr>
+                <th class="file">Code File</th>
+                <th class="action">Action</th>
+                <?php
+                $fileChangeExists = false;
+                foreach ($files as $file) {
+                    if ($file->operation !== CodeFile::OP_SKIP) {
+                        $fileChangeExists = true;
+                        echo '<th><input type="checkbox" id="check-all"></th>';
+                        break;
+                    }
                 }
-            }
-            ?>
+                ?>
 
-        </tr>
+            </tr>
         </thead>
         <tbody>
-        <?php foreach ($files as $file): ?>
+            <?php foreach ($files as $file): ?>
             <?php
             if ($file->operation === CodeFile::OP_OVERWRITE) {
                 $trClass = 'warning';
@@ -58,17 +58,9 @@ use yii\gii\CodeFile;
             ?>
             <tr class="<?= "$file->operation $trClass" ?>">
                 <td class="file">
-                    <?= Html::a(
-                        Html::encode($file->getRelativePath()),
-                        ['preview', 'id' => $id, 'file' => $file->id],
-                        ['class' => 'preview-code', 'data-title' => $file->getRelativePath()]
-                    ) ?>
+                    <?= Html::a(Html::encode($file->getRelativePath()), ['preview', 'id' => $id, 'file' => $file->id], ['class' => 'preview-code', 'data-title' => $file->getRelativePath()]) ?>
                     <?php if ($file->operation === CodeFile::OP_OVERWRITE): ?>
-                        <?= Html::a(
-                            'diff',
-                            ['diff', 'id' => $id, 'file' => $file->id],
-                            ['class' => 'diff-code label label-warning', 'data-title' => $file->getRelativePath()]
-                        ) ?>
+                        <?= Html::a('diff', ['diff', 'id' => $id, 'file' => $file->id], ['class' => 'diff-code label label-warning', 'data-title' => $file->getRelativePath()]) ?>
                     <?php endif; ?>
                 </td>
                 <td class="action">
@@ -81,21 +73,18 @@ use yii\gii\CodeFile;
                     ?>
                 </td>
                 <?php if ($fileChangeExists): ?>
-                    <td class="check">
-                        <?php
-                        if ($file->operation === CodeFile::OP_SKIP) {
-                            echo '&nbsp;';
-                        } else {
-                            echo Html::checkBox(
-                                "answers[{$file->id}]",
-                                isset($answers) ? isset($answers[$file->id]) : ($file->operation === CodeFile::OP_CREATE)
-                            );
-                        }
-                        ?>
-                    </td>
+                <td class="check">
+                    <?php
+                    if ($file->operation === CodeFile::OP_SKIP) {
+                        echo '&nbsp;';
+                    } else {
+                        echo Html::checkBox("answers[{$file->id}]", isset($answers) ? isset($answers[$file->id]) : ($file->operation === CodeFile::OP_CREATE));
+                    }
+                    ?>
+                </td>
                 <?php endif; ?>
             </tr>
-        <?php endforeach; ?>
+            <?php endforeach; ?>
         </tbody>
     </table>
 
@@ -112,7 +101,6 @@ use yii\gii\CodeFile;
                         &nbsp;
                     </div>
                     <strong class="modal-title pull-left">Modal title</strong>
-
                     <div class="clearfix"></div>
                 </div>
                 <div class="modal-body">

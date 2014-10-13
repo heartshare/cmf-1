@@ -98,7 +98,7 @@ class Security extends Component
     }
 
     /**
-     * Encrypts data using a cyptograhic key.
+     * Encrypts data using a cryptograhic key.
      * Derives keys for encryption and authentication from the input key using HKDF and a random salt,
      * which is very fast relative to [[encryptByPassword()]]. The input key must be properly
      * random -- use [[generateRandomKey()]] to generate keys.
@@ -282,7 +282,7 @@ class Security extends Component
 
     /**
      * Derives a key from the given input key using the standard HKDF algorithm.
-     * Implements HKDF spcified in [RFC 5869](https://tools.ietf.org/html/rfc5869).
+     * Implements HKDF specified in [RFC 5869](https://tools.ietf.org/html/rfc5869).
      * Recommend use one of the SHA-2 hash algorithms: sha224, sha256, sha384 or sha512.
      * @param string $algo a hash algorithm supported by `hash_hmac()`, e.g. 'SHA-256'
      * @param string $inputKey the source key
@@ -303,7 +303,7 @@ class Security extends Component
         }
         $hashLength = StringHelper::byteLength($test);
         if (is_string($length) && preg_match('{^\d{1,16}$}', $length)) {
-            $length = (int)$length;
+            $length = (int) $length;
         }
         if (!is_integer($length) || $length < 0 || $length > 255 * $hashLength) {
             throw new InvalidParamException('Invalid length');
@@ -358,13 +358,13 @@ class Security extends Component
             throw new InvalidParamException('Failed to generate HMAC with hash algorithm: ' . $algo);
         }
         if (is_string($iterations) && preg_match('{^\d{1,16}$}', $iterations)) {
-            $iterations = (int)$iterations;
+            $iterations = (int) $iterations;
         }
         if (!is_integer($iterations) || $iterations < 1) {
             throw new InvalidParamException('Invalid iterations');
         }
         if (is_string($length) && preg_match('{^\d{1,16}$}', $length)) {
-            $length = (int)$length;
+            $length = (int) $length;
         }
         if (!is_integer($length) || $length < 0) {
             throw new InvalidParamException('Invalid length');
@@ -557,12 +557,7 @@ class Security extends Component
             throw new InvalidParamException('Password must be a string and cannot be empty.');
         }
 
-        if (!preg_match(
-                '/^\$2[axy]\$(\d\d)\$[\.\/0-9A-Za-z]{22}/',
-                $hash,
-                $matches
-            ) || $matches[1] < 4 || $matches[1] > 30
-        ) {
+        if (!preg_match('/^\$2[axy]\$(\d\d)\$[\.\/0-9A-Za-z]{22}/', $hash, $matches) || $matches[1] < 4 || $matches[1] > 30) {
             throw new InvalidParamException('Hash is invalid.');
         }
 

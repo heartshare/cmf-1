@@ -68,10 +68,7 @@ class RequiredValidator extends Validator
     protected function validateValue($value)
     {
         if ($this->requiredValue === null) {
-            if ($this->strict && $value !== null || !$this->strict && !$this->isEmpty(
-                    is_string($value) ? trim($value) : $value
-                )
-            ) {
+            if ($this->strict && $value !== null || !$this->strict && !$this->isEmpty(is_string($value) ? trim($value) : $value)) {
                 return null;
             }
         } elseif (!$this->strict && $value == $this->requiredValue || $this->strict && $value === $this->requiredValue) {
@@ -80,12 +77,9 @@ class RequiredValidator extends Validator
         if ($this->requiredValue === null) {
             return [$this->message, []];
         } else {
-            return [
-                $this->message,
-                [
-                    'requiredValue' => $this->requiredValue,
-                ]
-            ];
+            return [$this->message, [
+                'requiredValue' => $this->requiredValue,
+            ]];
         }
     }
 
@@ -96,13 +90,9 @@ class RequiredValidator extends Validator
     {
         $options = [];
         if ($this->requiredValue !== null) {
-            $options['message'] = Yii::$app->getI18n()->format(
-                $this->message,
-                [
-                    'requiredValue' => $this->requiredValue,
-                ],
-                Yii::$app->language
-            );
+            $options['message'] = Yii::$app->getI18n()->format($this->message, [
+                'requiredValue' => $this->requiredValue,
+            ], Yii::$app->language);
             $options['requiredValue'] = $this->requiredValue;
         } else {
             $options['message'] = $this->message;
@@ -111,13 +101,9 @@ class RequiredValidator extends Validator
             $options['strict'] = 1;
         }
 
-        $options['message'] = Yii::$app->getI18n()->format(
-            $options['message'],
-            [
-                'attribute' => $object->getAttributeLabel($attribute),
-            ],
-            Yii::$app->language
-        );
+        $options['message'] = Yii::$app->getI18n()->format($options['message'], [
+            'attribute' => $object->getAttributeLabel($attribute),
+        ], Yii::$app->language);
 
         ValidationAsset::register($view);
 

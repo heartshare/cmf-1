@@ -121,15 +121,13 @@ class CaptchaAction extends Action
             // AJAX request for regenerating code
             $code = $this->getVerifyCode(true);
 
-            return json_encode(
-                [
-                    'hash1' => $this->generateValidationHash($code),
-                    'hash2' => $this->generateValidationHash(strtolower($code)),
-                    // we add a random 'v' parameter so that FireFox can refresh the image
-                    // when src attribute of image tag is changed
-                    'url' => Url::to([$this->id, 'v' => uniqid()]),
-                ]
-            );
+            return json_encode([
+                'hash1' => $this->generateValidationHash($code),
+                'hash2' => $this->generateValidationHash(strtolower($code)),
+                // we add a random 'v' parameter so that FireFox can refresh the image
+                // when src attribute of image tag is changed
+                'url' => Url::to([$this->id, 'v' => uniqid()]),
+            ]);
         } else {
             $this->setHttpHeaders();
             Yii::$app->response->format = Response::FORMAT_RAW;
@@ -259,8 +257,8 @@ class CaptchaAction extends Action
 
         $backColor = imagecolorallocate(
             $image,
-            (int)($this->backColor % 0x1000000 / 0x10000),
-            (int)($this->backColor % 0x10000 / 0x100),
+            (int) ($this->backColor % 0x1000000 / 0x10000),
+            (int) ($this->backColor % 0x10000 / 0x100),
             $this->backColor % 0x100
         );
         imagefilledrectangle($image, 0, 0, $this->width, $this->height, $backColor);
@@ -272,8 +270,8 @@ class CaptchaAction extends Action
 
         $foreColor = imagecolorallocate(
             $image,
-            (int)($this->foreColor % 0x1000000 / 0x10000),
-            (int)($this->foreColor % 0x10000 / 0x100),
+            (int) ($this->foreColor % 0x1000000 / 0x10000),
+            (int) ($this->foreColor % 0x10000 / 0x100),
             $this->foreColor % 0x100
         );
 
@@ -285,7 +283,7 @@ class CaptchaAction extends Action
         $x = 10;
         $y = round($this->height * 27 / 40);
         for ($i = 0; $i < $length; ++$i) {
-            $fontSize = (int)(rand(26, 32) * $scale * 0.8);
+            $fontSize = (int) (rand(26, 32) * $scale * 0.8);
             $angle = rand(-10, 10);
             $letter = $code[$i];
             $box = imagettftext($image, $fontSize, $angle, $x, $y, $foreColor, $this->fontFile, $letter);
@@ -308,9 +306,7 @@ class CaptchaAction extends Action
      */
     protected function renderImageByImagick($code)
     {
-        $backColor = $this->transparent ? new \ImagickPixel('transparent') : new \ImagickPixel('#' . dechex(
-            $this->backColor
-        ));
+        $backColor = $this->transparent ? new \ImagickPixel('transparent') : new \ImagickPixel('#' . dechex($this->backColor));
         $foreColor = new \ImagickPixel('#' . dechex($this->foreColor));
 
         $image = new \Imagick();
@@ -322,19 +318,19 @@ class CaptchaAction extends Action
         $fontMetrics = $image->queryFontMetrics($draw, $code);
 
         $length = strlen($code);
-        $w = (int)($fontMetrics['textWidth']) - 8 + $this->offset * ($length - 1);
-        $h = (int)($fontMetrics['textHeight']) - 8;
+        $w = (int) ($fontMetrics['textWidth']) - 8 + $this->offset * ($length - 1);
+        $h = (int) ($fontMetrics['textHeight']) - 8;
         $scale = min(($this->width - $this->padding * 2) / $w, ($this->height - $this->padding * 2) / $h);
         $x = 10;
         $y = round($this->height * 27 / 40);
         for ($i = 0; $i < $length; ++$i) {
             $draw = new \ImagickDraw();
             $draw->setFont($this->fontFile);
-            $draw->setFontSize((int)(rand(26, 32) * $scale * 0.8));
+            $draw->setFontSize((int) (rand(26, 32) * $scale * 0.8));
             $draw->setFillColor($foreColor);
             $image->annotateImage($draw, $x, $y, rand(-10, 10), $code[$i]);
             $fontMetrics = $image->queryFontMetrics($draw, $code[$i]);
-            $x += (int)($fontMetrics['textWidth']) + $this->offset;
+            $x += (int) ($fontMetrics['textWidth']) + $this->offset;
         }
 
         $image->setImageFormat('png');

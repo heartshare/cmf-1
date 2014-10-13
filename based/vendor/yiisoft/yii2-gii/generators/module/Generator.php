@@ -48,26 +48,13 @@ class Generator extends \yii\gii\Generator
      */
     public function rules()
     {
-        return array_merge(
-            parent::rules(),
-            [
-                [['moduleID', 'moduleClass'], 'filter', 'filter' => 'trim'],
-                [['moduleID', 'moduleClass'], 'required'],
-                [
-                    ['moduleID'],
-                    'match',
-                    'pattern' => '/^[\w\\-]+$/',
-                    'message' => 'Only word characters and dashes are allowed.'
-                ],
-                [
-                    ['moduleClass'],
-                    'match',
-                    'pattern' => '/^[\w\\\\]*$/',
-                    'message' => 'Only word characters and backslashes are allowed.'
-                ],
-                [['moduleClass'], 'validateModuleClass'],
-            ]
-        );
+        return array_merge(parent::rules(), [
+            [['moduleID', 'moduleClass'], 'filter', 'filter' => 'trim'],
+            [['moduleID', 'moduleClass'], 'required'],
+            [['moduleID'], 'match', 'pattern' => '/^[\w\\-]+$/', 'message' => 'Only word characters and dashes are allowed.'],
+            [['moduleClass'], 'match', 'pattern' => '/^[\w\\\\]*$/', 'message' => 'Only word characters and backslashes are allowed.'],
+            [['moduleClass'], 'validateModuleClass'],
+        ]);
     }
 
     /**
@@ -98,11 +85,7 @@ class Generator extends \yii\gii\Generator
     public function successMessage()
     {
         if (Yii::$app->hasModule($this->moduleID)) {
-            $link = Html::a(
-                'try it now',
-                Yii::$app->getUrlManager()->createUrl($this->moduleID),
-                ['target' => '_blank']
-            );
+            $link = Html::a('try it now', Yii::$app->getUrlManager()->createUrl($this->moduleID), ['target' => '_blank']);
 
             return "The module has been generated successfully. You may $link.";
         }
@@ -161,18 +144,11 @@ EOD;
      */
     public function validateModuleClass()
     {
-        if (strpos($this->moduleClass, '\\') === false || Yii::getAlias(
-                '@' . str_replace('\\', '/', $this->moduleClass),
-                false
-            ) === false
-        ) {
+        if (strpos($this->moduleClass, '\\') === false || Yii::getAlias('@' . str_replace('\\', '/', $this->moduleClass), false) === false) {
             $this->addError('moduleClass', 'Module class must be properly namespaced.');
         }
         if (empty($this->moduleClass) || substr_compare($this->moduleClass, '\\', -1, 1) === 0) {
-            $this->addError(
-                'moduleClass',
-                'Module class name must not be empty. Please enter a fully qualified class name. e.g. "app\\modules\\admin\\Module".'
-            );
+            $this->addError('moduleClass', 'Module class name must not be empty. Please enter a fully qualified class name. e.g. "app\\modules\\admin\\Module".');
         }
     }
 
@@ -181,9 +157,7 @@ EOD;
      */
     public function getModulePath()
     {
-        return Yii::getAlias(
-            '@' . str_replace('\\', '/', substr($this->moduleClass, 0, strrpos($this->moduleClass, '\\')))
-        );
+        return Yii::getAlias('@' . str_replace('\\', '/', substr($this->moduleClass, 0, strrpos($this->moduleClass, '\\'))));
     }
 
     /**

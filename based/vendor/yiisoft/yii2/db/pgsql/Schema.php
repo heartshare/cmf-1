@@ -33,8 +33,10 @@ class Schema extends \yii\db\Schema
         'bit' => self::TYPE_INTEGER,
         'bit varying' => self::TYPE_INTEGER,
         'varbit' => self::TYPE_INTEGER,
+
         'bool' => self::TYPE_BOOLEAN,
         'boolean' => self::TYPE_BOOLEAN,
+
         'box' => self::TYPE_STRING,
         'circle' => self::TYPE_STRING,
         'point' => self::TYPE_STRING,
@@ -42,22 +44,28 @@ class Schema extends \yii\db\Schema
         'lseg' => self::TYPE_STRING,
         'polygon' => self::TYPE_STRING,
         'path' => self::TYPE_STRING,
+
         'character' => self::TYPE_STRING,
         'char' => self::TYPE_STRING,
         'character varying' => self::TYPE_STRING,
         'varchar' => self::TYPE_STRING,
         'text' => self::TYPE_TEXT,
+
         'bytea' => self::TYPE_BINARY,
+
         'cidr' => self::TYPE_STRING,
         'inet' => self::TYPE_STRING,
         'macaddr' => self::TYPE_STRING,
+
         'real' => self::TYPE_FLOAT,
         'float4' => self::TYPE_FLOAT,
         'double precision' => self::TYPE_FLOAT,
         'float8' => self::TYPE_FLOAT,
         'decimal' => self::TYPE_DECIMAL,
         'numeric' => self::TYPE_DECIMAL,
+
         'money' => self::TYPE_MONEY,
+
         'smallint' => self::TYPE_SMALLINT,
         'int2' => self::TYPE_SMALLINT,
         'int4' => self::TYPE_INTEGER,
@@ -74,6 +82,7 @@ class Schema extends \yii\db\Schema
         'bigserial' => self::TYPE_BIGINT,
         'serial8' => self::TYPE_BIGINT,
         'pg_lsn' => self::TYPE_BIGINT,
+
         'date' => self::TYPE_DATE,
         'interval' => self::TYPE_STRING,
         'time without time zone' => self::TYPE_TIME,
@@ -85,10 +94,13 @@ class Schema extends \yii\db\Schema
         'timestamp with time zone' => self::TYPE_TIMESTAMP,
         'timestamptz' => self::TYPE_TIMESTAMP,
         'abstime' => self::TYPE_TIMESTAMP,
+
         'tsquery' => self::TYPE_STRING,
         'tsvector' => self::TYPE_STRING,
         'txid_snapshot' => self::TYPE_STRING,
+
         'unknown' => self::TYPE_STRING,
+
         'uuid' => self::TYPE_STRING,
         'json' => self::TYPE_STRING,
         'jsonb' => self::TYPE_STRING,
@@ -287,10 +299,7 @@ SQL;
                 // Index is an expression like "lower(colname::text)"
                 $indexColumns = preg_replace("/.*\(([^\:]+).*/mi", "$1", $index['indexcolumns']);
             } else {
-                $indexColumns = array_map(
-                    'trim',
-                    explode(',', str_replace(['{', '}', '"', '\\'], '', $index['indexcolumns']))
-                );
+                $indexColumns = array_map('trim', explode(',', str_replace(['{', '}', '"', '\\'], '', $index['indexcolumns'])));
             }
 
             $uniqueIndexes[$indexName] = $indexColumns;
@@ -373,23 +382,15 @@ SQL;
             $table->columns[$column->name] = $column;
             if ($column->isPrimaryKey) {
                 $table->primaryKey[] = $column->name;
-                if ($table->sequenceName === null && preg_match(
-                        "/nextval\\('\"?\\w+\"?\.?\"?\\w+\"?'(::regclass)?\\)/",
-                        $column->defaultValue
-                    ) === 1
-                ) {
-                    $table->sequenceName = preg_replace(
-                        ['/nextval/', '/::/', '/regclass/', '/\'\)/', '/\(\'/'],
-                        '',
-                        $column->defaultValue
-                    );
+                if ($table->sequenceName === null && preg_match("/nextval\\('\"?\\w+\"?\.?\"?\\w+\"?'(::regclass)?\\)/", $column->defaultValue) === 1) {
+                    $table->sequenceName = preg_replace(['/nextval/', '/::/', '/regclass/', '/\'\)/', '/\(\'/'], '', $column->defaultValue);
                 }
                 $column->defaultValue = null;
             } elseif ($column->defaultValue) {
                 if ($column->type === 'timestamp' && $column->defaultValue === 'now()') {
                     $column->defaultValue = new Expression($column->defaultValue);
                 } elseif ($column->type === 'boolean') {
-                    $column->defaultValue = ($column->defaultValue === 'true');
+                        $column->defaultValue = ($column->defaultValue === 'true');
                 } elseif (stripos($column->dbType, 'bit') === 0 || stripos($column->dbType, 'varbit') === 0) {
                     $column->defaultValue = bindec(trim($column->defaultValue, 'B\''));
                 } elseif (preg_match("/^'(.*?)'::/", $column->defaultValue, $matches)) {
@@ -418,10 +419,7 @@ SQL;
         $column->comment = $info['column_comment'];
         $column->dbType = $info['data_type'];
         $column->defaultValue = $info['column_default'];
-        $column->enumValues = ($info['enum_values'] !== null) ? explode(
-            ',',
-            str_replace(["''"], ["'"], $info['enum_values'])
-        ) : null;
+        $column->enumValues = ($info['enum_values'] !== null) ? explode(',', str_replace(["''"], ["'"], $info['enum_values'])) : null;
         $column->unsigned = false; // has no meaning in PG
         $column->isPrimaryKey = $info['is_pkey'];
         $column->name = $info['column_name'];

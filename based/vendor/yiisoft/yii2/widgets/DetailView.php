@@ -148,13 +148,10 @@ class DetailView extends Widget
     protected function renderAttribute($attribute, $index)
     {
         if (is_string($this->template)) {
-            return strtr(
-                $this->template,
-                [
-                    '{label}' => $attribute['label'],
-                    '{value}' => $this->formatter->format($attribute['value'], $attribute['format']),
-                ]
-            );
+            return strtr($this->template, [
+                '{label}' => $attribute['label'],
+                '{value}' => $this->formatter->format($attribute['value'], $attribute['format']),
+            ]);
         } else {
             return call_user_func($this->template, $attribute, $index, $this);
         }
@@ -170,9 +167,7 @@ class DetailView extends Widget
             if ($this->model instanceof Model) {
                 $this->attributes = $this->model->attributes();
             } elseif (is_object($this->model)) {
-                $this->attributes = $this->model instanceof Arrayable ? $this->model->toArray() : array_keys(
-                    get_object_vars($this->model)
-                );
+                $this->attributes = $this->model instanceof Arrayable ? $this->model->toArray() : array_keys(get_object_vars($this->model));
             } elseif (is_array($this->model)) {
                 $this->attributes = array_keys($this->model);
             } else {
@@ -208,9 +203,7 @@ class DetailView extends Widget
             if (isset($attribute['attribute'])) {
                 $attributeName = $attribute['attribute'];
                 if (!isset($attribute['label'])) {
-                    $attribute['label'] = $this->model instanceof Model ? $this->model->getAttributeLabel(
-                        $attributeName
-                    ) : Inflector::camel2words($attributeName, true);
+                    $attribute['label'] = $this->model instanceof Model ? $this->model->getAttributeLabel($attributeName) : Inflector::camel2words($attributeName, true);
                 }
                 if (!array_key_exists('value', $attribute)) {
                     $attribute['value'] = ArrayHelper::getValue($this->model, $attributeName);

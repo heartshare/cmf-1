@@ -255,9 +255,7 @@ class Component extends Object
                 }
             }
         }
-        throw new InvalidCallException('Unsetting an unknown or read-only property: ' . get_class(
-            $this
-        ) . '::' . $name);
+        throw new InvalidCallException('Unsetting an unknown or read-only property: ' . get_class($this) . '::' . $name);
     }
 
     /**
@@ -312,11 +310,7 @@ class Component extends Object
      */
     public function hasProperty($name, $checkVars = true, $checkBehaviors = true)
     {
-        return $this->canGetProperty($name, $checkVars, $checkBehaviors) || $this->canSetProperty(
-            $name,
-            false,
-            $checkBehaviors
-        );
+        return $this->canGetProperty($name, $checkVars, $checkBehaviors) || $this->canSetProperty($name, false, $checkBehaviors);
     }
 
     /**

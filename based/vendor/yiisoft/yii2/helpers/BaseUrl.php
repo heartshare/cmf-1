@@ -109,7 +109,7 @@ class BaseUrl
      */
     protected static function normalizeRoute($route)
     {
-        $route = (string)$route;
+        $route = (string) $route;
         if (strncmp($route, '/', 1) === 0) {
             // absolute route
             return ltrim($route, '/');
@@ -122,8 +122,7 @@ class BaseUrl
 
         if (strpos($route, '/') === false) {
             // empty or an action ID
-            return $route === '' ? Yii::$app->controller->getRoute() : Yii::$app->controller->getUniqueId(
-                ) . '/' . $route;
+            return $route === '' ? Yii::$app->controller->getRoute() : Yii::$app->controller->getUniqueId() . '/' . $route;
         } else {
             // relative to module
             return ltrim(Yii::$app->controller->module->getUniqueId() . '/' . $route, '/');

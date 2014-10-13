@@ -90,7 +90,7 @@ abstract class Dependency extends \yii\base\Object
     protected function generateReusableHash()
     {
         $data = $this->data;
-        $this->data = null; // https://github.com/yiisoft/yii2/issues/3052
+        $this->data = null;  // https://github.com/yiisoft/yii2/issues/3052
         $key = sha1(serialize($this));
         $this->data = $data;
         return $key;

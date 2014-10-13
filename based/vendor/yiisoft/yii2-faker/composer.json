@@ -21,9 +21,7 @@
         "fzaninotto/faker": "*"
     },
     "autoload": {
-        "psr-4": {
-            "yii\\faker\\": ""
-        }
+        "psr-4": { "yii\\faker\\": "" }
     },
     "extra": {
         "branch-alias": {

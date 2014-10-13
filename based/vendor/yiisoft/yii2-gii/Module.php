@@ -85,14 +85,11 @@ class Module extends \yii\base\Module implements BootstrapInterface
     public function bootstrap($app)
     {
         if ($app instanceof \yii\web\Application) {
-            $app->getUrlManager()->addRules(
-                [
-                    $this->id => $this->id . '/default/index',
-                    $this->id . '/<id:\w+>' => $this->id . '/default/view',
-                    $this->id . '/<controller:\w+>/<action:\w+>' => $this->id . '/<controller>/<action>',
-                ],
-                false
-            );
+            $app->getUrlManager()->addRules([
+                $this->id => $this->id . '/default/index',
+                $this->id . '/<id:\w+>' => $this->id . '/default/view',
+                $this->id . '/<controller:\w+>/<action:\w+>' => $this->id . '/<controller>/<action>',
+            ], false);
         } elseif ($app instanceof \yii\console\Application) {
             $app->controllerMap[$this->id] = [
                 'class' => 'yii\gii\console\GenerateController',
@@ -141,12 +138,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
     {
         $ip = Yii::$app->getRequest()->getUserIP();
         foreach ($this->allowedIPs as $filter) {
-            if ($filter === '*' || $filter === $ip || (($pos = strpos($filter, '*')) !== false && !strncmp(
-                        $ip,
-                        $filter,
-                        $pos
-                    ))
-            ) {
+            if ($filter === '*' || $filter === $ip || (($pos = strpos($filter, '*')) !== false && !strncmp($ip, $filter, $pos))) {
                 return true;
             }
         }

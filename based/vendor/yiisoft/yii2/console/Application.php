@@ -160,7 +160,7 @@ class Application extends \yii\base\Application
         try {
             return (int)parent::runAction($route, $params);
         } catch (InvalidRouteException $e) {
-            throw new Exception(Yii::t('yii', 'Unknown command "{command}".', ['command' => $route]), 0, $e);
+            throw new Exception("Unknown command \"$route\".", 0, $e);
         }
     }
 
@@ -185,13 +185,10 @@ class Application extends \yii\base\Application
      */
     public function coreComponents()
     {
-        return array_merge(
-            parent::coreComponents(),
-            [
-                'request' => ['class' => 'yii\console\Request'],
-                'response' => ['class' => 'yii\console\Response'],
-                'errorHandler' => ['class' => 'yii\console\ErrorHandler'],
-            ]
-        );
+        return array_merge(parent::coreComponents(), [
+            'request' => ['class' => 'yii\console\Request'],
+            'response' => ['class' => 'yii\console\Response'],
+            'errorHandler' => ['class' => 'yii\console\ErrorHandler'],
+        ]);
     }
 }

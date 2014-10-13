@@ -48,7 +48,7 @@ class Modal extends Widget
      */
     public $footer;
     /**
-     * @var string the modal size. Can be MODAL_LG or MODAL_SM, or empty for default.
+     * @var string the modal size. Can be [[SIZE_LARGE]] or [[SIZE_SMALL]], or empty for default.
      */
     public $size;
     /**
@@ -206,14 +206,11 @@ class Modal extends Widget
      */
     protected function initOptions()
     {
-        $this->options = array_merge(
-            [
-                'class' => 'fade',
-                'role' => 'dialog',
-                'tabindex' => -1,
-            ],
-            $this->options
-        );
+        $this->options = array_merge([
+            'class' => 'fade',
+            'role' => 'dialog',
+            'tabindex' => -1,
+        ], $this->options);
         Html::addCssClass($this->options, 'modal');
 
         if ($this->clientOptions !== false) {
@@ -221,23 +218,17 @@ class Modal extends Widget
         }
 
         if ($this->closeButton !== false) {
-            $this->closeButton = array_merge(
-                [
-                    'data-dismiss' => 'modal',
-                    'aria-hidden' => 'true',
-                    'class' => 'close',
-                ],
-                $this->closeButton
-            );
+            $this->closeButton = array_merge([
+                'data-dismiss' => 'modal',
+                'aria-hidden' => 'true',
+                'class' => 'close',
+            ], $this->closeButton);
         }
 
         if ($this->toggleButton !== false) {
-            $this->toggleButton = array_merge(
-                [
-                    'data-toggle' => 'modal',
-                ],
-                $this->toggleButton
-            );
+            $this->toggleButton = array_merge([
+                'data-toggle' => 'modal',
+            ], $this->toggleButton);
             if (!isset($this->toggleButton['data-target']) && !isset($this->toggleButton['href'])) {
                 $this->toggleButton['data-target'] = '#' . $this->options['id'];
             }

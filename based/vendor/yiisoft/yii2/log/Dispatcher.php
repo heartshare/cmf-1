@@ -184,9 +184,7 @@ class Dispatcher extends Component
                 } catch (\Exception $e) {
                     $target->enabled = false;
                     $targetErrors[] = [
-                        'Unable to send log via ' . get_class($target) . ': ' . ErrorHandler::convertExceptionToString(
-                            $e
-                        ),
+                        'Unable to send log via ' . get_class($target) . ': ' . ErrorHandler::convertExceptionToString($e),
                         Logger::LEVEL_WARNING,
                         __METHOD__,
                         microtime(true),

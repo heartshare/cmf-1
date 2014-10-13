@@ -51,13 +51,8 @@ class HelpController extends Controller
         if ($command !== null) {
             $result = Yii::$app->createController($command);
             if ($result === false) {
-                throw new Exception(Yii::t(
-                    'yii',
-                    'No help for unknown command "{command}".',
-                    [
-                        'command' => $this->ansiFormat($command, Console::FG_YELLOW),
-                    ]
-                ));
+                $name = $this->ansiFormat($command, Console::FG_YELLOW);
+                throw new Exception("No help for unknown command \"$name\".");
             }
 
             list($controller, $actionID) = $result;
@@ -154,7 +149,7 @@ class HelpController extends Controller
         if (is_dir($controllerPath)) {
             $files = scandir($controllerPath);
             foreach ($files as $file) {
-                if (!empty($file) && substr_compare($file, 'Controller.php', -14) === 0) {
+                if (!empty($file) && substr_compare($file, 'Controller.php', -14, 14) === 0) {
                     $controllerClass = $module->controllerNamespace . '\\' . substr(basename($file), 0, -4);
                     if ($this->validateControllerClass($controllerClass)) {
                         $commands[] = $prefix . Inflector::camel2id(substr(basename($file), 0, -14));
@@ -187,6 +182,7 @@ class HelpController extends Controller
     protected function getDefaultHelp()
     {
         $commands = $this->getCommandDescriptions();
+        $this->stdout("\nThis is Yii version " . \Yii::getVersion() . ".\n");
         if (!empty($commands)) {
             $this->stdout("\nThe following commands are available:\n\n", Console::BOLD);
             $len = 0;
@@ -203,7 +199,7 @@ class HelpController extends Controller
             $scriptName = $this->getScriptName();
             $this->stdout("\nTo see the help of each command, enter:\n", Console::BOLD);
             echo "\n  $scriptName " . $this->ansiFormat('help', Console::FG_YELLOW) . ' '
-                . $this->ansiFormat('<command-name>', Console::FG_CYAN) . "\n\n";
+                            . $this->ansiFormat('<command-name>', Console::FG_CYAN) . "\n\n";
         } else {
             $this->stdout("\nNo commands are found.\n\n", Console::BOLD);
         }
@@ -228,7 +224,7 @@ class HelpController extends Controller
             $this->stdout("\nSUB-COMMANDS\n\n", Console::BOLD);
             $prefix = $controller->getUniqueId();
             foreach ($actions as $action) {
-                echo '- ' . $this->ansiFormat($prefix . '/' . $action, Console::FG_YELLOW);
+                echo '- ' . $this->ansiFormat($prefix.'/'.$action, Console::FG_YELLOW);
                 if ($action === $controller->defaultAction) {
                     $this->stdout(' (default)', Console::FG_GREEN);
                 }
@@ -241,7 +237,7 @@ class HelpController extends Controller
             $scriptName = $this->getScriptName();
             echo "\nTo see the detailed information about individual sub-commands, enter:\n";
             echo "\n  $scriptName " . $this->ansiFormat('help', Console::FG_YELLOW) . ' '
-                . $this->ansiFormat('<sub-command>', Console::FG_CYAN) . "\n\n";
+                            . $this->ansiFormat('<sub-command>', Console::FG_CYAN) . "\n\n";
         }
     }
 
@@ -255,13 +251,8 @@ class HelpController extends Controller
     {
         $action = $controller->createAction($actionID);
         if ($action === null) {
-            throw new Exception(Yii::t(
-                'yii',
-                'No help for unknown sub-command "{command}".',
-                [
-                    'command' => rtrim($controller->getUniqueId() . '/' . $actionID, '/'),
-                ]
-            ));
+            $name = $this->ansiFormat(rtrim($controller->getUniqueId() . '/' . $actionID, '/'), Console::FG_YELLOW);
+            throw new Exception("No help for unknown sub-command \"$name\".");
         }
 
         $description = $controller->getActionHelp($action);
@@ -307,8 +298,7 @@ class HelpController extends Controller
                         $arg['required'],
                         $arg['type'],
                         $arg['default'],
-                        $arg['comment']
-                    ) . "\n\n";
+                        $arg['comment']) . "\n\n";
             }
         }
 
@@ -316,16 +306,11 @@ class HelpController extends Controller
             $this->stdout("\nOPTIONS\n\n", Console::BOLD);
             foreach ($options as $name => $option) {
                 echo $this->formatOptionHelp(
-                        $this->ansiFormat(
-                            '--' . $name,
-                            Console::FG_RED,
-                            empty($option['required']) ? Console::FG_RED : Console::BOLD
-                        ),
+                        $this->ansiFormat('--' . $name, Console::FG_RED, empty($option['required']) ? Console::FG_RED : Console::BOLD),
                         !empty($option['required']),
                         $option['type'],
                         $option['default'],
-                        $option['comment']
-                    ) . "\n\n";
+                        $option['comment']) . "\n\n";
             }
         }
     }
@@ -353,7 +338,7 @@ class HelpController extends Controller
             }
             if (is_bool($defaultValue)) {
                 // show as integer to avoid confusion
-                $defaultValue = (int)$defaultValue;
+                $defaultValue = (int) $defaultValue;
             }
             if (is_string($defaultValue)) {
                 $defaultValue = "'" . $defaultValue . "'";

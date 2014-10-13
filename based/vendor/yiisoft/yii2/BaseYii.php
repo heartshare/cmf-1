@@ -93,7 +93,7 @@ class BaseYii
      */
     public static function getVersion()
     {
-        return '2.0.0-rc';
+        return '2.0.0';
     }
 
     /**
@@ -287,11 +287,7 @@ class BaseYii
 
         include($classFile);
 
-        if (YII_DEBUG && !class_exists($className, false) && !interface_exists($className, false) && !trait_exists(
-                $className,
-                false
-            )
-        ) {
+        if (YII_DEBUG && !class_exists($className, false) && !interface_exists($className, false) && !trait_exists($className, false)) {
             throw new UnknownClassException("Unable to find '$className' in file: $classFile. Namespace missing?");
         }
     }
@@ -499,15 +495,10 @@ class BaseYii
     public static function t($category, $message, $params = [], $language = null)
     {
         if (static::$app !== null) {
-            return static::$app->getI18n()->translate(
-                $category,
-                $message,
-                $params,
-                $language ? : static::$app->language
-            );
+            return static::$app->getI18n()->translate($category, $message, $params, $language ?: static::$app->language);
         } else {
             $p = [];
-            foreach ((array)$params as $name => $value) {
+            foreach ((array) $params as $name => $value) {
                 $p['{' . $name . '}'] = $value;
             }
 

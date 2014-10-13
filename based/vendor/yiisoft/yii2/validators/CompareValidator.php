@@ -134,15 +134,10 @@ class CompareValidator extends Validator
         }
 
         if (!$this->compareValues($this->operator, $this->type, $value, $compareValue)) {
-            $this->addError(
-                $object,
-                $attribute,
-                $this->message,
-                [
-                    'compareAttribute' => $compareLabel,
-                    'compareValue' => $compareValue,
-                ]
-            );
+            $this->addError($object, $attribute, $this->message, [
+                'compareAttribute' => $compareLabel,
+                'compareValue' => $compareValue,
+            ]);
         }
     }
 
@@ -155,13 +150,10 @@ class CompareValidator extends Validator
             throw new InvalidConfigException('CompareValidator::compareValue must be set.');
         }
         if (!$this->compareValues($this->operator, $this->type, $value, $this->compareValue)) {
-            return [
-                $this->message,
-                [
-                    'compareAttribute' => $this->compareValue,
-                    'compareValue' => $this->compareValue,
-                ]
-            ];
+            return [$this->message, [
+                'compareAttribute' => $this->compareValue,
+                'compareValue' => $this->compareValue,
+            ]];
         } else {
             return null;
         }
@@ -181,8 +173,8 @@ class CompareValidator extends Validator
             $value = floatval($value);
             $compareValue = floatval($compareValue);
         } else {
-            $value = (string)$value;
-            $compareValue = (string)$compareValue;
+            $value = (string) $value;
+            $compareValue = (string) $compareValue;
         }
         switch ($operator) {
             case '==':
@@ -229,15 +221,11 @@ class CompareValidator extends Validator
             $options['skipOnEmpty'] = 1;
         }
 
-        $options['message'] = Yii::$app->getI18n()->format(
-            $this->message,
-            [
-                'attribute' => $object->getAttributeLabel($attribute),
-                'compareAttribute' => $compareValue,
-                'compareValue' => $compareValue,
-            ],
-            Yii::$app->language
-        );
+        $options['message'] = Yii::$app->getI18n()->format($this->message, [
+            'attribute' => $object->getAttributeLabel($attribute),
+            'compareAttribute' => $compareValue,
+            'compareValue' => $compareValue,
+        ], Yii::$app->language);
 
         ValidationAsset::register($view);
 

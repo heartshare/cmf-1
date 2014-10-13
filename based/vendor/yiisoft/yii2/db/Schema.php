@@ -124,14 +124,9 @@ abstract class Schema extends Object
                 if ($refresh || ($table = $cache->get($key)) === false) {
                     $this->_tables[$name] = $table = $this->loadTableSchema($realName);
                     if ($table !== null) {
-                        $cache->set(
-                            $key,
-                            $table,
-                            $db->schemaCacheDuration,
-                            new TagDependency([
-                                'tags' => $this->getCacheTag(),
-                            ])
-                        );
+                        $cache->set($key, $table, $db->schemaCacheDuration, new TagDependency([
+                            'tags' => $this->getCacheTag(),
+                        ]));
                     }
                 } else {
                     $this->_tables[$name] = $table;
@@ -166,15 +161,11 @@ abstract class Schema extends Object
      */
     protected function getCacheTag()
     {
-        return md5(
-            serialize(
-                [
-                    __CLASS__,
-                    $this->db->dsn,
-                    $this->db->username,
-                ]
-            )
-        );
+        return md5(serialize([
+            __CLASS__,
+            $this->db->dsn,
+            $this->db->username,
+        ]));
     }
 
     /**
@@ -258,10 +249,7 @@ abstract class Schema extends Object
     public function refresh()
     {
         /* @var $cache Cache */
-        $cache = is_string($this->db->schemaCache) ? Yii::$app->get(
-            $this->db->schemaCache,
-            false
-        ) : $this->db->schemaCache;
+        $cache = is_string($this->db->schemaCache) ? Yii::$app->get($this->db->schemaCache, false) : $this->db->schemaCache;
         if ($this->db->enableSchemaCache && $cache instanceof Cache) {
             TagDependency::invalidate($cache, $this->getCacheTag());
         }
@@ -539,9 +527,9 @@ abstract class Schema extends Object
                 $exceptionClass = $class;
             }
         }
-        $message = $e->getMessage() . "\nThe SQL being executed was: $rawSql";
+        $message = $e->getMessage()  . "\nThe SQL being executed was: $rawSql";
         $errorInfo = $e instanceof \PDOException ? $e->errorInfo : null;
-        return new $exceptionClass($message, $errorInfo, (int)$e->getCode(), $e);
+        return new $exceptionClass($message, $errorInfo, (int) $e->getCode(), $e);
     }
 
     /**

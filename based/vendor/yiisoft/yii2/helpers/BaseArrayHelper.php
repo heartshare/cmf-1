@@ -120,7 +120,11 @@ class BaseArrayHelper
             $next = array_shift($args);
             foreach ($next as $k => $v) {
                 if (is_integer($k)) {
-                    isset($res[$k]) ? $res[] = $v : $res[$k] = $v;
+                    if (isset($res[$k])) {
+                        $res[] = $v;
+                    } else {
+                        $res[$k] = $v;
+                    }
                 } elseif (is_array($v) && isset($res[$k]) && is_array($res[$k])) {
                     $res[$k] = self::merge($res[$k], $v);
                 } else {
@@ -429,7 +433,7 @@ class BaseArrayHelper
             $args[] = $direction[$i];
             $args[] = $flag;
         }
-        $args[] = & $array;
+        $args[] = &$array;
         call_user_func_array('array_multisort', $args);
     }
 

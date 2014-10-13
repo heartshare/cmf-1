@@ -220,71 +220,15 @@ class BaseInflector
      * @var array fallback map for transliteration used by [[slug()]] when intl isn't available.
      */
     public static $transliteration = [
-        'À' => 'A',
-        'Á' => 'A',
-        'Â' => 'A',
-        'Ã' => 'A',
-        'Ä' => 'A',
-        'Å' => 'A',
-        'Æ' => 'AE',
-        'Ç' => 'C',
-        'È' => 'E',
-        'É' => 'E',
-        'Ê' => 'E',
-        'Ë' => 'E',
-        'Ì' => 'I',
-        'Í' => 'I',
-        'Î' => 'I',
-        'Ï' => 'I',
-        'Ð' => 'D',
-        'Ñ' => 'N',
-        'Ò' => 'O',
-        'Ó' => 'O',
-        'Ô' => 'O',
-        'Õ' => 'O',
-        'Ö' => 'O',
-        'Ő' => 'O',
-        'Ø' => 'O',
-        'Ù' => 'U',
-        'Ú' => 'U',
-        'Û' => 'U',
-        'Ü' => 'U',
-        'Ű' => 'U',
-        'Ý' => 'Y',
-        'Þ' => 'TH',
+        'À' => 'A', 'Á' => 'A', 'Â' => 'A', 'Ã' => 'A', 'Ä' => 'A', 'Å' => 'A', 'Æ' => 'AE', 'Ç' => 'C',
+        'È' => 'E', 'É' => 'E', 'Ê' => 'E', 'Ë' => 'E', 'Ì' => 'I', 'Í' => 'I', 'Î' => 'I', 'Ï' => 'I',
+        'Ð' => 'D', 'Ñ' => 'N', 'Ò' => 'O', 'Ó' => 'O', 'Ô' => 'O', 'Õ' => 'O', 'Ö' => 'O', 'Ő' => 'O',
+        'Ø' => 'O', 'Ù' => 'U', 'Ú' => 'U', 'Û' => 'U', 'Ü' => 'U', 'Ű' => 'U', 'Ý' => 'Y', 'Þ' => 'TH',
         'ß' => 'ss',
-        'à' => 'a',
-        'á' => 'a',
-        'â' => 'a',
-        'ã' => 'a',
-        'ä' => 'a',
-        'å' => 'a',
-        'æ' => 'ae',
-        'ç' => 'c',
-        'è' => 'e',
-        'é' => 'e',
-        'ê' => 'e',
-        'ë' => 'e',
-        'ì' => 'i',
-        'í' => 'i',
-        'î' => 'i',
-        'ï' => 'i',
-        'ð' => 'd',
-        'ñ' => 'n',
-        'ò' => 'o',
-        'ó' => 'o',
-        'ô' => 'o',
-        'õ' => 'o',
-        'ö' => 'o',
-        'ő' => 'o',
-        'ø' => 'o',
-        'ù' => 'u',
-        'ú' => 'u',
-        'û' => 'u',
-        'ü' => 'u',
-        'ű' => 'u',
-        'ý' => 'y',
-        'þ' => 'th',
+        'à' => 'a', 'á' => 'a', 'â' => 'a', 'ã' => 'a', 'ä' => 'a', 'å' => 'a', 'æ' => 'ae', 'ç' => 'c',
+        'è' => 'e', 'é' => 'e', 'ê' => 'e', 'ë' => 'e', 'ì' => 'i', 'í' => 'i', 'î' => 'i', 'ï' => 'i',
+        'ð' => 'd', 'ñ' => 'n', 'ò' => 'o', 'ó' => 'o', 'ô' => 'o', 'õ' => 'o', 'ö' => 'o', 'ő' => 'o',
+        'ø' => 'o', 'ù' => 'u', 'ú' => 'u', 'û' => 'u', 'ü' => 'u', 'ű' => 'u', 'ý' => 'y', 'þ' => 'th',
         'ÿ' => 'y',
     ];
     /**
@@ -372,19 +316,11 @@ class BaseInflector
      */
     public static function camel2words($name, $ucwords = true)
     {
-        $label = trim(
-            strtolower(
-                str_replace(
-                    [
-                        '-',
-                        '_',
-                        '.'
-                    ],
-                    ' ',
-                    preg_replace('/(?<![A-Z])[A-Z]/', ' \0', $name)
-                )
-            )
-        );
+        $label = trim(strtolower(str_replace([
+            '-',
+            '_',
+            '.'
+        ], ' ', preg_replace('/(?<![A-Z])[A-Z]/', ' \0', $name))));
 
         return $ucwords ? ucwords($label) : $label;
     }
@@ -404,10 +340,7 @@ class BaseInflector
         if ($separator === '_') {
             return trim(strtolower(preg_replace($regex, '_\0', $name)), '_');
         } else {
-            return trim(
-                strtolower(str_replace('_', $separator, preg_replace($regex, $separator . '\0', $name))),
-                $separator
-            );
+            return trim(strtolower(str_replace('_', $separator, preg_replace($regex, $separator . '\0', $name))), $separator);
         }
     }
 

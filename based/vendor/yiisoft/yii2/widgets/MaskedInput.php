@@ -59,7 +59,7 @@ class MaskedInput extends InputWidget
      * @var array custom mask definitions to use. Should be configured as `maskSymbol => settings`, where
      *
      * - `maskSymbol` is a string, containing a character to identify your mask definition and
-     * - `settings` is an array, consisiting of the following entries:
+     * - `settings` is an array, consisting of the following entries:
      *   - `validator`: string, a JS regular expression or a JS function.
      *   - `cardinality`: int, specifies how many characters are represented and validated for the definition.
      *   - `prevalidator`: array, validate the characters before the definition cardinality is reached.
@@ -143,21 +143,8 @@ class MaskedInput extends InputWidget
     {
         $options = $this->clientOptions;
         foreach ($options as $key => $value) {
-            if (in_array(
-                    $key,
-                    [
-                        'oncomplete',
-                        'onincomplete',
-                        'oncleared',
-                        'onKeyUp',
-                        'onKeyDown',
-                        'onBeforeMask',
-                        'onBeforePaste',
-                        'onUnMask',
-                        'isComplete',
-                        'determineActiveMasksetIndex'
-                    ]
-                ) && !$value instanceof JsExpression
+            if (in_array($key, ['oncomplete', 'onincomplete', 'oncleared', 'onKeyUp', 'onKeyDown', 'onBeforeMask',
+                    'onBeforePaste', 'onUnMask', 'isComplete', 'determineActiveMasksetIndex']) && !$value instanceof JsExpression
             ) {
                 $options[$key] = new JsExpression($value);
             }
@@ -178,9 +165,7 @@ class MaskedInput extends InputWidget
         }
         $this->hashPluginOptions($view);
         if (is_array($this->definitions) && !empty($this->definitions)) {
-            $js .= '$.extend($.' . self::PLUGIN_NAME . '.defaults.definitions, ' . Json::encode(
-                    $this->definitions
-                ) . ");\n";
+            $js .= '$.extend($.' . self::PLUGIN_NAME . '.defaults.definitions, ' . Json::encode($this->definitions) . ");\n";
         }
         if (is_array($this->aliases) && !empty($this->aliases)) {
             $js .= '$.extend($.' . self::PLUGIN_NAME . '.defaults.aliases, ' . Json::encode($this->aliases) . ");\n";

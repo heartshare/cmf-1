@@ -199,7 +199,7 @@ class YiiRequirementChecker
             return false;
         }
 
-        return ((integer)$value == 1 || strtolower($value) == 'on');
+        return ((integer) $value == 1 || strtolower($value) == 'on');
     }
 
     /**
@@ -244,7 +244,7 @@ class YiiRequirementChecker
             return 0;
         }
         if (is_numeric($verboseSize)) {
-            return (integer)$verboseSize;
+            return (integer) $verboseSize;
         }
         $sizeUnit = trim($verboseSize, '0123456789');
         $size = str_replace($sizeUnit, '', $verboseSize);
@@ -254,24 +254,20 @@ class YiiRequirementChecker
         }
         switch (strtolower($sizeUnit)) {
             case 'kb':
-            case 'k':
-            {
+            case 'k': {
                 return $size * 1024;
             }
             case 'mb':
-            case 'm':
-            {
+            case 'm': {
                 return $size * 1024 * 1024;
             }
             case 'gb':
-            case 'g':
-            {
+            case 'g': {
                 return $size * 1024 * 1024 * 1024;
             }
-            default:
-                {
+            default: {
                 return 0;
-                }
+            }
         }
     }
 
@@ -286,20 +282,12 @@ class YiiRequirementChecker
         $postMaxSize = ini_get('post_max_size');
         $uploadMaxFileSize = ini_get('upload_max_filesize');
         if ($min !== null) {
-            $minCheckResult = $this->compareByteSize($postMaxSize, $min, '>=') && $this->compareByteSize(
-                    $uploadMaxFileSize,
-                    $min,
-                    '>='
-                );
+            $minCheckResult = $this->compareByteSize($postMaxSize, $min, '>=') && $this->compareByteSize($uploadMaxFileSize, $min, '>=');
         } else {
             $minCheckResult = true;
         }
         if ($max !== null) {
-            $maxCheckResult = $this->compareByteSize($postMaxSize, $max, '<=') && $this->compareByteSize(
-                    $uploadMaxFileSize,
-                    $max,
-                    '<='
-                );
+            $maxCheckResult = $this->compareByteSize($postMaxSize, $max, '<=') && $this->compareByteSize($uploadMaxFileSize, $max, '<=');
         } else {
             $maxCheckResult = true;
         }

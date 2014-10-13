@@ -57,15 +57,12 @@ class DefaultController extends Controller
         $tag = reset($tags);
         $this->loadData($tag);
 
-        return $this->render(
-            'index',
-            [
-                'panels' => $this->module->panels,
-                'dataProvider' => $dataProvider,
-                'searchModel' => $searchModel,
-                'manifest' => $this->getManifest(),
-            ]
-        );
+        return $this->render('index', [
+            'panels' => $this->module->panels,
+            'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
+            'manifest' => $this->getManifest(),
+        ]);
     }
 
     public function actionView($tag = null, $panel = null)
@@ -81,30 +78,24 @@ class DefaultController extends Controller
             $activePanel = $this->module->panels['request'];
         }
 
-        return $this->render(
-            'view',
-            [
-                'tag' => $tag,
-                'summary' => $this->summary,
-                'manifest' => $this->getManifest(),
-                'panels' => $this->module->panels,
-                'activePanel' => $activePanel,
-            ]
-        );
+        return $this->render('view', [
+            'tag' => $tag,
+            'summary' => $this->summary,
+            'manifest' => $this->getManifest(),
+            'panels' => $this->module->panels,
+            'activePanel' => $activePanel,
+        ]);
     }
 
     public function actionToolbar($tag)
     {
         $this->loadData($tag, 5);
 
-        return $this->renderPartial(
-            'toolbar',
-            [
-                'tag' => $tag,
-                'panels' => $this->module->panels,
-                'position' => 'bottom',
-            ]
-        );
+        return $this->renderPartial('toolbar', [
+            'tag' => $tag,
+            'panels' => $this->module->panels,
+            'position' => 'bottom',
+        ]);
     }
 
     public function actionDownloadMail($file)

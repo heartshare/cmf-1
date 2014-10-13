@@ -35,13 +35,9 @@ $this->title = 'Yii Debugger';
                     <?php
                     foreach ($panels as $id => $panel) {
                         $label = '<i class="glyphicon glyphicon-chevron-right"></i>' . Html::encode($panel->getName());
-                        echo Html::a(
-                            $label,
-                            ['view', 'tag' => $tag, 'panel' => $id],
-                            [
-                                'class' => $panel === $activePanel ? 'list-group-item active' : 'list-group-item',
-                            ]
-                        );
+                        echo Html::a($label, ['view', 'tag' => $tag, 'panel' => $id], [
+                            'class' => $panel === $activePanel ? 'list-group-item active' : 'list-group-item',
+                        ]);
                     }
                     ?>
                 </div>
@@ -49,45 +45,34 @@ $this->title = 'Yii Debugger';
             <div class="col-lg-10 col-md-10">
                 <div class="callout callout-danger">
                     <?php
-                    $count = 0;
-                    $items = [];
-                    foreach ($manifest as $meta) {
-                        $label = $meta['tag'] . ': ' . $meta['method'] . ' ' . $meta['url'] . ($meta['ajax'] ? ' (AJAX)' : '')
-                            . ', ' . date('Y-m-d h:i:s a', $meta['time'])
-                            . ', ' . $meta['ip'];
-                        $url = ['view', 'tag' => $meta['tag'], 'panel' => $activePanel->id];
-                        $items[] = [
-                            'label' => $label,
-                            'url' => $url,
-                        ];
-                        if (++$count >= 10) {
-                            break;
+                        $count = 0;
+                        $items = [];
+                        foreach ($manifest as $meta) {
+                            $label = $meta['tag'] . ': ' . $meta['method'] . ' ' . $meta['url'] . ($meta['ajax'] ? ' (AJAX)' : '')
+                                . ', ' . date('Y-m-d h:i:s a', $meta['time'])
+                                . ', ' . $meta['ip'];
+                            $url = ['view', 'tag' => $meta['tag'], 'panel' => $activePanel->id];
+                            $items[] = [
+                                'label' => $label,
+                                'url' => $url,
+                            ];
+                            if (++$count >= 10) {
+                                break;
+                            }
                         }
-                    }
-                    echo ButtonGroup::widget(
-                        [
+                        echo ButtonGroup::widget([
                             'buttons' => [
                                 Html::a('All', ['index'], ['class' => 'btn btn-default']),
-                                Html::a(
-                                    'Latest',
-                                    ['view', 'panel' => $activePanel->id],
-                                    ['class' => 'btn btn-default']
-                                ),
-                                ButtonDropdown::widget(
-                                    [
-                                        'label' => 'Last 10',
-                                        'options' => ['class' => 'btn-default'],
-                                        'dropdown' => ['items' => $items],
-                                    ]
-                                ),
+                                Html::a('Latest', ['view', 'panel' => $activePanel->id], ['class' => 'btn btn-default']),
+                                ButtonDropdown::widget([
+                                    'label' => 'Last 10',
+                                    'options' => ['class' => 'btn-default'],
+                                    'dropdown' => ['items' => $items],
+                                ]),
                             ],
-                        ]
-                    );
-                    echo "\n" . $summary['tag'] . ': ' . $summary['method'] . ' ' . Html::a(
-                            Html::encode($summary['url']),
-                            $summary['url']
-                        );
-                    echo ' at ' . date('Y-m-d h:i:s a', $summary['time']) . ' by ' . $summary['ip'];
+                        ]);
+                        echo "\n" . $summary['tag'] . ': ' . $summary['method'] . ' ' . Html::a(Html::encode($summary['url']), $summary['url']);
+                        echo ' at ' . date('Y-m-d h:i:s a', $summary['time']) . ' by ' . $summary['ip'];
                     ?>
                 </div>
                 <?= $activePanel->getDetail() ?>

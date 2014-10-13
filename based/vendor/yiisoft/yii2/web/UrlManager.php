@@ -240,10 +240,10 @@ class UrlManager extends Component
 
             Yii::trace('No matching URL rules. Using default URL parsing logic.', __METHOD__);
 
-            $suffix = (string)$this->suffix;
+            $suffix = (string) $this->suffix;
             if ($suffix !== '' && $pathInfo !== '') {
                 $n = strlen($this->suffix);
-                if (substr_compare($pathInfo, $this->suffix, -$n) === 0) {
+                if (substr_compare($pathInfo, $this->suffix, -$n, $n) === 0) {
                     $pathInfo = substr($pathInfo, 0, -$n);
                     if ($pathInfo === '') {
                         // suffix alone is not allowed
@@ -263,7 +263,7 @@ class UrlManager extends Component
                 $route = '';
             }
 
-            return [(string)$route, []];
+            return [(string) $route, []];
         }
     }
 
@@ -298,7 +298,7 @@ class UrlManager extends Component
      */
     public function createUrl($params)
     {
-        $params = (array)$params;
+        $params = (array) $params;
         $anchor = isset($params['#']) ? '#' . $params['#'] : '';
         unset($params['#'], $params[$this->routeParam]);
 
@@ -358,7 +358,7 @@ class UrlManager extends Component
      */
     public function createAbsoluteUrl($params, $scheme = null)
     {
-        $params = (array)$params;
+        $params = (array) $params;
         $url = $this->createUrl($params);
         if (strpos($url, '://') === false) {
             $url = $this->getHostInfo() . $url;

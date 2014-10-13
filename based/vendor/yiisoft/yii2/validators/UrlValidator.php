@@ -95,13 +95,9 @@ class UrlValidator extends Validator
             }
 
             if ($this->enableIDN) {
-                $value = preg_replace_callback(
-                    '/:\/\/([^\/]+)/',
-                    function ($matches) {
-                        return '://' . idn_to_ascii($matches[1]);
-                    },
-                    $value
-                );
+                $value = preg_replace_callback('/:\/\/([^\/]+)/', function ($matches) {
+                    return '://' . idn_to_ascii($matches[1]);
+                }, $value);
             }
 
             if (preg_match($pattern, $value)) {
@@ -125,14 +121,10 @@ class UrlValidator extends Validator
 
         $options = [
             'pattern' => new JsExpression($pattern),
-            'message' => Yii::$app->getI18n()->format(
-                    $this->message,
-                    [
-                        'attribute' => $object->getAttributeLabel($attribute),
-                    ],
-                    Yii::$app->language
-                ),
-            'enableIDN' => (boolean)$this->enableIDN,
+            'message' => Yii::$app->getI18n()->format($this->message, [
+                'attribute' => $object->getAttributeLabel($attribute),
+            ], Yii::$app->language),
+            'enableIDN' => (boolean) $this->enableIDN,
         ];
         if ($this->skipOnEmpty) {
             $options['skipOnEmpty'] = 1;

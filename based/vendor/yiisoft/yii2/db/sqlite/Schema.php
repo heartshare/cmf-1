@@ -160,7 +160,7 @@ class Schema extends \yii\db\Schema
         $sql = "PRAGMA foreign_key_list(" . $this->quoteSimpleTableName($table->name) . ')';
         $keys = $this->db->createCommand($sql)->queryAll();
         foreach ($keys as $key) {
-            $id = (int)$key['id'];
+            $id = (int) $key['id'];
             if (!isset($table->foreignKeys[$id])) {
                 $table->foreignKeys[$id] = [$key['table'], $key['from'] => $key['to']];
             } else {
@@ -192,9 +192,7 @@ class Schema extends \yii\db\Schema
 
         foreach ($indexes as $index) {
             $indexName = $index['name'];
-            $indexInfo = $this->db->createCommand(
-                "PRAGMA index_info(" . $this->quoteValue($index['name']) . ")"
-            )->queryAll();
+            $indexInfo = $this->db->createCommand("PRAGMA index_info(" . $this->quoteValue($index['name']) . ")")->queryAll();
 
             if ($index['unique']) {
                 $uniqueIndexes[$indexName] = [];
@@ -231,9 +229,9 @@ class Schema extends \yii\db\Schema
 
             if (!empty($matches[2])) {
                 $values = explode(',', $matches[2]);
-                $column->size = $column->precision = (int)$values[0];
+                $column->size = $column->precision = (int) $values[0];
                 if (isset($values[1])) {
-                    $column->scale = (int)$values[1];
+                    $column->scale = (int) $values[1];
                 }
                 if ($column->size === 1 && ($type === 'tinyint' || $type === 'bit')) {
                     $column->type = 'boolean';
@@ -272,17 +270,16 @@ class Schema extends \yii\db\Schema
      */
     public function setTransactionIsolationLevel($level)
     {
-        switch ($level) {
+        switch($level)
+        {
             case Transaction::SERIALIZABLE:
                 $this->db->createCommand("PRAGMA read_uncommitted = False;")->execute();
-                break;
+            break;
             case Transaction::READ_UNCOMMITTED:
                 $this->db->createCommand("PRAGMA read_uncommitted = True;")->execute();
-                break;
+            break;
             default:
-                throw new NotSupportedException(get_class(
-                    $this
-                ) . ' only supports transaction isolation levels READ UNCOMMITTED and SERIALIZABLE.');
+                throw new NotSupportedException(get_class($this) . ' only supports transaction isolation levels READ UNCOMMITTED and SERIALIZABLE.');
         }
     }
 }

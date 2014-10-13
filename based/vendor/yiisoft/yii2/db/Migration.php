@@ -351,10 +351,7 @@ class Migration extends Component implements MigrationInterface
      */
     public function addPrimaryKey($name, $table, $columns)
     {
-        echo "    > add primary key $name on $table (" . (is_array($columns) ? implode(
-                ',',
-                $columns
-            ) : $columns) . ") ...";
+        echo "    > add primary key $name on $table (" . (is_array($columns) ? implode(',', $columns) : $columns).") ...";
         $time = microtime(true);
         $this->db->createCommand()->addPrimaryKey($name, $table, $columns)->execute();
         echo " done (time: " . sprintf('%.3f', microtime(true) - $time) . "s)\n";
@@ -386,20 +383,9 @@ class Migration extends Component implements MigrationInterface
      */
     public function addForeignKey($name, $table, $columns, $refTable, $refColumns, $delete = null, $update = null)
     {
-        echo "    > add foreign key $name: $table (" . implode(
-                ',',
-                (array)$columns
-            ) . ") references $refTable (" . implode(',', (array)$refColumns) . ") ...";
+        echo "    > add foreign key $name: $table (" . implode(',', (array) $columns) . ") references $refTable (" . implode(',', (array) $refColumns) . ") ...";
         $time = microtime(true);
-        $this->db->createCommand()->addForeignKey(
-            $name,
-            $table,
-            $columns,
-            $refTable,
-            $refColumns,
-            $delete,
-            $update
-        )->execute();
+        $this->db->createCommand()->addForeignKey($name, $table, $columns, $refTable, $refColumns, $delete, $update)->execute();
         echo " done (time: " . sprintf('%.3f', microtime(true) - $time) . "s)\n";
     }
 
@@ -426,10 +412,7 @@ class Migration extends Component implements MigrationInterface
      */
     public function createIndex($name, $table, $columns, $unique = false)
     {
-        echo "    > create" . ($unique ? ' unique' : '') . " index $name on $table (" . implode(
-                ',',
-                (array)$columns
-            ) . ") ...";
+        echo "    > create" . ($unique ? ' unique' : '') . " index $name on $table (" . implode(',', (array) $columns) . ") ...";
         $time = microtime(true);
         $this->db->createCommand()->createIndex($name, $table, $columns, $unique)->execute();
         echo " done (time: " . sprintf('%.3f', microtime(true) - $time) . "s)\n";

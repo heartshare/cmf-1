@@ -98,9 +98,9 @@ abstract class ErrorHandler extends Component
             }
         } catch (\Exception $e) {
             // an other exception could be thrown while displaying the exception
-            $msg = (string)$e;
+            $msg = (string) $e;
             $msg .= "\nPrevious exception:\n";
-            $msg .= (string)$exception;
+            $msg .= (string) $exception;
             if (YII_DEBUG) {
                 if (PHP_SAPI === 'cli') {
                     echo $msg . "\n";
@@ -205,7 +205,7 @@ abstract class ErrorHandler extends Component
         } elseif ($exception instanceof \ErrorException) {
             $category .= ':' . $exception->getSeverity();
         }
-        Yii::error((string)$exception, $category);
+        Yii::error((string) $exception, $category);
     }
 
     /**

@@ -98,9 +98,7 @@ EOD;
     {
         $type = $this->getColumnType($type);
 
-        return 'ALTER TABLE ' . $this->db->quoteTableName($table) . ' MODIFY ' . $this->db->quoteColumnName(
-            $column
-        ) . ' ' . $this->getColumnType($type);
+        return 'ALTER TABLE ' . $this->db->quoteTableName($table) . ' MODIFY ' . $this->db->quoteColumnName($column) . ' ' . $this->getColumnType($type);
     }
 
     /**
@@ -129,19 +127,15 @@ EOD;
         }
 
         if ($value !== null) {
-            $value = (int)$value;
+            $value = (int) $value;
         } else {
             // use master connection to get the biggest PK value
-            $value = $this->db->useMaster(
-                    function (Connection $db) use ($tableSchema) {
-                        return $db->createCommand(
-                            "SELECT MAX(\"{$tableSchema->primaryKey}\") FROM \"{$tableSchema->name}\""
-                        )->queryScalar();
-                    }
-                ) + 1;
+            $value = $this->db->useMaster(function (Connection $db) use ($tableSchema) {
+                return $db->createCommand("SELECT MAX(\"{$tableSchema->primaryKey}\") FROM \"{$tableSchema->name}\"")->queryScalar();
+            }) + 1;
         }
 
         return "DROP SEQUENCE \"{$tableSchema->name}_SEQ\";"
-        . "CREATE SEQUENCE \"{$tableSchema->name}_SEQ\" START WITH {$value} INCREMENT BY 1 NOMAXVALUE NOCACHE";
+            . "CREATE SEQUENCE \"{$tableSchema->name}_SEQ\" START WITH {$value} INCREMENT BY 1 NOMAXVALUE NOCACHE";
     }
 }

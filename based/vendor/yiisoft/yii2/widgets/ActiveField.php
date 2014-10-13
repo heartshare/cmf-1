@@ -732,10 +732,7 @@ class ActiveField extends Component
         if (isset($this->selectors['error'])) {
             $options['error'] = $this->selectors['error'];
         } elseif (isset($this->errorOptions['class'])) {
-            $options['error'] = '.' . implode(
-                    '.',
-                    preg_split('/\s+/', $this->errorOptions['class'], -1, PREG_SPLIT_NO_EMPTY)
-                );
+            $options['error'] = '.' . implode('.', preg_split('/\s+/', $this->errorOptions['class'], -1, PREG_SPLIT_NO_EMPTY));
         } else {
             $options['error'] = isset($this->errorOptions['tag']) ? $this->errorOptions['tag'] : 'span';
         }
@@ -749,23 +746,17 @@ class ActiveField extends Component
         }
 
         if (!empty($validators)) {
-            $options['validate'] = new JsExpression("function (attribute, value, messages, deferred) {" . implode(
-                '',
-                $validators
-            ) . '}');
+            $options['validate'] = new JsExpression("function (attribute, value, messages, deferred) {" . implode('', $validators) . '}');
         }
 
         // only get the options that are different from the default ones (set in yii.activeForm.js)
-        return array_diff_assoc(
-            $options,
-            [
-                'validateOnChange' => true,
-                'validateOnBlur' => true,
-                'validateOnType' => false,
-                'validationDelay' => 500,
-                'encodeError' => true,
-                'error' => '.help-block',
-            ]
-        );
+        return array_diff_assoc($options, [
+            'validateOnChange' => true,
+            'validateOnBlur' => true,
+            'validateOnType' => false,
+            'validationDelay' => 500,
+            'encodeError' => true,
+            'error' => '.help-block',
+        ]);
     }
 }

@@ -66,7 +66,7 @@ class RangeValidator extends Validator
 
         $in = true;
 
-        foreach ((array)$value as $v) {
+        foreach ((is_array($value) ? $value : [$value]) as $v) {
             if (!in_array($v, $this->range, $this->strict)) {
                 $in = false;
                 break;
@@ -83,18 +83,14 @@ class RangeValidator extends Validator
     {
         $range = [];
         foreach ($this->range as $value) {
-            $range[] = (string)$value;
+            $range[] = (string) $value;
         }
         $options = [
             'range' => $range,
             'not' => $this->not,
-            'message' => Yii::$app->getI18n()->format(
-                    $this->message,
-                    [
-                        'attribute' => $object->getAttributeLabel($attribute),
-                    ],
-                    Yii::$app->language
-                ),
+            'message' => Yii::$app->getI18n()->format($this->message, [
+                'attribute' => $object->getAttributeLabel($attribute),
+            ], Yii::$app->language),
         ];
         if ($this->skipOnEmpty) {
             $options['skipOnEmpty'] = 1;

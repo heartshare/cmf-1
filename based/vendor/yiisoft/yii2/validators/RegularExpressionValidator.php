@@ -54,7 +54,7 @@ class RegularExpressionValidator extends Validator
     {
         $valid = !is_array($value) &&
             (!$this->not && preg_match($this->pattern, $value)
-                || $this->not && !preg_match($this->pattern, $value));
+            || $this->not && !preg_match($this->pattern, $value));
 
         return $valid ? null : [$this->message, []];
     }
@@ -81,13 +81,9 @@ class RegularExpressionValidator extends Validator
         $options = [
             'pattern' => new JsExpression($pattern),
             'not' => $this->not,
-            'message' => Yii::$app->getI18n()->format(
-                    $this->message,
-                    [
-                        'attribute' => $object->getAttributeLabel($attribute),
-                    ],
-                    Yii::$app->language
-                ),
+            'message' => Yii::$app->getI18n()->format($this->message, [
+                'attribute' => $object->getAttributeLabel($attribute),
+            ], Yii::$app->language),
         ];
         if ($this->skipOnEmpty) {
             $options['skipOnEmpty'] = 1;

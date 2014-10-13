@@ -171,14 +171,12 @@ class Nav extends Widget
                 if ($this->activateItems) {
                     $items = $this->isChildActive($items, $active);
                 }
-                $items = Dropdown::widget(
-                    [
-                        'items' => $items,
-                        'encodeLabels' => $this->encodeLabels,
-                        'clientOptions' => false,
-                        'view' => $this->getView(),
-                    ]
-                );
+                $items = Dropdown::widget([
+                    'items' => $items,
+                    'encodeLabels' => $this->encodeLabels,
+                    'clientOptions' => false,
+                    'view' => $this->getView(),
+                ]);
             }
         }
 

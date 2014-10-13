@@ -99,10 +99,7 @@ abstract class Target extends Component
      */
     public function collect($messages, $final)
     {
-        $this->messages = array_merge(
-            $this->messages,
-            $this->filterMessages($messages, $this->getLevels(), $this->categories, $this->except)
-        );
+        $this->messages = array_merge($this->messages, $this->filterMessages($messages, $this->getLevels(), $this->categories, $this->except));
         $count = count($this->messages);
         if ($count > 0 && ($final || $this->exportInterval > 0 && $count >= $this->exportInterval)) {
             if (($context = $this->getContextMessage()) !== '') {
@@ -207,12 +204,7 @@ abstract class Target extends Component
 
             $matched = empty($categories);
             foreach ($categories as $category) {
-                if ($message[2] === $category || !empty($category) && substr_compare(
-                        $category,
-                        '*',
-                        -1
-                    ) === 0 && strpos($message[2], rtrim($category, '*')) === 0
-                ) {
+                if ($message[2] === $category || !empty($category) && substr_compare($category, '*', -1, 1) === 0 && strpos($message[2], rtrim($category, '*')) === 0) {
                     $matched = true;
                     break;
                 }
@@ -250,14 +242,14 @@ abstract class Target extends Component
         }
         $traces = [];
         if (isset($message[4])) {
-            foreach ($message[4] as $trace) {
+            foreach($message[4] as $trace) {
                 $traces[] = "in {$trace['file']}:{$trace['line']}";
             }
         }
 
         $prefix = $this->getMessagePrefix($message);
         return date('Y-m-d H:i:s', $timestamp) . " {$prefix}[$level][$category] $text"
-        . (empty($traces) ? '' : "\n    " . implode("\n    ", $traces));
+            . (empty($traces) ? '' : "\n    " . implode("\n    ", $traces));
     }
 
     /**

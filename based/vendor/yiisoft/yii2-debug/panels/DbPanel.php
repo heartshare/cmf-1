@@ -56,15 +56,12 @@ class DbPanel extends Panel
         $queryCount = count($timings);
         $queryTime = number_format($this->getTotalQueryTime($timings) * 1000) . ' ms';
 
-        return Yii::$app->view->render(
-            'panels/db/summary',
-            [
-                'timings' => $this->calculateTimings(),
-                'panel' => $this,
-                'queryCount' => $queryCount,
-                'queryTime' => $queryTime,
-            ]
-        );
+        return Yii::$app->view->render('panels/db/summary', [
+            'timings' => $this->calculateTimings(),
+            'panel' => $this,
+            'queryCount' => $queryCount,
+            'queryTime' => $queryTime,
+        ]);
     }
 
     /**
@@ -75,14 +72,11 @@ class DbPanel extends Panel
         $searchModel = new Db();
         $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams(), $this->getModels());
 
-        return Yii::$app->view->render(
-            'panels/db/detail',
-            [
-                'panel' => $this,
-                'dataProvider' => $dataProvider,
-                'searchModel' => $searchModel,
-            ]
-        );
+        return Yii::$app->view->render('panels/db/detail', [
+            'panel' => $this,
+            'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
+        ]);
     }
 
     /**
@@ -116,11 +110,7 @@ class DbPanel extends Panel
     {
         $target = $this->module->logTarget;
 
-        return $target->filterMessages(
-            $target->messages,
-            Logger::LEVEL_PROFILE,
-            ['yii\db\Command::query', 'yii\db\Command::execute']
-        );
+        return $target->filterMessages($target->messages, Logger::LEVEL_PROFILE, ['yii\db\Command::query', 'yii\db\Command::execute']);
     }
 
     /**

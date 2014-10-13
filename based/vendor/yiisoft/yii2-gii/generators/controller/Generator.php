@@ -78,37 +78,14 @@ class Generator extends \yii\gii\Generator
      */
     public function rules()
     {
-        return array_merge(
-            parent::rules(),
-            [
-                [['controller', 'actions', 'baseClass', 'ns'], 'filter', 'filter' => 'trim'],
-                [['controller', 'baseClass'], 'required'],
-                [
-                    ['controller'],
-                    'match',
-                    'pattern' => '/^[a-z][a-z0-9\\-\\/]*$/',
-                    'message' => 'Only a-z, 0-9, dashes (-) and slashes (/) are allowed.'
-                ],
-                [
-                    ['actions'],
-                    'match',
-                    'pattern' => '/^[a-z][a-z0-9\\-,\\s]*$/',
-                    'message' => 'Only a-z, 0-9, dashes (-), spaces and commas are allowed.'
-                ],
-                [
-                    ['baseClass'],
-                    'match',
-                    'pattern' => '/^[\w\\\\]*$/',
-                    'message' => 'Only word characters and backslashes are allowed.'
-                ],
-                [
-                    ['ns'],
-                    'match',
-                    'pattern' => '/^[\w\\\\]*$/',
-                    'message' => 'Only word characters and backslashes are allowed.'
-                ],
-            ]
-        );
+        return array_merge(parent::rules(), [
+            [['controller', 'actions', 'baseClass', 'ns'], 'filter', 'filter' => 'trim'],
+            [['controller', 'baseClass'], 'required'],
+            [['controller'], 'match', 'pattern' => '/^[a-z][a-z0-9\\-\\/]*$/', 'message' => 'Only a-z, 0-9, dashes (-) and slashes (/) are allowed.'],
+            [['actions'], 'match', 'pattern' => '/^[a-z][a-z0-9\\-,\\s]*$/', 'message' => 'Only a-z, 0-9, dashes (-), spaces and commas are allowed.'],
+            [['baseClass'], 'match', 'pattern' => '/^[\w\\\\]*$/', 'message' => 'Only word characters and backslashes are allowed.'],
+            [['ns'], 'match', 'pattern' => '/^[\w\\\\]*$/', 'message' => 'Only word characters and backslashes are allowed.'],
+        ]);
     }
 
     /**

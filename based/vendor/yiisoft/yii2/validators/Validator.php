@@ -210,9 +210,9 @@ class Validator extends Component
     public function init()
     {
         parent::init();
-        $this->attributes = (array)$this->attributes;
-        $this->on = (array)$this->on;
-        $this->except = (array)$this->except;
+        $this->attributes = (array) $this->attributes;
+        $this->on = (array) $this->on;
+        $this->except = (array) $this->except;
     }
 
     /**

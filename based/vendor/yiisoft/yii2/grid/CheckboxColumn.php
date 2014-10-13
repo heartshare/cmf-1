@@ -65,7 +65,7 @@ class CheckboxColumn extends Column
         if (empty($this->name)) {
             throw new InvalidConfigException('The "name" property must be set.');
         }
-        if (substr_compare($this->name, '[]', -2)) {
+        if (substr_compare($this->name, '[]', -2, 2)) {
             $this->name .= '[]';
         }
     }
@@ -80,13 +80,11 @@ class CheckboxColumn extends Column
     {
         $name = rtrim($this->name, '[]') . '_all';
         $id = $this->grid->options['id'];
-        $options = json_encode(
-            [
-                'name' => $this->name,
-                'multiple' => $this->multiple,
-                'checkAll' => $name,
-            ]
-        );
+        $options = json_encode([
+            'name' => $this->name,
+            'multiple' => $this->multiple,
+            'checkAll' => $name,
+        ]);
         $this->grid->getView()->registerJs("jQuery('#$id').yiiGridView('setSelectionColumn', $options);");
 
         if ($this->header !== null || !$this->multiple) {

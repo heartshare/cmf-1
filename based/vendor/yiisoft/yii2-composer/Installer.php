@@ -191,10 +191,8 @@ class Installer extends LibraryInstaller
             mkdir($yiiDir, 0777, true);
         }
         foreach (['Yii.php', 'BaseYii.php', 'classes.php'] as $file) {
-            file_put_contents(
-                $yiiDir . '/' . $file,
-                <<<EOF
-               <?php
+            file_put_contents($yiiDir . '/' . $file, <<<EOF
+<?php
 /**
  * This is a link provided by the yiisoft/yii2-dev package via yii2-composer plugin.
  *
@@ -222,13 +220,13 @@ EOF
             rmdir($yiiDir);
         }
     }
-
+    
     public static function postCreateProject($event)
     {
         $params = $event->getComposer()->getPackage()->getExtra();
         if (isset($params[__METHOD__]) && is_array($params[__METHOD__])) {
             foreach ($params[__METHOD__] as $method => $args) {
-                call_user_func_array([__CLASS__, $method], (array)$args);
+                call_user_func_array([__CLASS__, $method], (array) $args);
             }
         }
     }
@@ -260,11 +258,7 @@ EOF
         $key = self::generateRandomString();
         foreach ($configs as $config) {
             if (is_file($config)) {
-                $content = preg_replace(
-                    '/(("|\')cookieValidationKey("|\')\s*=>\s*)(""|\'\')/',
-                    "\\1'$key'",
-                    file_get_contents($config)
-                );
+                $content = preg_replace('/(("|\')cookieValidationKey("|\')\s*=>\s*)(""|\'\')/', "\\1'$key'", file_get_contents($config));
                 file_put_contents($config, $content);
             }
         }

@@ -54,47 +54,24 @@ class Generator extends \yii\gii\Generator
      */
     public function rules()
     {
-        return array_merge(
-            parent::rules(),
-            [
-                [['db', 'ns', 'tableName', 'modelClass', 'baseClass'], 'filter', 'filter' => 'trim'],
-                [
-                    ['ns'],
-                    'filter',
-                    'filter' => function ($value) {
-                            return trim($value, '\\');
-                        }
-                ],
-                [['db', 'ns', 'tableName', 'baseClass'], 'required'],
-                [
-                    ['db', 'modelClass'],
-                    'match',
-                    'pattern' => '/^\w+$/',
-                    'message' => 'Only word characters are allowed.'
-                ],
-                [
-                    ['ns', 'baseClass'],
-                    'match',
-                    'pattern' => '/^[\w\\\\]+$/',
-                    'message' => 'Only word characters and backslashes are allowed.'
-                ],
-                [
-                    ['tableName'],
-                    'match',
-                    'pattern' => '/^(\w+\.)?([\w\*]+)$/',
-                    'message' => 'Only word characters, and optionally an asterisk and/or a dot are allowed.'
-                ],
-                [['db'], 'validateDb'],
-                [['ns'], 'validateNamespace'],
-                [['tableName'], 'validateTableName'],
-                [['modelClass'], 'validateModelClass', 'skipOnEmpty' => false],
-                [['baseClass'], 'validateClass', 'params' => ['extends' => ActiveRecord::className()]],
-                [['generateRelations', 'generateLabelsFromComments'], 'boolean'],
-                [['enableI18N'], 'boolean'],
-                [['useTablePrefix'], 'boolean'],
-                [['messageCategory'], 'validateMessageCategory', 'skipOnEmpty' => false],
-            ]
-        );
+        return array_merge(parent::rules(), [
+            [['db', 'ns', 'tableName', 'modelClass', 'baseClass'], 'filter', 'filter' => 'trim'],
+            [['ns'], 'filter', 'filter' => function($value) { return trim($value, '\\'); }],
+
+            [['db', 'ns', 'tableName', 'baseClass'], 'required'],
+            [['db', 'modelClass'], 'match', 'pattern' => '/^\w+$/', 'message' => 'Only word characters are allowed.'],
+            [['ns', 'baseClass'], 'match', 'pattern' => '/^[\w\\\\]+$/', 'message' => 'Only word characters and backslashes are allowed.'],
+            [['tableName'], 'match', 'pattern' => '/^(\w+\.)?([\w\*]+)$/', 'message' => 'Only word characters, and optionally an asterisk and/or a dot are allowed.'],
+            [['db'], 'validateDb'],
+            [['ns'], 'validateNamespace'],
+            [['tableName'], 'validateTableName'],
+            [['modelClass'], 'validateModelClass', 'skipOnEmpty' => false],
+            [['baseClass'], 'validateClass', 'params' => ['extends' => ActiveRecord::className()]],
+            [['generateRelations', 'generateLabelsFromComments'], 'boolean'],
+            [['enableI18N'], 'boolean'],
+            [['useTablePrefix'], 'boolean'],
+            [['messageCategory'], 'validateMessageCategory', 'skipOnEmpty' => false],
+        ]);
     }
 
     /**
@@ -102,18 +79,15 @@ class Generator extends \yii\gii\Generator
      */
     public function attributeLabels()
     {
-        return array_merge(
-            parent::attributeLabels(),
-            [
-                'ns' => 'Namespace',
-                'db' => 'Database Connection ID',
-                'tableName' => 'Table Name',
-                'modelClass' => 'Model Class',
-                'baseClass' => 'Base Class',
-                'generateRelations' => 'Generate Relations',
-                'generateLabelsFromComments' => 'Generate Labels from DB Comments',
-            ]
-        );
+        return array_merge(parent::attributeLabels(), [
+            'ns' => 'Namespace',
+            'db' => 'Database Connection ID',
+            'tableName' => 'Table Name',
+            'modelClass' => 'Model Class',
+            'baseClass' => 'Base Class',
+            'generateRelations' => 'Generate Relations',
+            'generateLabelsFromComments' => 'Generate Labels from DB Comments',
+        ]);
     }
 
     /**
@@ -121,33 +95,30 @@ class Generator extends \yii\gii\Generator
      */
     public function hints()
     {
-        return array_merge(
-            parent::hints(),
-            [
-                'ns' => 'This is the namespace of the ActiveRecord class to be generated, e.g., <code>app\models</code>',
-                'db' => 'This is the ID of the DB application component.',
-                'tableName' => 'This is the name of the DB table that the new ActiveRecord class is associated with, e.g. <code>post</code>.
+        return array_merge(parent::hints(), [
+            'ns' => 'This is the namespace of the ActiveRecord class to be generated, e.g., <code>app\models</code>',
+            'db' => 'This is the ID of the DB application component.',
+            'tableName' => 'This is the name of the DB table that the new ActiveRecord class is associated with, e.g. <code>post</code>.
                 The table name may consist of the DB schema part if needed, e.g. <code>public.post</code>.
                 The table name may end with asterisk to match multiple table names, e.g. <code>tbl_*</code>
                 will match tables who name starts with <code>tbl_</code>. In this case, multiple ActiveRecord classes
                 will be generated, one for each matching table name; and the class names will be generated from
                 the matching characters. For example, table <code>tbl_post</code> will generate <code>Post</code>
                 class.',
-                'modelClass' => 'This is the name of the ActiveRecord class to be generated. The class name should not contain
+            'modelClass' => 'This is the name of the ActiveRecord class to be generated. The class name should not contain
                 the namespace part as it is specified in "Namespace". You do not need to specify the class name
                 if "Table Name" ends with asterisk, in which case multiple ActiveRecord classes will be generated.',
-                'baseClass' => 'This is the base class of the new ActiveRecord class. It should be a fully qualified namespaced class name.',
-                'generateRelations' => 'This indicates whether the generator should generate relations based on
+            'baseClass' => 'This is the base class of the new ActiveRecord class. It should be a fully qualified namespaced class name.',
+            'generateRelations' => 'This indicates whether the generator should generate relations based on
                 foreign key constraints it detects in the database. Note that if your database contains too many tables,
                 you may want to uncheck this option to accelerate the code generation process.',
-                'generateLabelsFromComments' => 'This indicates whether the generator should generate attribute labels
+            'generateLabelsFromComments' => 'This indicates whether the generator should generate attribute labels
                 by using the comments of the corresponding DB columns.',
-                'useTablePrefix' => 'This indicates whether the table name returned by the generated ActiveRecord class
+            'useTablePrefix' => 'This indicates whether the table name returned by the generated ActiveRecord class
                 should consider the <code>tablePrefix</code> setting of the DB connection. For example, if the
                 table name is <code>tbl_post</code> and <code>tablePrefix=tbl_</code>, the ActiveRecord class
                 will return the table name as <code>{{%post}}</code>.',
-            ]
-        );
+        ]);
     }
 
     /**
@@ -159,8 +130,8 @@ class Generator extends \yii\gii\Generator
         if ($db !== null) {
             return [
                 'tableName' => function () use ($db) {
-                        return $db->getSchema()->getTableNames();
-                    },
+                    return $db->getSchema()->getTableNames();
+                },
             ];
         } else {
             return [];
@@ -180,10 +151,7 @@ class Generator extends \yii\gii\Generator
      */
     public function stickyAttributes()
     {
-        return array_merge(
-            parent::stickyAttributes(),
-            ['ns', 'db', 'baseClass', 'generateRelations', 'generateLabelsFromComments']
-        );
+        return array_merge(parent::stickyAttributes(), ['ns', 'db', 'baseClass', 'generateRelations', 'generateLabelsFromComments']);
     }
 
     /**
@@ -306,10 +274,7 @@ class Generator extends \yii\gii\Generator
                         $labels = array_intersect_key($this->generateLabels($table), array_flip($uniqueColumns));
                         $lastLabel = array_pop($labels);
                         $columnsList = implode("', '", $uniqueColumns);
-                        $rules[] = "[['" . $columnsList . "'], 'unique', 'targetAttribute' => ['" . $columnsList . "'], 'message' => 'The combination of " . implode(
-                                ', ',
-                                $labels
-                            ) . " and " . $lastLabel . " has already been taken.']";
+                        $rules[] = "[['" . $columnsList . "'], 'unique', 'targetAttribute' => ['" . $columnsList . "'], 'message' => 'The combination of " . implode(', ', $labels) . " and " . $lastLabel . " has already been taken.']";
                     }
                 }
             }
@@ -387,34 +352,18 @@ class Generator extends \yii\gii\Generator
 
             $link = $this->generateRelationLink([$fks[$table->primaryKey[1]][1] => $table->primaryKey[1]]);
             $viaLink = $this->generateRelationLink([$table->primaryKey[0] => $fks[$table->primaryKey[0]][1]]);
-            $relationName = $this->generateRelationName(
-                $relations,
-                $className0,
-                $db->getTableSchema($table0),
-                $table->primaryKey[1],
-                true
-            );
+            $relationName = $this->generateRelationName($relations, $className0, $db->getTableSchema($table0), $table->primaryKey[1], true);
             $relations[$className0][$relationName] = [
-                "return \$this->hasMany($className1::className(), $link)->viaTable('{" . $this->generateTableName(
-                    $table->name
-                ) . "}', $viaLink);",
+                "return \$this->hasMany($className1::className(), $link)->viaTable('" . $this->generateTableName($table->name) . "', $viaLink);",
                 $className1,
                 true,
             ];
 
             $link = $this->generateRelationLink([$fks[$table->primaryKey[0]][1] => $table->primaryKey[0]]);
             $viaLink = $this->generateRelationLink([$table->primaryKey[1] => $fks[$table->primaryKey[1]][1]]);
-            $relationName = $this->generateRelationName(
-                $relations,
-                $className1,
-                $db->getTableSchema($table1),
-                $table->primaryKey[0],
-                true
-            );
+            $relationName = $this->generateRelationName($relations, $className1, $db->getTableSchema($table1), $table->primaryKey[0], true);
             $relations[$className1][$relationName] = [
-                "return \$this->hasMany($className0::className(), $link)->viaTable('{" . $this->generateTableName(
-                    $table->name
-                ) . "}', $viaLink);",
+                "return \$this->hasMany($className0::className(), $link)->viaTable('" . $this->generateTableName($table->name) . "', $viaLink);",
                 $className0,
                 true,
             ];
@@ -439,12 +388,12 @@ class Generator extends \yii\gii\Generator
     }
 
     /**
-     * Checks if the given table is a pivot table.
+     * Checks if the given table is a junction table.
      * For simplicity, this method only deals with the case where the pivot contains two PK columns,
      * each referencing a column in a different table.
      * @param \yii\db\TableSchema the table being checked
-     * @return array|boolean the relevant foreign key constraint information if the table is a pivot table,
-     * or false if the table is not a pivot table.
+     * @return array|boolean the relevant foreign key constraint information if the table is a junction table,
+     * or false if the table is not a junction table.
      */
     protected function checkPivotTable($table)
     {
@@ -530,7 +479,7 @@ class Generator extends \yii\gii\Generator
         if ($this->isReservedKeyword($this->modelClass)) {
             $this->addError('modelClass', 'Class name cannot be a reserved PHP keyword.');
         }
-        if ((empty($this->tableName) || substr_compare($this->tableName, '*', -1)) && $this->modelClass == '') {
+        if ((empty($this->tableName) || substr_compare($this->tableName, '*', -1, 1)) && $this->modelClass == '') {
             $this->addError('modelClass', 'Model Class cannot be blank if table name does not end with asterisk.');
         }
     }
@@ -540,7 +489,7 @@ class Generator extends \yii\gii\Generator
      */
     public function validateTableName()
     {
-        if (strpos($this->tableName, '*') !== false && substr_compare($this->tableName, '*', -1)) {
+        if (strpos($this->tableName, '*') !== false && substr_compare($this->tableName, '*', -1, 1)) {
             $this->addError('tableName', 'Asterisk is only allowed as the last character.');
 
             return;
@@ -552,10 +501,7 @@ class Generator extends \yii\gii\Generator
             foreach ($tables as $table) {
                 $class = $this->generateClassName($table);
                 if ($this->isReservedKeyword($class)) {
-                    $this->addError(
-                        'tableName',
-                        "Table '$table' will generate a class which is a reserved PHP keyword."
-                    );
+                    $this->addError('tableName', "Table '$table' will generate a class which is a reserved PHP keyword.");
                     break;
                 }
             }

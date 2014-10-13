@@ -118,6 +118,6 @@ class TimestampBehavior extends AttributeBehavior
      */
     public function touch($attribute)
     {
-        $this->owner->updateAttributes(array_fill_keys((array)$attribute, $this->getValue(null)));
+        $this->owner->updateAttributes(array_fill_keys((array) $attribute, $this->getValue(null)));
     }
 }

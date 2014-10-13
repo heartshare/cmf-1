@@ -39,14 +39,11 @@ class ProfilingPanel extends Panel
      */
     public function getSummary()
     {
-        return Yii::$app->view->render(
-            'panels/profile/summary',
-            [
-                'memory' => sprintf('%.1f MB', $this->data['memory'] / 1048576),
-                'time' => number_format($this->data['time'] * 1000) . ' ms',
-                'panel' => $this
-            ]
-        );
+        return Yii::$app->view->render('panels/profile/summary', [
+            'memory' => sprintf('%.1f MB', $this->data['memory'] / 1048576),
+            'time' => number_format($this->data['time'] * 1000) . ' ms',
+            'panel' => $this
+        ]);
     }
 
     /**
@@ -57,16 +54,13 @@ class ProfilingPanel extends Panel
         $searchModel = new Profile();
         $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams(), $this->getModels());
 
-        return Yii::$app->view->render(
-            'panels/profile/detail',
-            [
-                'panel' => $this,
-                'dataProvider' => $dataProvider,
-                'searchModel' => $searchModel,
-                'memory' => sprintf('%.1f MB', $this->data['memory'] / 1048576),
-                'time' => number_format($this->data['time'] * 1000) . ' ms',
-            ]
-        );
+        return Yii::$app->view->render('panels/profile/detail', [
+            'panel' => $this,
+            'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
+            'memory' => sprintf('%.1f MB', $this->data['memory'] / 1048576),
+            'time' => number_format($this->data['time'] * 1000) . ' ms',
+        ]);
     }
 
     /**
@@ -94,7 +88,7 @@ class ProfilingPanel extends Panel
             $timings = Yii::getLogger()->calculateTimings($this->data['messages']);
 
             foreach ($timings as $seq => $profileTiming) {
-                $this->_models[] = [
+                $this->_models[] = 	[
                     'duration' => $profileTiming['duration'] * 1000, // in milliseconds
                     'category' => $profileTiming['category'],
                     'info' => $profileTiming['info'],

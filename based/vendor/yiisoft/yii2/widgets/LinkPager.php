@@ -155,13 +155,7 @@ class LinkPager extends Widget
 
         // first page
         if ($this->firstPageLabel !== false) {
-            $buttons[] = $this->renderPageButton(
-                $this->firstPageLabel,
-                0,
-                $this->firstPageCssClass,
-                $currentPage <= 0,
-                false
-            );
+            $buttons[] = $this->renderPageButton($this->firstPageLabel, 0, $this->firstPageCssClass, $currentPage <= 0, false);
         }
 
         // prev page
@@ -169,13 +163,7 @@ class LinkPager extends Widget
             if (($page = $currentPage - 1) < 0) {
                 $page = 0;
             }
-            $buttons[] = $this->renderPageButton(
-                $this->prevPageLabel,
-                $page,
-                $this->prevPageCssClass,
-                $currentPage <= 0,
-                false
-            );
+            $buttons[] = $this->renderPageButton($this->prevPageLabel, $page, $this->prevPageCssClass, $currentPage <= 0, false);
         }
 
         // internal pages
@@ -189,24 +177,12 @@ class LinkPager extends Widget
             if (($page = $currentPage + 1) >= $pageCount - 1) {
                 $page = $pageCount - 1;
             }
-            $buttons[] = $this->renderPageButton(
-                $this->nextPageLabel,
-                $page,
-                $this->nextPageCssClass,
-                $currentPage >= $pageCount - 1,
-                false
-            );
+            $buttons[] = $this->renderPageButton($this->nextPageLabel, $page, $this->nextPageCssClass, $currentPage >= $pageCount - 1, false);
         }
 
         // last page
         if ($this->lastPageLabel !== false) {
-            $buttons[] = $this->renderPageButton(
-                $this->lastPageLabel,
-                $pageCount - 1,
-                $this->lastPageCssClass,
-                $currentPage >= $pageCount - 1,
-                false
-            );
+            $buttons[] = $this->renderPageButton($this->lastPageLabel, $pageCount - 1, $this->lastPageCssClass, $currentPage >= $pageCount - 1, false);
         }
 
         return Html::tag('ul', implode("\n", $buttons), $this->options);
@@ -247,7 +223,7 @@ class LinkPager extends Widget
         $currentPage = $this->pagination->getPage();
         $pageCount = $this->pagination->getPageCount();
 
-        $beginPage = max(0, $currentPage - (int)($this->maxButtonCount / 2));
+        $beginPage = max(0, $currentPage - (int) ($this->maxButtonCount / 2));
         if (($endPage = $beginPage + $this->maxButtonCount - 1) >= $pageCount) {
             $endPage = $pageCount - 1;
             $beginPage = max(0, $endPage - $this->maxButtonCount + 1);

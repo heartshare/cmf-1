@@ -294,15 +294,13 @@ class GridView extends BaseListView
         $tableHeader = $this->showHeader ? $this->renderTableHeader() : false;
         $tableBody = $this->renderTableBody();
         $tableFooter = $this->showFooter ? $this->renderTableFooter() : false;
-        $content = array_filter(
-            [
-                $caption,
-                $columnGroup,
-                $tableHeader,
-                $tableFooter,
-                $tableBody,
-            ]
-        );
+        $content = array_filter([
+            $caption,
+            $columnGroup,
+            $tableHeader,
+            $tableFooter,
+            $tableBody,
+        ]);
 
         return Html::tag('table', implode("\n", $content), $this->tableOptions);
     }
@@ -478,15 +476,10 @@ class GridView extends BaseListView
             if (is_string($column)) {
                 $column = $this->createDataColumn($column);
             } else {
-                $column = Yii::createObject(
-                    array_merge(
-                        [
-                            'class' => $this->dataColumnClass ? : DataColumn::className(),
-                            'grid' => $this,
-                        ],
-                        $column
-                    )
-                );
+                $column = Yii::createObject(array_merge([
+                    'class' => $this->dataColumnClass ? : DataColumn::className(),
+                    'grid' => $this,
+                ], $column));
             }
             if (!$column->visible) {
                 unset($this->columns[$i]);
@@ -508,15 +501,13 @@ class GridView extends BaseListView
             throw new InvalidConfigException('The column must be specified in the format of "attribute", "attribute:format" or "attribute:format:label"');
         }
 
-        return Yii::createObject(
-            [
-                'class' => $this->dataColumnClass ? : DataColumn::className(),
-                'grid' => $this,
-                'attribute' => $matches[1],
-                'format' => isset($matches[3]) ? $matches[3] : 'text',
-                'label' => isset($matches[5]) ? $matches[5] : null,
-            ]
-        );
+        return Yii::createObject([
+            'class' => $this->dataColumnClass ? : DataColumn::className(),
+            'grid' => $this,
+            'attribute' => $matches[1],
+            'format' => isset($matches[3]) ? $matches[3] : 'text',
+            'label' => isset($matches[5]) ? $matches[5] : null,
+        ]);
     }
 
     /**

@@ -115,12 +115,10 @@ class Logger extends Component
     public function init()
     {
         parent::init();
-        register_shutdown_function(
-            function () {
-                // make sure "flush()" is called last when there are multiple shutdown functions
-                register_shutdown_function([$this, 'flush'], true);
-            }
-        );
+        register_shutdown_function(function () {
+            // make sure "flush()" is called last when there are multiple shutdown functions
+            register_shutdown_function([$this, 'flush'], true);
+        });
     }
 
     /**
@@ -208,11 +206,7 @@ class Logger extends Component
             $matched = empty($categories);
             foreach ($categories as $category) {
                 $prefix = rtrim($category, '*');
-                if (strpos(
-                        $timing['category'],
-                        $prefix
-                    ) === 0 && ($timing['category'] === $category || $prefix !== $category)
-                ) {
+                if (strpos($timing['category'], $prefix) === 0 && ($timing['category'] === $category || $prefix !== $category)) {
                     $matched = true;
                     break;
                 }
@@ -222,11 +216,7 @@ class Logger extends Component
                 foreach ($excludeCategories as $category) {
                     $prefix = rtrim($category, '*');
                     foreach ($timings as $i => $timing) {
-                        if (strpos(
-                                $timing['category'],
-                                $prefix
-                            ) === 0 && ($timing['category'] === $category || $prefix !== $category)
-                        ) {
+                        if (strpos($timing['category'], $prefix) === 0 && ($timing['category'] === $category || $prefix !== $category)) {
                             $matched = false;
                             break;
                         }

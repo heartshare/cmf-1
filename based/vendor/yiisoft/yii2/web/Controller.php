@@ -77,13 +77,9 @@ class Controller extends \yii\base\Controller
                 } elseif (!is_array($params[$name])) {
                     $args[] = $actionParams[$name] = $params[$name];
                 } else {
-                    throw new BadRequestHttpException(Yii::t(
-                        'yii',
-                        'Invalid data received for parameter "{param}".',
-                        [
-                            'param' => $name,
-                        ]
-                    ));
+                    throw new BadRequestHttpException(Yii::t('yii', 'Invalid data received for parameter "{param}".', [
+                        'param' => $name,
+                    ]));
                 }
                 unset($params[$name]);
             } elseif ($param->isDefaultValueAvailable()) {
@@ -94,13 +90,9 @@ class Controller extends \yii\base\Controller
         }
 
         if (!empty($missing)) {
-            throw new BadRequestHttpException(Yii::t(
-                'yii',
-                'Missing required parameters: {params}',
-                [
-                    'params' => implode(', ', $missing),
-                ]
-            ));
+            throw new BadRequestHttpException(Yii::t('yii', 'Missing required parameters: {params}', [
+                'params' => implode(', ', $missing),
+            ]));
         }
 
         $this->actionParams = $actionParams;
@@ -114,9 +106,7 @@ class Controller extends \yii\base\Controller
     public function beforeAction($action)
     {
         if (parent::beforeAction($action)) {
-            if ($this->enableCsrfValidation && Yii::$app->getErrorHandler(
-                )->exception === null && !Yii::$app->getRequest()->validateCsrfToken()
-            ) {
+            if ($this->enableCsrfValidation && Yii::$app->getErrorHandler()->exception === null && !Yii::$app->getRequest()->validateCsrfToken()) {
                 throw new BadRequestHttpException(Yii::t('yii', 'Unable to verify your data submission.'));
             }
             return true;

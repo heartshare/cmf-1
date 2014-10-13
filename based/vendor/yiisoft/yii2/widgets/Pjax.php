@@ -168,9 +168,7 @@ class Pjax extends Widget
         $this->clientOptions['scrollTo'] = $this->scrollTo;
         $options = Json::encode($this->clientOptions);
         $linkSelector = Json::encode($this->linkSelector !== null ? $this->linkSelector : '#' . $id . ' a');
-        $formSelector = Json::encode(
-            $this->formSelector !== null ? $this->formSelector : '#' . $id . ' form[data-pjax]'
-        );
+        $formSelector = Json::encode($this->formSelector !== null ? $this->formSelector : '#' . $id . ' form[data-pjax]');
         $view = $this->getView();
         PjaxAsset::register($view);
         $js = "jQuery(document).pjax($linkSelector, \"#$id\", $options);";

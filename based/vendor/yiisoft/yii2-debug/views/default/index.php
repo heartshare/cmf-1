@@ -27,124 +27,102 @@ $this->title = 'Yii Debugger';
 
     <div class="container">
         <div class="row">
-            <?php
+<?php
 
-            if (isset($this->context->module->panels['db']) && isset($this->context->module->panels['request'])) {
+if (isset($this->context->module->panels['db']) && isset($this->context->module->panels['request'])) {
 
-                echo "			<h1>Available Debug Data</h1>";
+    echo "			<h1>Available Debug Data</h1>";
 
-                $codes = [];
-                foreach ($manifest as $tag => $vals) {
-                    if (!empty($vals['statusCode'])) {
-                        $codes[] = $vals['statusCode'];
-                    }
-                }
-                $codes = array_unique($codes, SORT_NUMERIC);
-                $statusCodes = !empty($codes) ? array_combine($codes, $codes) : null;
+    $codes = [];
+    foreach ($manifest as $tag => $vals) {
+        if (!empty($vals['statusCode'])) {
+            $codes[] = $vals['statusCode'];
+        }
+    }
+    $codes = array_unique($codes, SORT_NUMERIC);
+    $statusCodes = !empty($codes) ? array_combine($codes, $codes) : null;
 
-                echo GridView::widget(
-                    [
-                        'dataProvider' => $dataProvider,
-                        'filterModel' => $searchModel,
-                        'rowOptions' => function ($model, $key, $index, $grid) use ($searchModel) {
-                                $dbPanel = $this->context->module->panels['db'];
+    echo GridView::widget([
+        'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+        'rowOptions' => function ($model, $key, $index, $grid) use ($searchModel) {
+            $dbPanel = $this->context->module->panels['db'];
 
-                                if ($searchModel->isCodeCritical(
-                                        $model['statusCode']
-                                    ) || $dbPanel->isQueryCountCritical($model['sqlCount'])
-                                ) {
-                                    return ['class' => 'danger'];
-                                } else {
-                                    return [];
-                                }
-                            },
-                        'columns' => [
-                            ['class' => 'yii\grid\SerialColumn'],
-                            [
-                                'attribute' => 'tag',
-                                'value' => function ($data) {
-                                        return Html::a($data['tag'], ['view', 'tag' => $data['tag']]);
-                                    },
-                                'format' => 'html',
-                            ],
-                            [
-                                'attribute' => 'time',
-                                'value' => function ($data) {
-                                        return '<span class="nowrap">' . Yii::$app->formatter->asDateTime(
-                                            $data['time'],
-                                            'short'
-                                        ) . '</span>';
-                                    },
-                                'format' => 'html',
-                            ],
-                            'ip',
-                            [
-                                'attribute' => 'sqlCount',
-                                'label' => 'Query Count',
-                                'value' => function ($data) {
-                                        $dbPanel = $this->context->module->panels['db'];
-
-                                        if ($dbPanel->isQueryCountCritical($data['sqlCount'])) {
-
-                                            $content = Html::tag('b', $data['sqlCount']) . ' ' . Html::tag(
-                                                    'span',
-                                                    '',
-                                                    ['class' => 'glyphicon glyphicon-exclamation-sign']
-                                                );
-
-                                            return Html::a(
-                                                $content,
-                                                ['view', 'panel' => 'db', 'tag' => $data['tag']],
-                                                [
-                                                    'title' => 'Too many queries. Allowed count is ' . $dbPanel->criticalQueryThreshold,
-                                                ]
-                                            );
-
-                                        } else {
-                                            return $data['sqlCount'];
-                                        }
-                                    },
-                                'format' => 'html',
-                            ],
-                            [
-                                'attribute' => 'mailCount',
-                                'visible' => isset($this->context->module->panels['mail']),
-                            ],
-                            [
-                                'attribute' => 'method',
-                                'filter' => [
-                                    'get' => 'GET',
-                                    'post' => 'POST',
-                                    'delete' => 'DELETE',
-                                    'put' => 'PUT',
-                                    'head' => 'HEAD'
-                                ]
-                            ],
-                            [
-                                'attribute' => 'ajax',
-                                'value' => function ($data) {
-                                        return $data['ajax'] ? 'Yes' : 'No';
-                                    },
-                                'filter' => ['No', 'Yes'],
-                            ],
-                            [
-                                'attribute' => 'url',
-                                'label' => 'URL',
-                            ],
-                            [
-                                'attribute' => 'statusCode',
-                                'filter' => $statusCodes,
-                                'label' => 'Status code'
-                            ],
-                        ],
-                    ]
-                );
-
+            if ($searchModel->isCodeCritical($model['statusCode']) || $dbPanel->isQueryCountCritical($model['sqlCount'])) {
+                return ['class'=>'danger'];
             } else {
-                echo "<div class='alert alert-warning'>No data available. Panel <code>db</code> or <code>request</code> not found.</div>";
+                return [];
             }
+        },
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+            [
+                'attribute' => 'tag',
+                'value' => function ($data) {
+                    return Html::a($data['tag'], ['view', 'tag' => $data['tag']]);
+                },
+                'format' => 'html',
+            ],
+            [
+                'attribute' => 'time',
+                'value' => function ($data) {
+                    return '<span class="nowrap">' . Yii::$app->formatter->asDateTime($data['time'], 'short') . '</span>';
+                },
+                'format' => 'html',
+            ],
+            'ip',
+            [
+                'attribute' => 'sqlCount',
+                'label' => 'Query Count',
+                'value' => function ($data) {
+                    $dbPanel = $this->context->module->panels['db'];
 
-            ?>
+                    if ($dbPanel->isQueryCountCritical($data['sqlCount'])) {
+
+                        $content = Html::tag('b', $data['sqlCount']) . ' ' . Html::tag('span', '', ['class' => 'glyphicon glyphicon-exclamation-sign']);
+
+                        return Html::a($content, ['view', 'panel' => 'db', 'tag' => $data['tag']], [
+                            'title' => 'Too many queries. Allowed count is ' . $dbPanel->criticalQueryThreshold,
+                        ]);
+
+                    } else {
+                        return $data['sqlCount'];
+                    }
+                },
+                'format' => 'html',
+            ],
+            [
+                'attribute' => 'mailCount',
+                'visible' => isset($this->context->module->panels['mail']),
+            ],
+            [
+                'attribute' => 'method',
+                'filter' => ['get' => 'GET', 'post' => 'POST', 'delete' => 'DELETE', 'put' => 'PUT', 'head' => 'HEAD']
+            ],
+            [
+                'attribute'=>'ajax',
+                'value' => function ($data) {
+                    return $data['ajax'] ? 'Yes' : 'No';
+                },
+                'filter' => ['No', 'Yes'],
+            ],
+            [
+                'attribute' => 'url',
+                'label' => 'URL',
+            ],
+            [
+                'attribute' => 'statusCode',
+                'filter' => $statusCodes,
+                'label' => 'Status code'
+            ],
+        ],
+    ]);
+
+} else {
+    echo "<div class='alert alert-warning'>No data available. Panel <code>db</code> or <code>request</code> not found.</div>";
+}
+
+?>
         </div>
     </div>
 </div>

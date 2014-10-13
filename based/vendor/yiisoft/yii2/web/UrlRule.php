@@ -216,10 +216,10 @@ class UrlRule extends Object implements UrlRuleInterface
         }
 
         $pathInfo = $request->getPathInfo();
-        $suffix = (string)($this->suffix === null ? $manager->suffix : $this->suffix);
+        $suffix = (string) ($this->suffix === null ? $manager->suffix : $this->suffix);
         if ($suffix !== '' && $pathInfo !== '') {
             $n = strlen($suffix);
-            if (substr_compare($pathInfo, $suffix, -$n) === 0) {
+            if (substr_compare($pathInfo, $suffix, -$n, $n) === 0) {
                 $pathInfo = substr($pathInfo, 0, -$n);
                 if ($pathInfo === '') {
                     // suffix alone is not allowed
@@ -313,11 +313,7 @@ class UrlRule extends Object implements UrlRuleInterface
 
         // match params in the pattern
         foreach ($this->_paramRules as $name => $rule) {
-            if (isset($params[$name]) && !is_array($params[$name]) && ($rule === '' || preg_match(
-                        $rule,
-                        $params[$name]
-                    ))
-            ) {
+            if (isset($params[$name]) && !is_array($params[$name]) && ($rule === '' || preg_match($rule, $params[$name]))) {
                 $tr["<$name>"] = $this->encodeParams ? urlencode($params[$name]) : $params[$name];
                 unset($params[$name]);
             } elseif (!isset($this->defaults[$name]) || isset($params[$name])) {

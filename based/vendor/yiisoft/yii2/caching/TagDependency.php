@@ -31,7 +31,7 @@ class TagDependency extends Dependency
      */
     protected function generateDependencyData($cache)
     {
-        $timestamps = $this->getTimestamps($cache, (array)$this->tags);
+        $timestamps = $this->getTimestamps($cache, (array) $this->tags);
 
         $newKeys = [];
         foreach ($timestamps as $key => $timestamp) {
@@ -53,7 +53,7 @@ class TagDependency extends Dependency
      */
     public function getHasChanged($cache)
     {
-        $timestamps = $this->getTimestamps($cache, (array)$this->tags);
+        $timestamps = $this->getTimestamps($cache, (array) $this->tags);
         return $timestamps !== $this->data;
     }
 

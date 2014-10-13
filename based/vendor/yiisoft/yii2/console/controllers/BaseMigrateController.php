@@ -104,7 +104,7 @@ abstract class BaseMigrateController extends Controller
         }
 
         $total = count($migrations);
-        $limit = (int)$limit;
+        $limit = (int) $limit;
         if ($limit > 0) {
             $migrations = array_slice($migrations, 0, $limit);
         }
@@ -154,7 +154,7 @@ abstract class BaseMigrateController extends Controller
         if ($limit === 'all') {
             $limit = null;
         } else {
-            $limit = (int)$limit;
+            $limit = (int) $limit;
             if ($limit < 1) {
                 throw new Exception("The step argument must be greater than 0.");
             }
@@ -212,7 +212,7 @@ abstract class BaseMigrateController extends Controller
         if ($limit === 'all') {
             $limit = null;
         } else {
-            $limit = (int)$limit;
+            $limit = (int) $limit;
             if ($limit < 1) {
                 throw new Exception("The step argument must be greater than 0.");
             }
@@ -281,7 +281,7 @@ abstract class BaseMigrateController extends Controller
     {
         if (preg_match('/^m?(\d{6}_\d{6})(_.*?)?$/', $version, $matches)) {
             $this->migrateToVersion('m' . $matches[1]);
-        } elseif ((string)(int)$version == $version) {
+        } elseif ((string) (int) $version == $version) {
             $this->migrateToTime($version);
         } elseif (($time = strtotime($version)) !== false) {
             $this->migrateToTime($time);
@@ -371,7 +371,7 @@ abstract class BaseMigrateController extends Controller
         if ($limit === 'all') {
             $limit = null;
         } else {
-            $limit = (int)$limit;
+            $limit = (int) $limit;
             if ($limit < 1) {
                 throw new Exception("The limit must be greater than 0.");
             }
@@ -415,7 +415,7 @@ abstract class BaseMigrateController extends Controller
         if ($limit === 'all') {
             $limit = null;
         } else {
-            $limit = (int)$limit;
+            $limit = (int) $limit;
             if ($limit < 1) {
                 throw new Exception("The limit must be greater than 0.");
             }
@@ -612,10 +612,7 @@ abstract class BaseMigrateController extends Controller
                 continue;
             }
             $path = $this->migrationPath . DIRECTORY_SEPARATOR . $file;
-            if (preg_match('/^(m(\d{6}_\d{6})_.*?)\.php$/', $file, $matches) && is_file(
-                    $path
-                ) && !isset($applied[$matches[2]])
-            ) {
+            if (preg_match('/^(m(\d{6}_\d{6})_.*?)\.php$/', $file, $matches) && is_file($path) && !isset($applied[$matches[2]])) {
                 $migrations[] = $matches[1];
             }
         }

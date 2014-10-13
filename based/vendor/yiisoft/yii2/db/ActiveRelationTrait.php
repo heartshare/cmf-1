@@ -44,7 +44,7 @@ trait ActiveRelationTrait
      */
     public $link;
     /**
-     * @var array|object the query associated with the pivot table. Please call [[via()]]
+     * @var array|object the query associated with the junction table. Please call [[via()]]
      * to set this property instead of directly setting it.
      * This property is only used in relational context.
      * @see via()
@@ -78,7 +78,7 @@ trait ActiveRelationTrait
     }
 
     /**
-     * Specifies the relation associated with the pivot table.
+     * Specifies the relation associated with the junction table.
      *
      * Use this method to specify a pivot record/table when declaring a relation in the [[ActiveRecord]] class:
      *
@@ -96,7 +96,7 @@ trait ActiveRelationTrait
      * ```
      *
      * @param string $relationName the relation name. This refers to a relation declared in [[primaryModel]].
-     * @param callable $callable a PHP callback for customizing the relation associated with the pivot table.
+     * @param callable $callable a PHP callback for customizing the relation associated with the junction table.
      * Its signature should be `function($query)`, where `$query` is the query to be customized.
      * @return static the relation object itself.
      */
@@ -150,9 +150,7 @@ trait ActiveRelationTrait
             $method = new \ReflectionMethod($model, 'get' . $name);
             $realName = lcfirst(substr($method->getName(), 3));
             if ($realName !== $name) {
-                throw new InvalidParamException('Relation names are case sensitive. ' . get_class(
-                    $model
-                ) . " has a relation named \"$realName\" instead of \"$name\".");
+                throw new InvalidParamException('Relation names are case sensitive. ' . get_class($model) . " has a relation named \"$realName\" instead of \"$name\".");
             }
         }
 
@@ -197,10 +195,10 @@ trait ActiveRelationTrait
         }
 
         if ($this->via instanceof self) {
-            // via pivot table
+            // via junction table
             /* @var $viaQuery ActiveRelationTrait */
             $viaQuery = $this->via;
-            $viaModels = $viaQuery->findPivotRows($primaryModels);
+            $viaModels = $viaQuery->findJunctionRows($primaryModels);
             $this->filterByModels($viaModels);
         } elseif (is_array($this->via)) {
             // via relation
@@ -254,10 +252,13 @@ trait ActiveRelationTrait
                 if ($this->multiple && count($link) == 1 && is_array($keys = $primaryModel[reset($link)])) {
                     $value = [];
                     foreach ($keys as $key) {
+                        if (!is_scalar($key)) {
+                            $key = serialize($key);
+                        }
                         if (isset($buckets[$key])) {
                             if ($this->indexBy !== null) {
                                 // if indexBy is set, array_merge will cause renumbering of numeric array
-                                foreach ($buckets[$key] as $bucketKey => $bucketValue) {
+                                foreach($buckets[$key] as $bucketKey => $bucketValue) {
                                     $value[$bucketKey] = $bucketValue;
                                 }
                             } else {
@@ -296,9 +297,7 @@ trait ActiveRelationTrait
         }
         $model = reset($models);
         /* @var $relation ActiveQueryInterface|ActiveQuery */
-        $relation = $model instanceof ActiveRecordInterface ? $model->getRelation(
-            $name
-        ) : (new $this->modelClass)->getRelation($name);
+        $relation = $model instanceof ActiveRecordInterface ? $model->getRelation($name) : (new $this->modelClass)->getRelation($name);
 
         if ($relation->multiple) {
             $buckets = $this->buildBuckets($primaryModels, $relation->link, null, null, false);
@@ -494,7 +493,7 @@ trait ActiveRelationTrait
      * @param array $primaryModels either array of AR instances or arrays
      * @return array
      */
-    private function findPivotRows($primaryModels)
+    private function findJunctionRows($primaryModels)
     {
         if (empty($primaryModels)) {
             return [];

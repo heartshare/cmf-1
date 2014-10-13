@@ -63,10 +63,7 @@ class JsonResponseFormatter extends Component implements ResponseFormatterInterf
             $response->content = sprintf('%s(%s);', $response->data['callback'], Json::encode($response->data['data']));
         } else {
             $response->content = '';
-            Yii::warning(
-                "The 'jsonp' response requires that the data be an array consisting of both 'data' and 'callback' elements.",
-                __METHOD__
-            );
+            Yii::warning("The 'jsonp' response requires that the data be an array consisting of both 'data' and 'callback' elements.", __METHOD__);
         }
     }
 }

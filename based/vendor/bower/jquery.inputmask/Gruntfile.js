@@ -1,6 +1,6 @@
 module.exports = function (grunt) {
     function createBanner(fileName) {
-        return '/*\n' +
+        return '/*!\n' +
             '* ' + fileName + '\n' +
             '* http://github.com/RobinHerbots/jquery.inputmask\n' +
             '* Copyright (c) 2010 - <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>\n' +
@@ -38,7 +38,6 @@ module.exports = function (grunt) {
         }
         return uglifyConfig;
     }
-
     function wrapAMDLoader(src, dst, dependencies) {
         function stripClosureExecution() {
             return srcFile.replace(new RegExp("\\(jQuery\\).*$"), "");
@@ -79,9 +78,7 @@ module.exports = function (grunt) {
         },
         nugetpack: {
             dist: {
-                src: function () {
-                    return process.platform === "linux" ? 'nuget/jquery.inputmask.linux.nuspec' : 'nuget/jquery.inputmask.nuspec';
-                }(),
+                src: function () { return process.platform === "linux" ? 'nuget/jquery.inputmask.linux.nuspec' : 'nuget/jquery.inputmask.nuspec'; }(),
                 dest: 'dist/',
                 options: {
                     version: '<%= pkg.version %>'

@@ -16,13 +16,9 @@ $activeGenerator = Yii::$app->controller->generator;
             <?php
             foreach ($generators as $id => $generator) {
                 $label = '<i class="glyphicon glyphicon-chevron-right"></i>' . Html::encode($generator->getName());
-                echo Html::a(
-                    $label,
-                    ['default/view', 'id' => $id],
-                    [
-                        'class' => $generator === $activeGenerator ? 'list-group-item active' : 'list-group-item',
-                    ]
-                );
+                echo Html::a($label, ['default/view', 'id' => $id], [
+                    'class' => $generator === $activeGenerator ? 'list-group-item active' : 'list-group-item',
+                ]);
             }
             ?>
         </div>

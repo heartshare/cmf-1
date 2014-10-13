@@ -104,7 +104,7 @@ class I18N extends Component
      */
     public function format($message, $params, $language)
     {
-        $params = (array)$params;
+        $params = (array) $params;
         if ($params === []) {
             return $message;
         }
@@ -114,10 +114,7 @@ class I18N extends Component
             $result = $formatter->format($message, $params, $language);
             if ($result === false) {
                 $errorMessage = $formatter->getErrorMessage();
-                Yii::warning(
-                    "Formatting message for language '$language' failed with error: $errorMessage. The message being formatted was: $message.",
-                    __METHOD__
-                );
+                Yii::warning("Formatting message for language '$language' failed with error: $errorMessage. The message being formatted was: $message.", __METHOD__);
 
                 return $message;
             } else {
@@ -185,9 +182,7 @@ class I18N extends Component
                     if ($source instanceof MessageSource) {
                         return $source;
                     } else {
-                        return $this->translations[$category] = $this->translations[$pattern] = Yii::createObject(
-                            $source
-                        );
+                        return $this->translations[$category] = $this->translations[$pattern] = Yii::createObject($source);
                     }
                 }
             }

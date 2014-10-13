@@ -22,12 +22,12 @@ use yii\widgets\ActiveForm;
     <?= "<?php " ?>$form = ActiveForm::begin(); ?>
 
     <?php foreach ($generator->getModelAttributes() as $attribute): ?>
-        <?= "<?= " ?>$form->field($model, '<?= $attribute ?>') ?>
+    <?= "<?= " ?>$form->field($model, '<?= $attribute ?>') ?>
     <?php endforeach; ?>
 
-    <div class="form-group">
-        <?= "<?= " ?>Html::submitButton(<?= $generator->generateString('Submit') ?>, ['class' => 'btn btn-primary']) ?>
-    </div>
+        <div class="form-group">
+            <?= "<?= " ?>Html::submitButton(<?= $generator->generateString('Submit') ?>, ['class' => 'btn btn-primary']) ?>
+        </div>
     <?= "<?php " ?>ActiveForm::end(); ?>
 
 </div><!-- <?= str_replace('/', '-', trim($generator->viewName, '-')) ?> -->

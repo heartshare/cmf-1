@@ -463,14 +463,11 @@ class User extends Component
      */
     protected function afterLogin($identity, $cookieBased, $duration)
     {
-        $this->trigger(
-            self::EVENT_AFTER_LOGIN,
-            new UserEvent([
-                'identity' => $identity,
-                'cookieBased' => $cookieBased,
-                'duration' => $duration,
-            ])
-        );
+        $this->trigger(self::EVENT_AFTER_LOGIN, new UserEvent([
+            'identity' => $identity,
+            'cookieBased' => $cookieBased,
+            'duration' => $duration,
+        ]));
     }
 
     /**
@@ -500,12 +497,9 @@ class User extends Component
      */
     protected function afterLogout($identity)
     {
-        $this->trigger(
-            self::EVENT_AFTER_LOGOUT,
-            new UserEvent([
-                'identity' => $identity,
-            ])
-        );
+        $this->trigger(self::EVENT_AFTER_LOGOUT, new UserEvent([
+            'identity' => $identity,
+        ]));
     }
 
     /**
@@ -522,7 +516,7 @@ class User extends Component
             if (is_array($data) && isset($data[2])) {
                 $cookie = new Cookie($this->identityCookie);
                 $cookie->value = $value;
-                $cookie->expire = time() + (int)$data[2];
+                $cookie->expire = time() + (int) $data[2];
                 Yii::$app->getResponse()->getCookies()->add($cookie);
             }
         }
@@ -540,13 +534,11 @@ class User extends Component
     protected function sendIdentityCookie($identity, $duration)
     {
         $cookie = new Cookie($this->identityCookie);
-        $cookie->value = json_encode(
-            [
-                $identity->getId(),
-                $identity->getAuthKey(),
-                $duration,
-            ]
-        );
+        $cookie->value = json_encode([
+            $identity->getId(),
+            $identity->getAuthKey(),
+            $duration,
+        ]);
         $cookie->expire = time() + $duration;
         Yii::$app->getResponse()->getCookies()->add($cookie);
     }
@@ -623,9 +615,7 @@ class User extends Component
 
         if (($this->authTimeout !== null || $this->absoluteAuthTimeout !== null) && $identity !== null) {
             $expire = $this->authTimeout !== null ? $session->get($this->authTimeoutParam) : null;
-            $expireAbsolute = $this->absoluteAuthTimeout !== null ? $session->get(
-                $this->absoluteAuthTimeoutParam
-            ) : null;
+            $expireAbsolute = $this->absoluteAuthTimeout !== null ? $session->get($this->absoluteAuthTimeoutParam) : null;
             if ($expire !== null && $expire < time() || $expireAbsolute !== null && $expireAbsolute < time()) {
                 $this->logout(false);
             } elseif ($this->authTimeout !== null) {
