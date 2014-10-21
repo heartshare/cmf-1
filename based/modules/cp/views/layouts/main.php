@@ -47,6 +47,7 @@ AppAsset::register($this);
                     'items' => [
                         ['label' => yii::t('language', 'Language'), 'url' => ['/cp/language']],
                         ['label' => yii::t('translation', 'Translation'), 'url' => ['/cp/translation']],
+                        ['label' => yii::t('page', 'Pages'), 'url' => ['/cp/page']],
                     ],
                 ]
             ],

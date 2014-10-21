@@ -41,5 +41,25 @@ Page
 ```
 
 ```
-Localization
+Localization - done!
+```
+
+```
+Menu
+```
+
+```
+Configuration
+```
+
+```
+Magic button
+```
+
+```
+Search full text
+```
+
+```
+Module migration
 ```

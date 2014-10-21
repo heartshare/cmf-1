@@ -11,6 +11,7 @@ $config = [
         'log',
         'language',
         'translation',
+        'page',
     ],
     'defaultRoute' => 'index', // default controller
     'modules' => [
@@ -22,6 +23,9 @@ $config = [
         ],
         'translation' => [
             'class' => 'app\modules\translation\Translation',
+        ],
+        'page' => [
+            'class' => 'app\modules\page\Page',
         ],
     ],
     'components' => [

@@ -15,6 +15,11 @@ class IndexController extends Controller
         ];
     }
 
+    public function actionPage($route)
+    {
+        die($route);
+    }
+
     public function actionIndex()
     {
         return $this->render('index');
