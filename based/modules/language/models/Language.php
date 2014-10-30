@@ -98,4 +98,13 @@ class Language extends \yii\db\ActiveRecord
     {
         return self::findOne(['iso' => self::getCurrent()]);
     }
+
+    /**
+     * @return mixed
+     */
+    public static function getCurrentCode()
+    {
+        list($code) = explode('-', self::getCurrent(), 2);
+        return $code;
+    }
 }
