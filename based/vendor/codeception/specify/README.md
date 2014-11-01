@@ -64,7 +64,6 @@ $this->assertEquals('davert', $this->user->name);
 ?>        
 ```
 
-
 Failure in `specify` block won't get your test stopped.
 
 ``` php
@@ -80,9 +79,80 @@ $this->assertTrue(true);
 
 If a test fails you will specification text in the result.
 
+## Isolation
+
+Isolation is achieved by **cloning object properties** for each specify block.
+By default objects are cloned using deep cloning method.
+This behavior can be customized in order to speed up test execution by preventing some objects from cloning or switching to shallow cloning using `clone` operator.
+Some properties can be ignored from cloning using either global or local config settings.
+
+### Global Configuration
+
+Cloning configuration can be set globally
+
+```php
+<?php
+// globally disabling cloning of properties
+Codeception\Specify\Config::setIgnoredProperties(['user', 'repository']);
+?>
+```
+
+See complete [reference](https://github.com/Codeception/Specify/blob/master/docs/GlobalConfig.md).
+
+### Local Configuration
+
+Configuring can be done locally per test case
+
+```php
+<?php
+class UserTest extends \PHPUnit_Framework_TestCase
+{
+    use Codeception\Specify;
+
+    function testUser()
+    {
+        // do not deep clone user property
+        $this->specifyConfig()
+            ->shallowClone('user');
+    }
+}
+```
+
+Only specific properties can be preserved in specify blocks:
+
+```php
+<?php
+class UserTest extends \PHPUnit_Framework_TestCase
+{
+    use Codeception\Specify;
+    protected $user;
+    protected $post;
+
+    function testUser()
+    {
+        $this->user = 'davert';
+        $this->post = 'hello world';
+
+        $this->specifyConfig()
+            ->cloneOnly('user');
+
+        $this->specify('post is not cloned', function() {
+            $this->user = 'john';
+            $this->post = 'bye world';
+        });
+        $this->assertEquals('davert', $this->user); // user is restored
+        $this->assertEquals('bye world', $this->post); // post was not stored
+    }
+}
+```
+
+
+[Reference](https://github.com/Codeception/Specify/blob/master/docs/LocalConfig.md)
+
+
 ## Exceptions
 
-You can wait for exception thronw inside a block.
+You can wait for exception thrown inside a block.
 
 ``` php
 <?php
@@ -165,5 +235,6 @@ Install with Composer:
 }
 ```
 Include `Codeception\Specifiy` trait into your test.
+
 
 License: MIT

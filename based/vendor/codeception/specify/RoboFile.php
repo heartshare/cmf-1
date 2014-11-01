@@ -1,22 +1,13 @@
 <?php
+require_once __DIR__.'/vendor/autoload.php';
 
 class Robofile extends \Robo\Tasks
 {
     public function release()
     {
-        $version = file_get_contents('VERSION');
-        // ask for changes in this release
-        $changelog = $this->taskChangelog()
-            ->version($version)
-            ->askForChanges()
-            ->run();
+        $this->test();
 
-        // adding changelog and pushing it
-        $this->taskGit()
-            ->add('CHANGELOG.md')
-            ->commit('updated changelog')
-            ->push()
-            ->run();
+        $version = file_get_contents('VERSION');
 
         // create GitHub release
         $this->taskGitHubRelease($version)
@@ -25,5 +16,34 @@ class Robofile extends \Robo\Tasks
             ->run();
     }
 
+    public function changed($description)
+    {
+        $this->taskChangelog()
+            ->version(file_get_contents('VERSION'))
+            ->change($description)
+            ->run();
+    }
 
+    protected $docs = [
+        'docs/GlobalConfig.md' => \Codeception\Specify\Config::class,
+        'docs/LocalConfig.md' => \Codeception\Specify\ConfigBuilder::class,
+    ];
+
+    public function docs()
+    {
+        foreach ($this->docs as $file => $class) {
+            class_exists($class, true);
+            $this->taskGenDoc($file)
+                ->docClass($class)
+                ->processProperty(false)
+                ->run();
+        }
+    }
+
+
+    public function test()
+    {
+        $res = $this->taskPHPUnit()->run();
+        if (!$res) exit;
+    }
 }

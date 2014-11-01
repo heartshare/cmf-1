@@ -333,7 +333,8 @@
                 skipKeyPressEvent = false, //Safari 5.1.x - modal dialog fires keypress twice workaround
                 skipInputEvent = false, //skip when triggered from within inputmask
                 ignorable = false,
-                maxLength;
+                maxLength,
+                firstClick = true;
 
             //maskset helperfunctions
 
@@ -456,9 +457,10 @@
             }
             function getTestTemplate(pos, ndxIntlzr, tstPs) {
                 function checkAlternationMatch(test, altNdx, altArr) {
+                    var altArrC = opts.greedy ? altArr : altArr.slice(0, 1);
                     var isMatch = false, altLocArr = test.locator[altNdx].toString().split(",");
                     for (var alndx = 0; alndx < altLocArr.length; alndx++) {
-                        if ($.inArray(altLocArr[alndx], altArr) != -1) {
+                        if ($.inArray(altLocArr[alndx], altArrC) != -1) {
                             isMatch = true;
                             break;
                         }
@@ -841,6 +843,31 @@
                     }
                     return false;
                 }
+                //set alternator choice on previous skipped placeholder positions
+                function trackbackAlternations(originalPos, newPos) {
+                    var vp = getMaskSet()["validPositions"][newPos],
+                        targetLocator = vp.locator,
+                        tll = targetLocator.length;
+
+                    //console.log("target locator: " + targetLocator);
+                    for (var ps = originalPos; ps < newPos; ps++) {
+                        if (!isMask(ps)) {
+                            var tests = getTests(ps),
+                            bestMatch, equality = -1;
+                            for (var tndx in tests) {
+                                var activeTest = tests[tndx];
+                                for (var i = 0; i < tll; i++) {
+                                    if (targetLocator[i] == activeTest.locator[i] && equality < i) { //needs fix for locators with multiple alternations
+                                        equality = i;
+                                        bestMatch = activeTest;
+                                    }
+                                }
+                                //console.log(bestMatch.locator);
+                            }
+                            setValidPosition(ps, $.extend({}, bestMatch, { "input": bestMatch["match"].def }), true)
+                        }
+                    }
+                }
                 //Check for a nonmask before the pos
                 var buffer = getBuffer();
                 for (var pndx = pos - 1; pndx > -1; pndx--) {
@@ -867,6 +894,7 @@
                             for (var nPos = maskPos + 1, snPos = seekNext(maskPos) ; nPos <= snPos; nPos++) {
                                 result = _isValid(nPos, c, strict, fromSetValid);
                                 if (result !== false) {
+                                    trackbackAlternations(maskPos, nPos);
                                     maskPos = nPos;
                                     break;
                                 }
@@ -1056,11 +1084,15 @@
             }
             function clearOptionalTail(input) {
                 var buffer = getBuffer(), tmpBuffer = buffer.slice();
-                var rl = determineLastRequiredPosition(), lmib = tmpBuffer.length - 1;
-                for (; lmib > rl; lmib--) {
-                    if (isMask(lmib)) break;
+                if ($.isFunction(opts.postProcessOnBlur))
+                    opts.postProcessOnBlur.call(input, tmpBuffer, opts);
+                else {
+                    var rl = determineLastRequiredPosition(), lmib = tmpBuffer.length - 1;
+                    for (; lmib > rl; lmib--) {
+                        if (isMask(lmib)) break;
+                    }
+                    tmpBuffer.splice(rl, lmib + 1 - rl);
                 }
-                tmpBuffer.splice(rl, lmib + 1 - rl);
                 writeBuffer(input, tmpBuffer);
             }
             function isComplete(buffer) { //return true / false / undefined (repeat *)
@@ -1433,7 +1465,7 @@
                 var keyupResult = opts.onKeyUp.call(this, e, buffer, currentCaretPos.begin, opts);
                 handleOnKeyResult(input, keyupResult, currentCaretPos);
                 if (k == $.inputmask.keyCode.TAB && opts.showMaskOnFocus) {
-                    if ($input.hasClass('focus-inputmask') && input._valueGet().length == 0) {
+                    if ($input.is(":focus") && input._valueGet().length == 0) {
                         resetMaskSet();
                         buffer = getBuffer();
                         writeBuffer(input, buffer);
@@ -1555,7 +1587,6 @@
 
                     //unbind all events - to make sure that no other mask will interfere when re-masking
                     $el.unbind(".inputmask");
-                    $el.removeClass('focus-inputmask');
                     //bind events
                     $el.closest('form').bind("submit", function (e) { //trigger change on submit if any
                         if (valueOnFocus != getBuffer().join('')) {
@@ -1574,7 +1605,7 @@
                     });
                     $el.bind("mouseenter.inputmask", function () {
                         var $input = $(this), input = this;
-                        if (!$input.hasClass('focus-inputmask') && opts.showMaskOnHover) {
+                        if (!$input.is(":focus") && opts.showMaskOnHover) {
                             if (input._valueGet() != getBuffer().join('')) {
                                 writeBuffer(input, getBuffer());
                             }
@@ -1583,9 +1614,10 @@
                         var $input = $(this), input = this;
                         if ($input.data('_inputmask')) {
                             var nptValue = input._valueGet(), buffer = getBuffer();
-                            $input.removeClass('focus-inputmask');
+                            firstClick = true;
                             if (valueOnFocus != getBuffer().join('')) {
                                 $input.change();
+                                valueOnFocus = getBuffer().join('');
                             }
                             if (opts.clearMaskOnLostFocus && nptValue != '') {
                                 if (nptValue == getBufferTemplate().join(''))
@@ -1607,19 +1639,18 @@
                                 }
                             }
                         }
-                    }).bind("focus.inputmask", function () {
+                    }).bind("focus.inputmask", function (e) {
                         var $input = $(this), input = this, nptValue = input._valueGet();
-                        if (opts.showMaskOnFocus && !$input.hasClass('focus-inputmask') && (!opts.showMaskOnHover || (opts.showMaskOnHover && nptValue == ''))) {
+                        if (opts.showMaskOnFocus && !$input.is(":focus") && (!opts.showMaskOnHover || (opts.showMaskOnHover && nptValue == ''))) {
                             if (input._valueGet() != getBuffer().join('')) {
                                 writeBuffer(input, getBuffer(), seekNext(getLastValidPosition()));
                             }
                         }
-                        $input.addClass('focus-inputmask');
                         valueOnFocus = getBuffer().join('');
                     }).bind("mouseleave.inputmask", function () {
                         var $input = $(this), input = this;
                         if (opts.clearMaskOnLostFocus) {
-                            if (!$input.hasClass('focus-inputmask') && input._valueGet() != $input.attr("placeholder")) {
+                            if (!$input.is(":focus") && input._valueGet() != $input.attr("placeholder")) {
                                 if (input._valueGet() == getBufferTemplate().join('') || input._valueGet() == '')
                                     input._valueSet('');
                                 else { //clearout optional tail of the mask
@@ -1628,24 +1659,23 @@
                             }
                         }
                     }).bind("click.inputmask", function () {
-                        var input = this;
-                        if ($(input).is(":focus")) {
-                            setTimeout(function () {
-                                var selectedCaret = caret(input);
-                                if (selectedCaret.begin == selectedCaret.end) {
-                                    if (opts.radixFocus && opts.radixPoint != "" && $.inArray(opts.radixPoint, getBuffer()) != -1 && getBuffer().join('') == getBufferTemplate().join(''))
-                                        caret(input, $.inArray(opts.radixPoint, getBuffer()));
-                                    else {
-                                        var clickPosition = isRTL ? TranslatePosition(selectedCaret.begin) : selectedCaret.begin,
-                                            lastPosition = seekNext(getLastValidPosition(clickPosition));
-                                        if (clickPosition < lastPosition) {
-                                            caret(input, isMask(clickPosition) ? clickPosition : seekNext(clickPosition));
-                                        } else {
-                                            caret(input, lastPosition);
-                                        }
+                        var $input = $(this), input = this;
+                        if ($input.is(":focus")) {
+                            var selectedCaret = caret(input);
+                            if (selectedCaret.begin == selectedCaret.end) {
+                                if (opts.radixFocus && opts.radixPoint != "" && $.inArray(opts.radixPoint, getBuffer()) != -1 && (firstClick || getBuffer().join('') == getBufferTemplate().join(''))) {
+                                    caret(input, $.inArray(opts.radixPoint, getBuffer()));
+                                    firstClick = false;
+                                } else {
+                                    var clickPosition = isRTL ? TranslatePosition(selectedCaret.begin) : selectedCaret.begin,
+                                        lastPosition = seekNext(getLastValidPosition(clickPosition));
+                                    if (clickPosition < lastPosition) {
+                                        caret(input, isMask(clickPosition) ? clickPosition : seekNext(clickPosition));
+                                    } else {
+                                        caret(input, lastPosition);
                                     }
                                 }
-                            }, 0);
+                            }
                         }
                     }).bind('dblclick.inputmask', function () {
                         var input = this;
@@ -1716,7 +1746,6 @@
                         writeBuffer(el, getBuffer());
                     }
                     if (activeElement === el) { //position the caret when in focus
-                        $el.addClass('focus-inputmask');
                         caret(el, seekNext(getLastValidPosition()));
                     }
 
@@ -1798,7 +1827,6 @@
                         el._valueSet(unmaskedvalue($el));
                         //unbind all events
                         $el.unbind(".inputmask");
-                        $el.removeClass('focus-inputmask');
                         //clear data
                         $el.removeData('_inputmask');
                         //restore the value property
@@ -1910,7 +1938,8 @@
                 },
                 //specify keyCodes which should not be considered in the keypress event, otherwise the preventDefault will stop their default behavior especially in FF
                 ignorables: [8, 9, 13, 19, 27, 33, 34, 35, 36, 37, 38, 39, 40, 45, 46, 93, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123],
-                isComplete: undefined //override for isComplete - args => buffer, opts - return true || false
+                isComplete: undefined, //override for isComplete - args => buffer, opts - return true || false
+                postProcessOnBlur: undefined //do some postprocessing of the value on the blur event, this overrides the clearOptionalTail functionality, args => tmpBuffer, opts
             },
             keyCode: {
                 ALT: 18, BACKSPACE: 8, CAPS_LOCK: 20, COMMA: 188, COMMAND: 91, COMMAND_LEFT: 91, COMMAND_RIGHT: 93, CONTROL: 17, DELETE: 46, DOWN: 40, END: 35, ENTER: 13, ESCAPE: 27, HOME: 36, INSERT: 45, LEFT: 37, MENU: 93, NUMPAD_ADD: 107, NUMPAD_DECIMAL: 110, NUMPAD_DIVIDE: 111, NUMPAD_ENTER: 108,

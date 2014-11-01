@@ -102,16 +102,16 @@
         },
         {
             "name": "bower-asset/jquery-ui",
-            "version": "1.11.1",
+            "version": "1.11.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/components/jqueryui.git",
-                "reference": "39890e8599bdd79c423ea21b967195106800b87d"
+                "reference": "396781474d936959061271505f506b78398fe6a2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/components/jqueryui/zipball/39890e8599bdd79c423ea21b967195106800b87d",
-                "reference": "39890e8599bdd79c423ea21b967195106800b87d",
+                "url": "https://api.github.com/repos/components/jqueryui/zipball/396781474d936959061271505f506b78398fe6a2",
+                "reference": "396781474d936959061271505f506b78398fe6a2",
                 "shasum": ""
             },
             "require": {
@@ -122,23 +122,21 @@
                 "bower-asset-main": [
                     "jquery-ui.js"
                 ],
-                "bower-asset-ignore": [
-
-                ]
+                "bower-asset-ignore": []
             }
         },
         {
             "name": "bower-asset/jquery.inputmask",
-            "version": "3.1.32",
+            "version": "3.1.34",
             "source": {
                 "type": "git",
                 "url": "https://github.com/RobinHerbots/jquery.inputmask.git",
-                "reference": "bb776eb7e7be594fa77d5598e6f89d96029a8bac"
+                "reference": "f48d10463039a23469e65cc4b5c0b4409e8fb596"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/RobinHerbots/jquery.inputmask/zipball/bb776eb7e7be594fa77d5598e6f89d96029a8bac",
-                "reference": "bb776eb7e7be594fa77d5598e6f89d96029a8bac",
+                "url": "https://api.github.com/repos/RobinHerbots/jquery.inputmask/zipball/f48d10463039a23469e65cc4b5c0b4409e8fb596",
+                "reference": "f48d10463039a23469e65cc4b5c0b4409e8fb596",
                 "shasum": ""
             },
             "require": {
@@ -181,16 +179,16 @@
         },
         {
             "name": "bower-asset/punycode",
-            "version": "v1.3.1",
+            "version": "v1.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bestiejs/punycode.js.git",
-                "reference": "de452f89aea23f126f7b219f576abda1c0823825"
+                "reference": "38c8d3131a82567bfef18da09f7f4db68c84f8a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bestiejs/punycode.js/zipball/de452f89aea23f126f7b219f576abda1c0823825",
-                "reference": "de452f89aea23f126f7b219f576abda1c0823825",
+                "url": "https://api.github.com/repos/bestiejs/punycode.js/zipball/38c8d3131a82567bfef18da09f7f4db68c84f8a3",
+                "reference": "38c8d3131a82567bfef18da09f7f4db68c84f8a3",
                 "shasum": ""
             },
             "type": "bower-asset-library",
@@ -235,16 +233,16 @@
         },
         {
             "name": "cebe/markdown",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cebe/markdown.git",
-                "reference": "4f6b35cc5cc1025ed946839fd24e05ace617867a"
+                "reference": "9d6c36d6623497523ed421a31d940bc1d7435578"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cebe/markdown/zipball/4f6b35cc5cc1025ed946839fd24e05ace617867a",
-                "reference": "4f6b35cc5cc1025ed946839fd24e05ace617867a",
+                "url": "https://api.github.com/repos/cebe/markdown/zipball/9d6c36d6623497523ed421a31d940bc1d7435578",
+                "reference": "9d6c36d6623497523ed421a31d940bc1d7435578",
                 "shasum": ""
             },
             "require": {
@@ -291,7 +289,7 @@
                 "markdown",
                 "markdown-extra"
             ],
-            "time": "2014-10-10 20:54:29"
+            "time": "2014-10-25 16:16:49"
         },
         {
             "name": "ezyang/htmlpurifier",
@@ -848,24 +846,24 @@
         },
         {
             "name": "codeception/specify",
-            "version": "0.3.6",
+            "version": "0.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Codeception/Specify.git",
-                "reference": "0cabe95241bec511917e9804b211a3a91645d026"
+                "reference": "0c0ae07adfc231115b3b72ade22f44c23c199ded"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Codeception/Specify/zipball/0cabe95241bec511917e9804b211a3a91645d026",
-                "reference": "0cabe95241bec511917e9804b211a3a91645d026",
+                "url": "https://api.github.com/repos/Codeception/Specify/zipball/0c0ae07adfc231115b3b72ade22f44c23c199ded",
+                "reference": "0c0ae07adfc231115b3b72ade22f44c23c199ded",
                 "shasum": ""
             },
             "require": {
-                "myclabs/deep-copy": "*",
+                "myclabs/deep-copy": "~1.1",
                 "php": ">=5.4.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "3.7.*"
+                "phpunit/phpunit": "~4.0"
             },
             "type": "library",
             "autoload": {
@@ -877,12 +875,11 @@
             "authors": [
                 {
                     "name": "Michael Bodnarchuk",
-                    "email": "davert.php@mailican.com",
-                    "homepage": "http://codeception.com"
+                    "email": "davert.php@mailican.com"
                 }
             ],
             "description": "BDD code blocks for PHPUnit and Codeception",
-            "time": "2014-03-22 00:46:25"
+            "time": "2014-10-17 00:06:51"
         },
         {
             "name": "codeception/verify",
@@ -941,9 +938,7 @@
             },
             "type": "library",
             "extra": {
-                "branch-alias": [
-
-                ]
+                "branch-alias": []
             },
             "autoload": {
                 "psr-0": {
@@ -1233,9 +1228,7 @@
             "time": "2014-10-12 17:09:06"
         }
     ],
-    "aliases": [
-
-    ],
+    "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
         "yiisoft/yii2-jui": 5,
@@ -1246,7 +1239,5 @@
     "platform": {
         "php": ">=5.4.0"
     },
-    "platform-dev": [
-
-    ]
+    "platform-dev": []
 }

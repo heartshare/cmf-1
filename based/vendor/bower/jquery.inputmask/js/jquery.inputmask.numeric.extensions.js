@@ -125,18 +125,26 @@ Optional extensions on the jquery.inputmask base
                     return rslt;
                 }
             },
+            postProcessOnBlur: function (tmpBuffer, opts) {
+                var tmpBufSplit = opts.radixPoint != "" ? tmpBuffer.join('').split(opts.radixPoint) : [tmpBuffer.join('')],
+                    matchRslt = tmpBufSplit[0].match(opts.regex.integerPart(opts)),
+                    matchRsltDigits = tmpBufSplit.length == 2 ? tmpBufSplit[1].match(opts.regex.integerNPart(opts)) : undefined;
+                if (matchRslt && matchRslt[matchRslt.index] == "-0" && (matchRsltDigits == undefined || matchRsltDigits[matchRsltDigits.index].match(/^0+$/))) {
+                    tmpBuffer.splice(0, 1);
+                }
+            },
             regex: {
                 integerPart: function (opts) { return new RegExp('[-\+]?\\d+'); },
                 integerNPart: function (opts) { return new RegExp('\\d+'); }
             },
-            signHandler: function (chrs, buffer, pos, strict, opts) {
+            signHandler: function (chrs, maskset, pos, strict, opts) {
                 if (!strict && (opts.allowMinus && chrs === "-" || opts.allowPlus && chrs === "+")) {
-                    var matchRslt = buffer.join('').match(opts.regex.integerPart(opts));
+                    var matchRslt = maskset.buffer.join('').match(opts.regex.integerPart(opts));
 
-                    if (matchRslt && matchRslt.length > 0 && matchRslt[matchRslt.index] !== "0") {
-                        if (buffer[matchRslt.index] == (chrs === "-" ? "+" : "-")) {
+                    if (matchRslt && matchRslt[matchRslt.index].length > 0 && (matchRslt[matchRslt.index] !== "0" || (maskset.buffer && maskset._buffer && maskset.buffer.join('') != maskset._buffer.join('')))) {
+                        if (maskset.buffer[matchRslt.index] == (chrs === "-" ? "+" : "-")) {
                             return { "pos": matchRslt.index, "c": chrs, "remove": matchRslt.index, "caret": pos };
-                        } else if (buffer[matchRslt.index] == (chrs === "-" ? "-" : "+")) {
+                        } else if (maskset.buffer[matchRslt.index] == (chrs === "-" ? "-" : "+")) {
                             return { "remove": matchRslt.index, "caret": pos - 1 };
                         } else {
                             return { "pos": matchRslt.index, "c": chrs, "caret": pos + 1 };
@@ -182,7 +190,7 @@ Optional extensions on the jquery.inputmask base
             definitions: {
                 '~': {
                     validator: function (chrs, maskset, pos, strict, opts) {
-                        var isValid = opts.signHandler(chrs, maskset.buffer, pos, strict, opts);
+                        var isValid = opts.signHandler(chrs, maskset, pos, strict, opts);
                         if (!isValid) {
                             isValid = opts.radixHandler(chrs, maskset, pos, strict, opts);
                             if (!isValid) {
@@ -207,7 +215,7 @@ Optional extensions on the jquery.inputmask base
                 },
                 '+': {
                     validator: function (chrs, maskset, pos, strict, opts) {
-                        var isValid = opts.signHandler(chrs, maskset.buffer, pos, strict, opts);
+                        var isValid = opts.signHandler(chrs, maskset, pos, strict, opts);
                         if (!isValid) {
                             isValid = (opts.allowMinus && chrs == "-") || (opts.allowPlus && chrs == "+");
                         }
@@ -219,7 +227,7 @@ Optional extensions on the jquery.inputmask base
                 },
                 ':': {
                     validator: function (chrs, maskset, pos, strict, opts) {
-                        var isValid = opts.signHandler(chrs, maskset.buffer, pos, strict, opts);
+                        var isValid = opts.signHandler(chrs, maskset, pos, strict, opts);
                         if (!isValid) {
                             var radix = "[" + $.inputmask.escapeRegex.call(this, opts.radixPoint) + "]";
                             isValid = new RegExp(radix).test(chrs);
