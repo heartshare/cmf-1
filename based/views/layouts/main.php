@@ -4,7 +4,7 @@ use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
-use app\modules\language\widgets\LanguageWidget;
+use krok\language\widgets\LanguageWidget;
 
 /* @var $this \yii\web\View */
 /* @var $content string */
@@ -69,10 +69,10 @@ AppAsset::register($this);
             <?=
             Yii::t(
                 'yii',
-                'Framework {version_core} CMF {version_cmf}',
+                'Framework {version_core} CP {version_cmf}',
                 [
                     'version_core' => Yii::getVersion(),
-                    'version_cmf' => '0.1',
+                    'version_cmf' => '1.0',
                 ]
             ) ?>
         </p>

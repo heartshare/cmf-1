@@ -9,61 +9,12 @@ $config = [
     'sourceLanguage' => 'en-US',
     'bootstrap' => [
         'log',
-        'language',
-        'translation',
-        'page',
     ],
-    'defaultRoute' => 'index', // default controller
-    'modules' => [
-        'cp' => [
-            'class' => 'app\modules\cp\Cp',
-        ],
-        'language' => [
-            'class' => 'app\modules\language\Language',
-        ],
-        'translation' => [
-            'class' => 'app\modules\translation\Translation',
-        ],
-        'page' => [
-            'class' => 'app\modules\page\Page',
-        ],
-    ],
+    'defaultRoute' => 'index', // todo: page
+    'modules' => [],
     'components' => [
         'request' => [
-            'class' => 'app\modules\language\components\LangRequest',
             'cookieValidationKey' => 'pbrCfBk0ZjXzuV6c2VSRg0aEBoTk7XkC',
-        ],
-        'i18n' => [
-            'translations' => [
-                'db' => [
-                    'sourceLanguage' => 'ru-RU',
-                    'class' => 'yii\i18n\DbMessageSource',
-                    'messageTable' => '{{%i18n_message}}',
-                    'sourceMessageTable' => '{{%i18n_source}}',
-                    'enableCaching' => YII_DEBUG ? false : true,
-                    'on missingTranslation' => [
-                        'app\modules\translation\components\TranslationEventHandler',
-                        'handleMissingTranslation'
-                    ],
-                ],
-                'yii' => [
-                    'class' => 'yii\i18n\PhpMessageSource',
-                    'sourceLanguage' => 'en-US',
-                    'basePath' => '@app/messages',
-                ],
-            ],
-        ],
-        'urlManager' => [
-            'class' => 'app\modules\language\components\LangUrlManager',
-            'enablePrettyUrl' => true,
-            'showScriptName' => false,
-            'suffix' => '.html',
-            'enableStrictParsing' => false,
-            'rules' => [
-                '<language:\w+\-\w+>' => '/',
-                '<language:\w+\-\w+>/<controller:\w+>' => '<controller>',
-                '<language:\w+\-\w+>/<controller:\w+>/<action:\w+>' => '<controller>/<action>',
-            ],
         ],
         /*
         'cache' => [
@@ -82,7 +33,7 @@ $config = [
             ],
         ],
         'errorHandler' => [
-            'errorAction' => 'index/error',
+            'errorAction' => 'index/error', // todo: page
         ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',

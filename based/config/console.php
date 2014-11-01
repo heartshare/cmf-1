@@ -6,7 +6,6 @@ return [
     'id' => 'basic-console',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log', 'gii'],
-    'controllerNamespace' => 'app\commands',
     'controllerMap' => [
         'migrate' => [
             'class' => 'yii\console\controllers\MigrateController',
